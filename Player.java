@@ -22,6 +22,7 @@ public class Player implements Comparable<Player>
 		return 0;
 	}
 
+	//TODO: get rid of and define in subclasses
 	//evaluate player by assigning them a score
 	public double evaluate(double[] coeffs) {
 		score = dot(stats,coeffs);
@@ -48,7 +49,7 @@ public class Player implements Comparable<Player>
 
 
 	//helper function for evalute()
-	private double dot(int[] a, double[] b) {
+	protected double dot(int[] a, double[] b) {
 		if(a.length != b.length) {
 			System.out.println("Error: arrays don't have same length");
 			System.exit(1);
@@ -59,5 +60,11 @@ public class Player implements Comparable<Player>
 			sum += (a[i]*b[i]);
 		}
 		return sum;
+	}
+
+	//TODO: eliminate or move to separate class
+	public static class stat
+	{
+		protected int value;
 	}
 }

@@ -9,4 +9,4 @@ $(CLASSES): $(SRCS)
 	$(JAVAC) $(CCFLAGS) $(SRCS)
 
 clean:
-	rm *.class
+	rm -f *.class

@@ -14,26 +14,50 @@ public class ff
 	public static final QB kolb = new QB("kolb",new int[]{109,74,1169,8,3,27});
 	public static final QB quinn = new QB("quinn",new int[]{112,85,1141,2,8,21});
 	public static final QB leinart = new QB("leinart",new int[]{16,17,115,0,1,1});
+	public static final QB sanchez = new QB("sanchez",new int[]{246,207,2883,13,18,34});
+	public static final QB weeden = new QB("weeden",new int[]{297,220,3385,14,17,28});
 	//RB
 	public static final RB lynch = new RB("lynch",new int[]{315,1590,11});
 	public static final RB rice = new RB("rice",new int[]{257,1143,9});
 	public static final RB foster = new RB("foster",new int[]{351,1424,15});
 	public static final RB rbush = new RB("r bush",new int[]{227,986,6});
-	public static final RB vereen = new RB("vereen",new int[]{62,251,3});
+	public static final RB mathews = new RB("mathews",new int[]{184,707,1});
 	public static final RB jonesdrew = new RB("jones-drew",new int[]{86,414,1});
 	public static final RB hillman = new RB("hillman",new int[]{85,330,1});
+	public static final RB redman = new RB("redman",new int[]{110,410,2});
 	//WR
 	public static final WR cjohnson = new WR("c johnson",new int[]{122,1964,5});
 	public static final WR jjones = new WR("j jones",new int[]{79,1198,10});
-	public static final WR bryant = new WR("bryant",new int[]{92,1382,12});
+	public static final WR dbryant = new WR("d bryant",new int[]{92,1382,12});
 	public static final WR amendola = new WR("amendola",new int[]{63,666,3});
 	public static final WR bedwards = new WR("b edwards",new int[]{18,199,1});
-	public static final WR ssmith = new WR("s smith",new int[]{14,131,0});
+	public static final WR manningham = new WR("manningham",new int[]{42,449,1});
 	public static final WR sholmes = new WR("s holmes",new int[]{20,272,1});
+	public static final WR hdouglas = new WR("h douglas",new int[]{38,395,1});
+	//DEF
+	public static final DEF chicago = new DEF("chicago",new int[]{41,24,20,0,10,0,255,5050});
+	public static final DEF sanfran = new DEF("san fransisco",new int[]{38,14,11,1,4,0,265,4710});
+	public static final DEF seattle = new DEF("seattle",new int[]{36,18,13,0,5,0,255,5050});
+	public static final DEF cleveland = new DEF("cleveland",new int[]{38,17,12,0,2,1,356,5821});
+	public static final DEF neworleans = new DEF("new orleans",new int[]{30,15,11,0,5,0,434,7042});
+	public static final DEF jacksonville = new DEF("jacksonville",new int[]{20,12,11,0,1,0,414,6088});
+	public static final DEF oakland = new DEF("oakland",new int[]{25,11,8,0,0,0,431,5672});
+	//K
+	public static final K gostkowski = new K("gostkowski",new int[]{66,0,0,8,10,9,2,0,0,2,4,0});
+	public static final K mbryant = new K("m bryant",new int[]{44,0,1,8,10,10,4,0,1,1,3,0});
+	public static final K tucker = new K("tucker",new int[]{42,0,0,8,8,10,4,0,0,0,3,0});
+	public static final K suisham = new K("suisham",new int[]{34,0,0,7,8,12,1,0,1,0,0,2});
+	public static final K cundiff = new K("cundiff",new int[]{17,0,0,1,3,3,0,0,0,2,1,2});
+	public static final K forbath = new K("forbath",new int[]{33,1,0,3,2,11,1,0,0,1,0,0});
+	public static final K scobee = new K("scobee",new int[]{18,1,1,4,8,11,1,0,0,0,2,1});
+	public static final K folk = new K("folk",new int[]{30,0,0,7,6,5,3,0,1,2,2,1});
+	public static final K crosby = new K("crosby",new int[]{50,0,0,5,5,9,2,0,0,2,3,7});
 	//files to write results to
 	public static final String qbFilename = "QBresults.txt";
 	public static final String rbFilename = "RBresults.txt";
 	public static final String wrFilename = "WRresults.txt";
+	public static final String defFilename = "DEFresults.txt";
+	public static final String kFilename = "Kresults.txt";
 
 	public static void main(String[] args)
 	{
@@ -44,20 +68,27 @@ public class ff
 		String mode = args[0];
 
 		if(mode.equals("qb")) {
-			QB[] qbs = {leinart,quinn,kolb,palmer,brady,peyton,rodgers};
+			QB[] qbs = {sanchez,weeden,leinart,quinn,kolb,palmer,brady,peyton,rodgers};
 			QB[] sortedQBs = runQBs(args,qbs,qbFilename);
 		} else if(mode.equals("rb")) {
-			RB[] rbs = {hillman,vereen,jonesdrew,rbush,rice,lynch,foster};
-			RB[] sortedRBS = runRBs(args,rbs,rbFilename);
+			RB[] rbs = {redman, hillman,mathews,jonesdrew,rbush,rice,lynch,foster};
+			RB[] sortedRBs = runRBs(args,rbs,rbFilename);
 		} else if(mode.equals("wr")) {
-			WR[] wrs = {ssmith,bedwards,sholmes,amendola,jjones,bryant,cjohnson};
+			WR[] wrs = {bedwards,sholmes,hdouglas,manningham,amendola,jjones,dbryant,cjohnson};
 			WR[] sortedWRs = runWRs(args,wrs,wrFilename);
+		} else if(mode.equals("def")) {
+			DEF[] defs = {oakland,neworleans,jacksonville,cleveland,seattle,sanfran,chicago};
+			DEF[] sortedDEFs = runDEFs(args,defs,defFilename);
+		} else if(mode.equals("k")) {
+			K[] ks = {cundiff,folk,crosby,forbath,scobee,suisham,gostkowski,mbryant,tucker};
+			K[] sortedKs = runKs(args,ks,kFilename);
 		} else {
 			System.out.println("Error: Invalid mode");
 			System.exit(1);
 		}
 	}
 
+	//could pass in PrintStream instead of filename string to make switching to System.out. easy
 	public static Player[] runPlayers(Player[] players, double[] coeffs, String filename) {
 		//make copy of players to preserve original order
 		Player[] sortedPlayers = Arrays.copyOf(players,players.length);
@@ -67,9 +98,9 @@ public class ff
 			sortedPlayers[i].evaluate(coeffs);
 		}
 		Arrays.sort(sortedPlayers); //sort players based on score
+		//write results to file
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename,true)));
-			//print results
 			out.println("***** Custom scoring coefficients *****");
 			out.println(players[0].statsCats());
 			printCoeffs(coeffs,out);
@@ -128,6 +159,48 @@ public class ff
 		double[] coeffs = {recCE,ydsCE,tdCE};
 
 		return (WR[])runPlayers(wrs,coeffs,filename);
+	}
+
+	public static DEF[] runDEFs(String[] args, DEF[] defs, String filename)
+	{
+		if(args.length < (defs[0].getNumStats()+1)) {
+			System.out.println("Error: Not enough arguments");
+			System.exit(1);
+		}
+		double sckCE = Double.parseDouble(args[1]);
+		double intCE = Double.parseDouble(args[2]);
+		double fumbCE = Double.parseDouble(args[3]);
+		double safCE = Double.parseDouble(args[4]);
+		double tdCE = Double.parseDouble(args[5]);
+		double retCE = Double.parseDouble(args[6]);
+		double ptsCE = Double.parseDouble(args[7])/DEF.getPointsUnit();
+		double ydsCE = Double.parseDouble(args[8])/DEF.getYardsUnit();
+		double[] coeffs = {sckCE,intCE,fumbCE,safCE,tdCE,retCE,ptsCE,ydsCE};
+
+		return (DEF[])runPlayers(defs,coeffs,filename);
+	}
+
+	public static K[] runKs(String[] args, K[] ks, String filename)
+	{
+		if(args.length < (ks[0].getNumStats()+1)) {
+			System.out.println("Error: Not enough arguments");
+			System.exit(1);
+		}
+		double patmdCE = Double.parseDouble(args[1]);
+		double patmsCE = Double.parseDouble(args[2]);
+		double fgmd1CE = Double.parseDouble(args[3]);
+		double fgmd2CE = Double.parseDouble(args[4]);
+		double fgmd3CE = Double.parseDouble(args[5]);
+		double fgmd4CE = Double.parseDouble(args[6]);
+		double fgmd5CE = Double.parseDouble(args[7]);
+		double fgms1CE = Double.parseDouble(args[8]);
+		double fgms2CE = Double.parseDouble(args[9]);
+		double fgms3CE = Double.parseDouble(args[10]);
+		double fgms4CE = Double.parseDouble(args[11]);
+		double fgms5CE = Double.parseDouble(args[12]);
+		double[] coeffs = {patmdCE,patmsCE,fgmd1CE,fgmd2CE,fgmd3CE,fgmd4CE,fgmd5CE,fgms1CE,fgms2CE,fgms3CE,fgms4CE,fgms5CE};
+
+		return (K[])runPlayers(ks,coeffs,filename);
 	}
 
 	//write array to printwriter stream
