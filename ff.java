@@ -2,6 +2,7 @@ import java.util.Arrays;
 import java.io.PrintWriter;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 
 public class ff
@@ -53,6 +54,7 @@ public class ff
 	public static final K folk = new K("folk",new int[]{30,0,0,7,6,5,3,0,1,2,2,1});
 	public static final K crosby = new K("crosby",new int[]{50,0,0,5,5,9,2,0,0,2,3,7});
 	//files to write results to
+	public static final String resultsDir = "results";
 	public static final String qbFilename = "QBresults.txt";
 	public static final String rbFilename = "RBresults.txt";
 	public static final String wrFilename = "WRresults.txt";
@@ -100,7 +102,7 @@ public class ff
 		Arrays.sort(sortedPlayers); //sort players based on score
 		//write results to file
 		try {
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename,true)));
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(new File(resultsDir,filename),true)));
 			out.println("***** Custom scoring coefficients *****");
 			out.println(players[0].statsCats());
 			printCoeffs(coeffs,out);
