@@ -22,7 +22,7 @@ public class Player implements Comparable<Player>
 		return 0;
 	}
 
-	//TODO: get rid of and define in subclasses
+	//TODO: get rid of and define in subclasses, or use variable arguments-- make class which couples stats and coeffs arrays??
 	//evaluate player by assigning them a score
 	public double evaluate(double[] coeffs) {
 		score = dot(stats,coeffs);
