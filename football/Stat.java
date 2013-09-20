@@ -1,3 +1,5 @@
+package football;
+
 //TODO: make T extend Cat
 public class Stat<T extends Enum<T>> //forces T to be an enum
 {

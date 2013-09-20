@@ -1,3 +1,5 @@
+package football.players;
+
 public class K extends Player
 {
 	private final int numStats = 12;

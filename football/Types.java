@@ -1,8 +1,10 @@
+package football;
+
 //types of categories
 public class Types
 {
 	//TODO: any way to save code with all these enums?? -- nested/hierarchical enums??
-	public enum PassCat
+	public enum PassCats
 	{
 		COMP("COMP"),
 		INC("INC"),
@@ -14,7 +16,7 @@ public class Types
 		private final String text;
 		private static final int size = values().length;
 
-		private PassCat(String text) {
+		private PassCats(String text) {
 			this.text = text;
 		}
 
@@ -27,7 +29,7 @@ public class Types
 		}
 	}
 
-	public enum RushCat
+	public enum RushCats
 	{
 		ATT("ATT"),
 		YDS("YDS"),
@@ -36,7 +38,7 @@ public class Types
 		private final String text;
 		private static final int size = values().length;
 
-		private RushCat(String text) {
+		private RushCats(String text) {
 			this.text = text;
 		}
 
@@ -49,7 +51,7 @@ public class Types
 		}
 	}
 
-	public enum RecCat
+	public enum RecCats
 	{
 		REC("REC"),
 		YDS("YDS"),
@@ -58,7 +60,7 @@ public class Types
 		private final String text;
 		private static final int size = values().length;
 
-		private RecCat(String text) {
+		private RecCats(String text) {
 			this.text = text;
 		}
 
@@ -71,7 +73,7 @@ public class Types
 		}
 	}
 
-	public enum KickCat
+	public enum KickCats
 	{
 		PAT_MD("PAT_MD"),
 		PAT_MS("PAT_MS"),
@@ -89,7 +91,7 @@ public class Types
 		private final String text;
 		private static final int size = values().length;
 
-		private KickCat(String text) {
+		private KickCats(String text) {
 			this.text = text;
 		}
 
@@ -102,7 +104,7 @@ public class Types
 		}
 	}
 
-	public enum DefCat
+	public enum DefCats
 	{
 		SCK("SCK"),
 		INT("INT"),
@@ -116,7 +118,7 @@ public class Types
 		private final String text;
 		private static final int size = values().length;
 
-		private DefCat(String text) {
+		private DefCats(String text) {
 			this.text = text;
 		}
 
@@ -129,7 +131,7 @@ public class Types
 		}
 	}
 
-	public enum MiscCat
+	public enum MiscCats
 	{
 		FUMB_TD("FUMB_TD"), //fumble recovered for td
 		TWO_PT_CONV("2_PT_CONV"),
@@ -139,7 +141,7 @@ public class Types
 		private final String text;
 		private static final int size = values().length;
 
-		private MiscCat(String text) {
+		private MiscCats(String text) {
 			this.text = text;
 		}
 

@@ -1,3 +1,5 @@
+package football.players;
+
 import java.text.DecimalFormat;
 
 public class Player implements Comparable<Player>

@@ -1,3 +1,5 @@
+package football.players;
+
 public class DEF extends Player
 {
 	private final int numStats = 8;

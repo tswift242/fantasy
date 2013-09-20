@@ -1,3 +1,5 @@
+package football.players;
+
 public class WR extends Player
 {
 	private final int numStats = 3;
