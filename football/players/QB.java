@@ -1,12 +1,13 @@
 package football.players;
 
-//import football.Types.PassCats;
+import football.Stat;
+import football.Types.PassCats;
 
 public class QB extends Player
 {
 	private final int numStats = 6;
 	private static final int yardsUnit = 25;
-	//private Stat<PassCats>[] passStats;
+	private Stat<PassCats>[] passStats;
 
 	//stats ordered: comp, inc, yds, td, inter, sck
 	public QB(String name, int[] stats)

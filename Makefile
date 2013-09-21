@@ -1,19 +1,19 @@
 JCC = javac
-JFLAGS = -g -Xlint
-#SRCS = $(shell find . -type f -name '*.java')
-SRCS = $(wildcard *.java)
-SRCS += $(wildcard **/*.java)
+SRCDIR = football
+BUILDDIR = build
+CLASSDIR = $(BUILDDIR)/classes
+JFLAGS = -g -Xlint -d $(CLASSDIR) #-cp $(CLASSDIR)
+SRCS = $(shell find $(SRCDIR) -type f -name '*.java')
+#SRCS = $(wildcard $(SRCDIR)/*.java)
+#SRCS += $(wildcard $(SRCDIR)/**/*.java)
 CLASSES = $(SRCS:.java=.class)
-CLASSDIR = classes
-
-#vpath %.java players
 
 all: $(CLASSES)
 
 $(CLASSES): $(SRCS)
-	@echo $(SRCS)
-	#@echo $(CLASSES)
-	#$(JCC) $(JFLAGS) $(SRCS)
+	$(JCC) $(JFLAGS) $(SRCS)
 
 clean:
-	rm -f *.class
+	#$(shell shopt -s globstar)
+	rm -f $(CLASSDIR)/**/*.class
+	#$(shell shopt -u globstar)

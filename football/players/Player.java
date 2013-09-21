@@ -63,10 +63,4 @@ public class Player implements Comparable<Player>
 		}
 		return sum;
 	}
-
-	//TODO: eliminate or move to separate class
-	public static class stat
-	{
-		protected int value;
-	}
 }
