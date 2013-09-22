@@ -2,12 +2,16 @@ package football.players;
 
 import football.Stat;
 import football.categories.Pass;
+import football.categories.Rush;
+import football.categories.Misc;
 
 public class QB extends Player
 {
 	private final int numStats = 6;
 	private static final int yardsUnit = 25;
 	private Stat<Pass>[] passStats;
+	private Stat<Rush>[] rushStats;
+	private Stat<Misc>[] miscStats;
 
 	//stats ordered: comp, inc, yds, td, inter, sck
 	public QB(String name, int[] stats)

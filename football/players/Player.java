@@ -8,6 +8,7 @@ public class Player implements Comparable<Player>
 	protected int[] stats;
 	protected double score; //calculated and stored by evaluate
 
+	//************TODO: make abstract
 	public Player(String name, int[] stats)
 	{
 		if(stats.length != getNumStats()) {

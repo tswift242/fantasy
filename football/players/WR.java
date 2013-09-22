@@ -1,9 +1,15 @@
 package football.players;
 
+import football.Stat;
+import football.categories.Rec;
+import football.categories.Misc;
+
 public class WR extends Player
 {
 	private final int numStats = 3;
 	private static final int yardsUnit = 10;
+	private Stat<Rec>[] recStats;
+	private Stat<Misc>[] miscStats;
 
 	//stats ordered: rec, yds, td
 	public WR(String name, int[] stats)

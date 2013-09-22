@@ -1,9 +1,13 @@
 package football.players;
 
+import football.Stat;
+import football.categories.Kick;
+
 public class K extends Player
 {
 	private final int numStats = 12;
 	private static final int yardsUnit = 10;
+	private Stat<Kick>[] kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
 	public K(String name, int[] stats)

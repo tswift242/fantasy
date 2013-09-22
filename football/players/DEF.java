@@ -1,11 +1,15 @@
 package football.players;
 
+import football.Stat;
+import football.categories.Def;
+
 public class DEF extends Player
 {
 	private final int numStats = 8;
 	//TODO: check this
 	private static final int yardsUnit = 200;
 	private static final int ptsUnit = 7;
+	private Stat<Def>[] defStats;
 
 	public DEF(String name, int[] stats)
 	{
