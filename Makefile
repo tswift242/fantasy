@@ -1,19 +1,29 @@
 JCC = javac
+JFLAGS = -g -Xlint -d $(CLASSDIR)
 SRCDIR = football
 BUILDDIR = build
 CLASSDIR = $(BUILDDIR)/classes
-JFLAGS = -g -Xlint -d $(CLASSDIR) #-cp $(CLASSDIR)
 SRCS = $(shell find $(SRCDIR) -type f -name '*.java')
 #SRCS = $(wildcard $(SRCDIR)/*.java)
 #SRCS += $(wildcard $(SRCDIR)/**/*.java)
 CLASSES = $(SRCS:.java=.class)
+MKDIR = -mkdir -p
 
-all: $(CLASSES)
+.PHONY: all directories clean
 
-$(CLASSES): $(SRCS)
-	$(JCC) $(JFLAGS) $(SRCS)
+all: directories $(CLASSES)
+
+directories: $(CLASSDIR)
+
+# Create compiled source directories
+$(CLASSDIR): $(BUILDDIR)
+	$(MKDIR) $(CLASSDIR)
+
+$(BUILDDIR):
+	$(MKDIR) $(BUILDDIR)
+
+%.class: %.java
+	$(JCC) $(JFLAGS) $<
 
 clean:
-	#$(shell shopt -s globstar)
-	rm -f $(CLASSDIR)/**/*.class
-	#$(shell shopt -u globstar)
+	@$(RM) $(shell find $(CLASSDIR) -type f -name '*.class')
