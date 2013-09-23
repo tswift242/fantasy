@@ -12,6 +12,7 @@ import football.categories.*;
 
 public class ff
 {
+	//TODO: arguments need to be LinkedHashSet's to maintain order!!!!!!!!!
 	//QB
 	public static final QB brady = new QB("brady",new Stat<Pass>[]{new Stat<Pass>(Pass.COMP,401),new Stat<Pass>(Pass.INC,236),new Stat<Pass>(Pass.YDS,4827),new Stat<Pass>(Pass.TD,34),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,27)});
 	public static final QB peyton = new QB("peyton",new int[]{400,183,4659,37,11,21});

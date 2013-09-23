@@ -1,6 +1,6 @@
 package football.players;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 import java.text.DecimalFormat;
 
 import football.Stat;
@@ -38,7 +38,7 @@ public abstract class Player implements Comparable<Player>
 	public abstract String statsCats();
 
 	//helper function for evalute()
-	protected <T extends Enum<T>> double dot(Set<Stat<T>> stats, double[] coeffs) {
+	protected <T extends Enum<T>> double dot(LinkedHashSet<Stat<T>> stats, double[] coeffs) {
 		if(stats.size() != coeffs.length) {
 			System.out.println("Error: inputs don't have same length");
 			System.exit(1);

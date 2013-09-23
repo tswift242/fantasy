@@ -1,6 +1,6 @@
 package football.players;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 import football.Stat;
 import football.categories.Rec;
@@ -11,11 +11,11 @@ public class WR extends Player
 	private final int numStats = 3;
 	private static final int yardsUnit = 10;
 	private final int numStatTypes = 2; //number of stat types used by player
-	private Set<Stat<Rec>> recStats;
-	private Set<Stat<Misc>> miscStats;
+	private LinkedHashSet<Stat<Rec>> recStats;
+	private LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: rec, yds, td
-	public WR(String name, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
+	public WR(String name, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
 		super(name);
 		this.recStats = recStats;

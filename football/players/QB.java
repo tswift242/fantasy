@@ -1,6 +1,6 @@
 package football.players;
 
-import java.util.Set;
+import java.util.LinkedHashSet;
 
 import football.Stat;
 import football.categories.Pass;
@@ -12,12 +12,12 @@ public class QB extends Player
 	private final int numStats = 6;
 	private static final int yardsUnit = 25;
 	private final int numStatTypes = 3; //number of stat types used by player
-	private Set<Stat<Pass>> passStats;
-	private Set<Stat<Rush>> rushStats;
-	private Set<Stat<Misc>> miscStats;
+	private LinkedHashSet<Stat<Pass>> passStats;
+	private LinkedHashSet<Stat<Rush>> rushStats;
+	private LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: comp, inc, yds, td, inter, sck
-	public QB(String name, Set<Stat<Pass>> passStats, Set<Stat<Rush>> rushStats, Set<Stat<Misc>> miscStats)
+	public QB(String name, LinkedHashSet<Stat<Pass>> passStats, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
 		super(name);
 		this.passStats = passStats;

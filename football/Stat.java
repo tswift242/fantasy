@@ -18,4 +18,9 @@ public class Stat<T extends Enum<T>> //forces T to be an enum
 	public int getValue() {
 		return value;
 	}
+
+	//stats considered equal if they're of the same category
+	public boolean equals(Stat<T> other) {
+		return (this.category == other.category);
+	}
 }
