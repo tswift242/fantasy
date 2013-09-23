@@ -9,11 +9,21 @@ public class DEF extends Player
 	//TODO: check this
 	private static final int yardsUnit = 200;
 	private static final int ptsUnit = 7;
+	private final int numStatTypes = 1; //number of stat types used by player
 	private Stat<Def>[] defStats;
 
-	public DEF(String name, int[] stats)
+	public DEF(String name, Stat<Def>[] defStats)
 	{
-		super(name,stats);
+		super(name);
+		this.defStats = defStats;
+	}
+
+	public double evaluate(double[] ... coeffs) {
+		if(coeffs.length != numStatTypes) {
+			System.out.println("Error: DEF.evalutae() expects " + numStatTypes + " arguments");
+			System.exit(1);
+		}
+		return dot(defStats,coeffs[0]);
 	}
 
 	public int getNumStats() {

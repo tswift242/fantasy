@@ -8,13 +8,24 @@ public class WR extends Player
 {
 	private final int numStats = 3;
 	private static final int yardsUnit = 10;
+	private final int numStatTypes = 2; //number of stat types used by player
 	private Stat<Rec>[] recStats;
 	private Stat<Misc>[] miscStats;
 
 	//stats ordered: rec, yds, td
-	public WR(String name, int[] stats)
+	public WR(String name, Stat<Rec>[] recStats, Stat<Misc>[] miscStats)
 	{
-		super(name,stats);
+		super(name);
+		this.recStats = recStats;
+		this.miscStats = miscStats;
+	}
+
+	public double evaluate(double[] ... coeffs) {
+		if(coeffs.length != numStatTypes) {
+			System.out.println("Error: wr.evalutae() expects " + numStatTypes + " arguments");
+			System.exit(1);
+		}
+		return (dot(recStats,coeffs[0]) + dot(miscStats,coeffs[1]));
 	}
 
 	public int getNumStats() {

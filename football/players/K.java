@@ -7,12 +7,22 @@ public class K extends Player
 {
 	private final int numStats = 12;
 	private static final int yardsUnit = 10;
+	private final int numStatTypes = 1; //number of stat types used by player
 	private Stat<Kick>[] kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
-	public K(String name, int[] stats)
+	public K(String name, Stat<Kick>[] kickStats)
 	{
-		super(name,stats);
+		super(name);
+		this.kickStats = kickStats;
+	}
+
+	public double evaluate(double[] ... coeffs) {
+		if(coeffs.length != numStatTypes) {
+			System.out.println("Error: K.evalutae() expects " + numStatTypes + " arguments");
+			System.exit(1);
+		}
+		return dot(kickStats,coeffs[0]);
 	}
 
 	public int getNumStats() {
