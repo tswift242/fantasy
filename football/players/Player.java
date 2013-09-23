@@ -1,5 +1,6 @@
 package football.players;
 
+import java.util.Set;
 import java.text.DecimalFormat;
 
 import football.Stat;
@@ -37,15 +38,17 @@ public abstract class Player implements Comparable<Player>
 	public abstract String statsCats();
 
 	//helper function for evalute()
-	protected <T extends Enum<T>> double dot(Stat<T>[] a, double[] b) {
-		if(a.length != b.length) {
-			System.out.println("Error: arrays don't have same length");
+	protected <T extends Enum<T>> double dot(Set<Stat<T>> stats, double[] coeffs) {
+		if(stats.size() != coeffs.length) {
+			System.out.println("Error: inputs don't have same length");
 			System.exit(1);
 		}
 
 		double sum = 0.0;
-		for(int i = 0; i < a.length; i++) {
-			sum += (a[i].getValue()*b[i]);
+		int i = 0;
+		for(Stat<T> stat : stats) {
+			sum += (stat.getValue()*coeffs[i]);
+			i++;
 		}
 		return sum;
 	}

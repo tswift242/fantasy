@@ -8,11 +8,12 @@ import java.io.File;
 import java.io.IOException;
 
 import football.players.*;
+import football.categories.*;
 
 public class ff
 {
 	//QB
-	public static final QB brady = new QB("brady",new int[]{401,236,4827,34,8,27});
+	public static final QB brady = new QB("brady",new Stat<Pass>[]{new Stat<Pass>(Pass.COMP,401),new Stat<Pass>(Pass.INC,236),new Stat<Pass>(Pass.YDS,4827),new Stat<Pass>(Pass.TD,34),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,27)});
 	public static final QB peyton = new QB("peyton",new int[]{400,183,4659,37,11,21});
 	public static final QB rodgers = new QB("rodgers",new int[]{371,181,4295,39,8,51});
 	public static final QB palmer = new QB("palmer",new int[]{345,220,4018,22,14,26});

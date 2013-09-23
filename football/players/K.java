@@ -1,5 +1,7 @@
 package football.players;
 
+import java.util.Set;
+
 import football.Stat;
 import football.categories.Kick;
 
@@ -8,10 +10,10 @@ public class K extends Player
 	private final int numStats = 12;
 	private static final int yardsUnit = 10;
 	private final int numStatTypes = 1; //number of stat types used by player
-	private Stat<Kick>[] kickStats;
+	private Set<Stat<Kick>> kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
-	public K(String name, Stat<Kick>[] kickStats)
+	public K(String name, Set<Stat<Kick>> kickStats)
 	{
 		super(name);
 		this.kickStats = kickStats;

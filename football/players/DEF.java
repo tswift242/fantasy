@@ -1,5 +1,7 @@
 package football.players;
 
+import java.util.Set;
+
 import football.Stat;
 import football.categories.Def;
 
@@ -10,9 +12,9 @@ public class DEF extends Player
 	private static final int yardsUnit = 200;
 	private static final int ptsUnit = 7;
 	private final int numStatTypes = 1; //number of stat types used by player
-	private Stat<Def>[] defStats;
+	private Set<Stat<Def>> defStats;
 
-	public DEF(String name, Stat<Def>[] defStats)
+	public DEF(String name, Set<Stat<Def>> defStats)
 	{
 		super(name);
 		this.defStats = defStats;

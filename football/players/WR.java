@@ -1,5 +1,7 @@
 package football.players;
 
+import java.util.Set;
+
 import football.Stat;
 import football.categories.Rec;
 import football.categories.Misc;
@@ -9,11 +11,11 @@ public class WR extends Player
 	private final int numStats = 3;
 	private static final int yardsUnit = 10;
 	private final int numStatTypes = 2; //number of stat types used by player
-	private Stat<Rec>[] recStats;
-	private Stat<Misc>[] miscStats;
+	private Set<Stat<Rec>> recStats;
+	private Set<Stat<Misc>> miscStats;
 
 	//stats ordered: rec, yds, td
-	public WR(String name, Stat<Rec>[] recStats, Stat<Misc>[] miscStats)
+	public WR(String name, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
 	{
 		super(name);
 		this.recStats = recStats;
