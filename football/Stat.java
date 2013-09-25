@@ -1,7 +1,7 @@
 package football;
 
 //TODO: make T extend Cat
-public class Stat<T extends Enum<T>> //forces T to be an enum
+public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
 {
 	private T category;
 	private int value;
@@ -22,5 +22,10 @@ public class Stat<T extends Enum<T>> //forces T to be an enum
 	//stats considered equal if they're of the same category
 	public boolean equals(Stat<T> other) {
 		return (this.category == other.category);
+	}
+
+	//induce natural ordering on Stat using ordering of its enum
+	public int compareTo(Stat<T> other) {
+		return this.category.compareTo(other.category);
 	}
 }
