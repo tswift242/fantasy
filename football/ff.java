@@ -6,59 +6,142 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedHashSet;
 
 import football.players.*;
 import football.categories.*;
 
 public class ff
 {
-	//TODO: arguments need to be LinkedHashSet's to maintain order!!!!!!!!!
 	//QB
-	public static final QB brady = new QB("brady",new Stat<Pass>[]{new Stat<Pass>(Pass.COMP,401),new Stat<Pass>(Pass.INC,236),new Stat<Pass>(Pass.YDS,4827),new Stat<Pass>(Pass.TD,34),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,27)});
-	public static final QB peyton = new QB("peyton",new int[]{400,183,4659,37,11,21});
-	public static final QB rodgers = new QB("rodgers",new int[]{371,181,4295,39,8,51});
-	public static final QB palmer = new QB("palmer",new int[]{345,220,4018,22,14,26});
-	public static final QB kolb = new QB("kolb",new int[]{109,74,1169,8,3,27});
-	public static final QB quinn = new QB("quinn",new int[]{112,85,1141,2,8,21});
-	public static final QB leinart = new QB("leinart",new int[]{16,17,115,0,1,1});
-	public static final QB sanchez = new QB("sanchez",new int[]{246,207,2883,13,18,34});
-	public static final QB weeden = new QB("weeden",new int[]{297,220,3385,14,17,28});
+	public static final QB brady = new QB("brady",
+			newSet(new Stat<Pass>(Pass.COMP,401),new Stat<Pass>(Pass.INC,236),new Stat<Pass>(Pass.YDS,4827),new Stat<Pass>(Pass.TD,34),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,27)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB peyton = new QB("peyton",
+			newSet(new Stat<Pass>(Pass.COMP,400),new Stat<Pass>(Pass.INC,183),new Stat<Pass>(Pass.YDS,4659),new Stat<Pass>(Pass.TD,37),new Stat<Pass>(Pass.INT,11),new Stat<Pass>(Pass.SCK,21)),
+			
+			newSet(new Stat<Rush>(Rush.ATT,0)),newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB rodgers = new QB("rodgers",
+		newSet(new Stat<Pass>(Pass.COMP,371),new Stat<Pass>(Pass.INC,181),new Stat<Pass>(Pass.YDS,4295),new Stat<Pass>(Pass.TD,39),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,51)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB palmer = new QB("palmer",
+		newSet(new Stat<Pass>(Pass.COMP,345),new Stat<Pass>(Pass.INC,220),new Stat<Pass>(Pass.YDS,4018),new Stat<Pass>(Pass.TD,22),new Stat<Pass>(Pass.INT,14),new Stat<Pass>(Pass.SCK,26)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB kolb = new QB("kolb",
+		newSet(new Stat<Pass>(Pass.COMP,109),new Stat<Pass>(Pass.INC,74),new Stat<Pass>(Pass.YDS,1169),new Stat<Pass>(Pass.TD,8),new Stat<Pass>(Pass.INT,3),new Stat<Pass>(Pass.SCK,27)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB quinn = new QB("quinn",
+		newSet(new Stat<Pass>(Pass.COMP,112),new Stat<Pass>(Pass.INC,85),new Stat<Pass>(Pass.YDS,1141),new Stat<Pass>(Pass.TD,2),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,21)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB leinart = new QB("leinart",
+		newSet(new Stat<Pass>(Pass.COMP,16),new Stat<Pass>(Pass.INC,17),new Stat<Pass>(Pass.YDS,115),new Stat<Pass>(Pass.TD,0),new Stat<Pass>(Pass.INT,1),new Stat<Pass>(Pass.SCK,1)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB sanchez = new QB("sanchez",
+		newSet(new Stat<Pass>(Pass.COMP,246),new Stat<Pass>(Pass.INC,207),new Stat<Pass>(Pass.YDS,2883),new Stat<Pass>(Pass.TD,13),new Stat<Pass>(Pass.INT,18),new Stat<Pass>(Pass.SCK,34)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final QB weeden = new QB("weeden",
+		newSet(new Stat<Pass>(Pass.COMP,297),new Stat<Pass>(Pass.INC,220),new Stat<Pass>(Pass.YDS,3385),new Stat<Pass>(Pass.TD,14),new Stat<Pass>(Pass.INT,17),new Stat<Pass>(Pass.SCK,28)),
+		newSet(new Stat<Rush>(Rush.ATT,0)),
+		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	//RB
-	public static final RB lynch = new RB("lynch",new int[]{315,1590,11});
-	public static final RB rice = new RB("rice",new int[]{257,1143,9});
-	public static final RB foster = new RB("foster",new int[]{351,1424,15});
-	public static final RB rbush = new RB("r bush",new int[]{227,986,6});
-	public static final RB mathews = new RB("mathews",new int[]{184,707,1});
-	public static final RB jonesdrew = new RB("jones-drew",new int[]{86,414,1});
-	public static final RB hillman = new RB("hillman",new int[]{85,330,1});
-	public static final RB redman = new RB("redman",new int[]{110,410,2});
+	public static final RB lynch = new RB("lynch",
+			newSet(new Stat<Rush>(Rush.ATT,315),new Stat<Rush>(Rush.YDS,1590),new Stat<Rush>(Rush.TD,11)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB rice = new RB("rice",
+			newSet(new Stat<Rush>(Rush.ATT,257),new Stat<Rush>(Rush.YDS,1143),new Stat<Rush>(Rush.TD,9)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB foster = new RB("foster",
+			newSet(new Stat<Rush>(Rush.ATT,351),new Stat<Rush>(Rush.YDS,1424),new Stat<Rush>(Rush.TD,15)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB rbush = new RB("r bush",
+			newSet(new Stat<Rush>(Rush.ATT,227),new Stat<Rush>(Rush.YDS,986),new Stat<Rush>(Rush.TD,6)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB mathews = new RB("mathews",
+			newSet(new Stat<Rush>(Rush.ATT,184),new Stat<Rush>(Rush.YDS,707),new Stat<Rush>(Rush.TD,1)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB jonesdrew = new RB("jones-drew",
+			newSet(new Stat<Rush>(Rush.ATT,86),new Stat<Rush>(Rush.YDS,414),new Stat<Rush>(Rush.TD,1)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB hillman = new RB("hillman",
+			newSet(new Stat<Rush>(Rush.ATT,85),new Stat<Rush>(Rush.YDS,330),new Stat<Rush>(Rush.TD,1)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final RB redman = new RB("redman",
+			newSet(new Stat<Rush>(Rush.ATT,110),new Stat<Rush>(Rush.YDS,410),new Stat<Rush>(Rush.TD,2)),
+			newSet(new Stat<Rec>(Rec.REC,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	//WR
-	public static final WR cjohnson = new WR("c johnson",new int[]{122,1964,5});
-	public static final WR jjones = new WR("j jones",new int[]{79,1198,10});
-	public static final WR dbryant = new WR("d bryant",new int[]{92,1382,12});
-	public static final WR amendola = new WR("amendola",new int[]{63,666,3});
-	public static final WR bedwards = new WR("b edwards",new int[]{18,199,1});
-	public static final WR manningham = new WR("manningham",new int[]{42,449,1});
-	public static final WR sholmes = new WR("s holmes",new int[]{20,272,1});
-	public static final WR hdouglas = new WR("h douglas",new int[]{38,395,1});
+	public static final WR cjohnson = new WR("c johnson",
+			newSet(new Stat<Rec>(Rec.REC,122),new Stat<Rec>(Rec.YDS,1964),new Stat<Rec>(Rec.TD,5)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO 
+	public static final WR jjones = new WR("j jones",
+			newSet(new Stat<Rec>(Rec.REC,79),new Stat<Rec>(Rec.YDS,1198),new Stat<Rec>(Rec.TD,10)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final WR dbryant = new WR("d bryant",
+			newSet(new Stat<Rec>(Rec.REC,92),new Stat<Rec>(Rec.YDS,1382),new Stat<Rec>(Rec.TD,12)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final WR amendola = new WR("amendola",
+			newSet(new Stat<Rec>(Rec.REC,63),new Stat<Rec>(Rec.YDS,666),new Stat<Rec>(Rec.TD,3)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final WR bedwards = new WR("b edwards",
+			newSet(new Stat<Rec>(Rec.REC,18),new Stat<Rec>(Rec.YDS,199),new Stat<Rec>(Rec.TD,1)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final WR manningham = new WR("manningham",
+			newSet(new Stat<Rec>(Rec.REC,42),new Stat<Rec>(Rec.YDS,449),new Stat<Rec>(Rec.TD,1)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final WR sholmes = new WR("s holmes",
+			newSet(new Stat<Rec>(Rec.REC,20),new Stat<Rec>(Rec.YDS,272),new Stat<Rec>(Rec.TD,1)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+	public static final WR hdouglas = new WR("h douglas",
+			newSet(new Stat<Rec>(Rec.REC,38),new Stat<Rec>(Rec.YDS,395),new Stat<Rec>(Rec.TD,1)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	//DEF
-	public static final DEF chicago = new DEF("chicago",new int[]{41,24,20,0,10,0,255,5050});
-	public static final DEF sanfran = new DEF("san fransisco",new int[]{38,14,11,1,4,0,265,4710});
-	public static final DEF seattle = new DEF("seattle",new int[]{36,18,13,0,5,0,255,5050});
-	public static final DEF cleveland = new DEF("cleveland",new int[]{38,17,12,0,2,1,356,5821});
-	public static final DEF neworleans = new DEF("new orleans",new int[]{30,15,11,0,5,0,434,7042});
-	public static final DEF jacksonville = new DEF("jacksonville",new int[]{20,12,11,0,1,0,414,6088});
-	public static final DEF oakland = new DEF("oakland",new int[]{25,11,8,0,0,0,431,5672});
+	public static final DEF chicago = new DEF("chicago",
+			newSet(new Stat<Def>(Def.SCK,41),new Stat<Def>(Def.INT,24),new Stat<Def>(Def.FUMB,20),new Stat<Def>(Def.SAF,0),new Stat<Def>(Def.TD,10),new Stat<Def>(Def.RET,0),new Stat<Def>(Def.PTS,255),new Stat<Def>(Def.YDS,5050)));
+	public static final DEF sanfran = new DEF("san fransisco",
+			newSet(new Stat<Def>(Def.SCK,38),new Stat<Def>(Def.INT,14),new Stat<Def>(Def.FUMB,11),new Stat<Def>(Def.SAF,1),new Stat<Def>(Def.TD,4),new Stat<Def>(Def.RET,0),new Stat<Def>(Def.PTS,265),new Stat<Def>(Def.YDS,4710)));
+	public static final DEF seattle = new DEF("seattle",
+			newSet(new Stat<Def>(Def.SCK,36),new Stat<Def>(Def.INT,18),new Stat<Def>(Def.FUMB,13),new Stat<Def>(Def.SAF,0),new Stat<Def>(Def.TD,5),new Stat<Def>(Def.RET,0),new Stat<Def>(Def.PTS,255),new Stat<Def>(Def.YDS,5050)));
+	public static final DEF cleveland = new DEF("cleveland",
+			newSet(new Stat<Def>(Def.SCK,38),new Stat<Def>(Def.INT,17),new Stat<Def>(Def.FUMB,12),new Stat<Def>(Def.SAF,0),new Stat<Def>(Def.TD,2),new Stat<Def>(Def.RET,1),new Stat<Def>(Def.PTS,356),new Stat<Def>(Def.YDS,5821)));
+	public static final DEF neworleans = new DEF("new orleans",
+			newSet(new Stat<Def>(Def.SCK,30),new Stat<Def>(Def.INT,15),new Stat<Def>(Def.FUMB,11),new Stat<Def>(Def.SAF,0),new Stat<Def>(Def.TD,5),new Stat<Def>(Def.RET,0),new Stat<Def>(Def.PTS,434),new Stat<Def>(Def.YDS,7042)));
+	public static final DEF jacksonville = new DEF("jacksonville",
+			newSet(new Stat<Def>(Def.SCK,20),new Stat<Def>(Def.INT,12),new Stat<Def>(Def.FUMB,11),new Stat<Def>(Def.SAF,0),new Stat<Def>(Def.TD,1),new Stat<Def>(Def.RET,0),new Stat<Def>(Def.PTS,414),new Stat<Def>(Def.YDS,6088)));
+	public static final DEF oakland = new DEF("oakland",
+			newSet(new Stat<Def>(Def.SCK,25),new Stat<Def>(Def.INT,11),new Stat<Def>(Def.FUMB,8),new Stat<Def>(Def.SAF,0),new Stat<Def>(Def.TD,0),new Stat<Def>(Def.RET,0),new Stat<Def>(Def.PTS,431),new Stat<Def>(Def.YDS,5672)));
 	//K
-	public static final K gostkowski = new K("gostkowski",new int[]{66,0,0,8,10,9,2,0,0,2,4,0});
-	public static final K mbryant = new K("m bryant",new int[]{44,0,1,8,10,10,4,0,1,1,3,0});
-	public static final K tucker = new K("tucker",new int[]{42,0,0,8,8,10,4,0,0,0,3,0});
-	public static final K suisham = new K("suisham",new int[]{34,0,0,7,8,12,1,0,1,0,0,2});
-	public static final K cundiff = new K("cundiff",new int[]{17,0,0,1,3,3,0,0,0,2,1,2});
-	public static final K forbath = new K("forbath",new int[]{33,1,0,3,2,11,1,0,0,1,0,0});
-	public static final K scobee = new K("scobee",new int[]{18,1,1,4,8,11,1,0,0,0,2,1});
-	public static final K folk = new K("folk",new int[]{30,0,0,7,6,5,3,0,1,2,2,1});
-	public static final K crosby = new K("crosby",new int[]{50,0,0,5,5,9,2,0,0,2,3,7});
+	public static final K gostkowski = new K("gostkowski",
+			newSet(new Stat<Kick>(Kick.PAT_MD,66),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,8),new Stat<Kick>(Kick.FG_MD_30,10),new Stat<Kick>(Kick.FG_MD_40,9),new Stat<Kick>(Kick.FG_MD_50,2),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,0),new Stat<Kick>(Kick.FG_MS_30,2),new Stat<Kick>(Kick.FG_MS_40,4),new Stat<Kick>(Kick.FG_MS_50,0)));
+	public static final K mbryant = new K("m bryant",
+			newSet(new Stat<Kick>(Kick.PAT_MD,44),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,1),new Stat<Kick>(Kick.FG_MD_20,8),new Stat<Kick>(Kick.FG_MD_30,10),new Stat<Kick>(Kick.FG_MD_40,10),new Stat<Kick>(Kick.FG_MD_50,4),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,1),new Stat<Kick>(Kick.FG_MS_30,1),new Stat<Kick>(Kick.FG_MS_40,3),new Stat<Kick>(Kick.FG_MS_50,0)));
+	public static final K tucker = new K("tucker",
+			newSet(new Stat<Kick>(Kick.PAT_MD,42),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,8),new Stat<Kick>(Kick.FG_MD_30,8),new Stat<Kick>(Kick.FG_MD_40,10),new Stat<Kick>(Kick.FG_MD_50,4),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,0),new Stat<Kick>(Kick.FG_MS_30,0),new Stat<Kick>(Kick.FG_MS_40,3),new Stat<Kick>(Kick.FG_MS_50,0)));
+	public static final K suisham = new K("suisham",
+			newSet(new Stat<Kick>(Kick.PAT_MD,34),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,7),new Stat<Kick>(Kick.FG_MD_30,8),new Stat<Kick>(Kick.FG_MD_40,12),new Stat<Kick>(Kick.FG_MD_50,1),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,1),new Stat<Kick>(Kick.FG_MS_30,0),new Stat<Kick>(Kick.FG_MS_40,0),new Stat<Kick>(Kick.FG_MS_50,2)));
+	public static final K cundiff = new K("cundiff",
+			newSet(new Stat<Kick>(Kick.PAT_MD,17),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,1),new Stat<Kick>(Kick.FG_MD_30,3),new Stat<Kick>(Kick.FG_MD_40,3),new Stat<Kick>(Kick.FG_MD_50,0),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,0),new Stat<Kick>(Kick.FG_MS_30,2),new Stat<Kick>(Kick.FG_MS_40,1),new Stat<Kick>(Kick.FG_MS_50,2)));
+	public static final K forbath = new K("forbath",
+			newSet(new Stat<Kick>(Kick.PAT_MD,33),new Stat<Kick>(Kick.PAT_MS,1),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,3),new Stat<Kick>(Kick.FG_MD_30,2),new Stat<Kick>(Kick.FG_MD_40,11),new Stat<Kick>(Kick.FG_MD_50,1),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,0),new Stat<Kick>(Kick.FG_MS_30,1),new Stat<Kick>(Kick.FG_MS_40,0),new Stat<Kick>(Kick.FG_MS_50,0)));
+	public static final K scobee = new K("scobee",
+			newSet(new Stat<Kick>(Kick.PAT_MD,18),new Stat<Kick>(Kick.PAT_MS,1),new Stat<Kick>(Kick.FG_MD_0,1),new Stat<Kick>(Kick.FG_MD_20,4),new Stat<Kick>(Kick.FG_MD_30,8),new Stat<Kick>(Kick.FG_MD_40,11),new Stat<Kick>(Kick.FG_MD_50,1),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,0),new Stat<Kick>(Kick.FG_MS_30,0),new Stat<Kick>(Kick.FG_MS_40,2),new Stat<Kick>(Kick.FG_MS_50,1)));
+	public static final K folk = new K("folk",
+			newSet(new Stat<Kick>(Kick.PAT_MD,30),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,7),new Stat<Kick>(Kick.FG_MD_30,6),new Stat<Kick>(Kick.FG_MD_40,5),new Stat<Kick>(Kick.FG_MD_50,3),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,1),new Stat<Kick>(Kick.FG_MS_30,2),new Stat<Kick>(Kick.FG_MS_40,2),new Stat<Kick>(Kick.FG_MS_50,1)));
+	public static final K crosby = new K("crosby",
+			newSet(new Stat<Kick>(Kick.PAT_MD,50),new Stat<Kick>(Kick.PAT_MS,0),new Stat<Kick>(Kick.FG_MD_0,0),new Stat<Kick>(Kick.FG_MD_20,5),new Stat<Kick>(Kick.FG_MD_30,5),new Stat<Kick>(Kick.FG_MD_40,9),new Stat<Kick>(Kick.FG_MD_50,2),new Stat<Kick>(Kick.FG_MS_0,0),new Stat<Kick>(Kick.FG_MS_20,0),new Stat<Kick>(Kick.FG_MS_30,2),new Stat<Kick>(Kick.FG_MS_40,3),new Stat<Kick>(Kick.FG_MS_50,7)));
 	//files to write results to
 	public static final String resultsDir = "results";
 	public static final String qbFilename = "QBresults.txt";
@@ -226,5 +309,15 @@ public class ff
 			out.print(coeffs[i] + "\t\t");
 		}
 		out.println();
+	}
+
+	//utility for easy set construction
+	//constructs LinkedHashSet to maintain insertion order
+	private static <T extends Enum<T>> LinkedHashSet<Stat<T>> newSet(Stat<T> ... stats) {
+		LinkedHashSet<Stat<T>> set = new LinkedHashSet<Stat<T>>();
+		for(Stat<T> stat : stats) {
+			set.add(stat);
+		}
+		return set;
 	}
 }
