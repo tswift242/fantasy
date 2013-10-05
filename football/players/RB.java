@@ -29,7 +29,8 @@ public class RB extends Player
 			System.out.println("Error: RB.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		return (dot(rushStats,coeffs[0]) + dot(recStats,coeffs[1]) + dot(miscStats,coeffs[2]));
+		score = (dot(rushStats,coeffs[0]) + dot(recStats,coeffs[1]) + dot(miscStats,coeffs[2]));
+		return score;
 	}
 
 	public double parseScoringCoeffsAndEvaluate(String[] args) {

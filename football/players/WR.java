@@ -26,7 +26,8 @@ public class WR extends Player
 			System.out.println("Error: wr.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		return (dot(recStats,coeffs[0]) + dot(miscStats,coeffs[1]));
+		score = (dot(recStats,coeffs[0]) + dot(miscStats,coeffs[1]));
+		return score;
 	}
 
 	public double parseScoringCoeffsAndEvaluate(String[] args) {

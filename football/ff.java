@@ -18,6 +18,8 @@ public class ff
 	public static final String wrFilename = "WRresults.txt";
 	public static final String defFilename = "DEFresults.txt";
 	public static final String kFilename = "Kresults.txt";
+	public static final String sectionDenoter = "********";
+	public static final String delimiter = "***********************************************************";
 
 	public static void main(String[] args)
 	{
@@ -66,14 +68,15 @@ public class ff
 		//write results to file
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(new File(resultsDir,filename),true)));
-			out.println("***** Custom scoring coefficients *****");
+			out.println(delimiter + "\n");
+			out.println(toSectionHeader("Custom scoring coefficients"));
 			out.println(players[0].statsCats());
 			printCoeffs(args,out);
-			/*out.println(\n***** Default scoring rules *****");
+			/*out.println(toSectionHeader("Default scoring rules"));
 			printArray(players,out);*/
-			out.println("\n***** Custom scoring rules *****");
+			out.println(toSectionHeader("Custom scoring rules"));
 			printArray(sortedPlayers,out);
-			out.println("\n********************************************\n");
+			out.println(delimiter + "\n\n\n");
 			out.close();
 		} catch(IOException e) {
 			System.out.println("IO exception when writing to file " + filename);
@@ -112,6 +115,7 @@ public class ff
 		for(int i = 0; i < numPlayers; i++) {
 			out.println(players[i].toString());
 		}
+		out.println("\n");
 	}
 
 	//TODO: format this better for players with different stat types
@@ -121,6 +125,11 @@ public class ff
 		for(int i = 1; i < numCoeffs; i++) { //skip mode argument
 			out.print(args[i] + "\t\t");
 		}
-		out.println();
+		out.println("\n");
+	}
+
+	//surrounds sectionTitle on both sides by sectionDenoter to create section header
+	private static String toSectionHeader(String sectionTitle) {
+		return (sectionDenoter + " " + sectionTitle + " " + sectionDenoter);
 	}
 }

@@ -19,6 +19,10 @@ public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
 		return value;
 	}
 
+	public String toString() {
+		return ("(" + category.toString() + "," + value + ")");
+	}
+
 	//stats considered equal if they're of the same category
 	public boolean equals(Stat<T> other) {
 		return (this.category == other.category);

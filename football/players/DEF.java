@@ -25,7 +25,8 @@ public class DEF extends Player
 			System.out.println("Error: DEF.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		return dot(defStats,coeffs[0]);
+		score = dot(defStats,coeffs[0]);
+		return score;
 	}
 
 	public double parseScoringCoeffsAndEvaluate(String[] args) {

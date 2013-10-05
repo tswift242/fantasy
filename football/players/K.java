@@ -22,7 +22,8 @@ public class K extends Player
 			System.out.println("Error: K.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		return dot(kickStats,coeffs[0]);
+		score = dot(kickStats,coeffs[0]);
+		return score;
 	}
 
 	public double parseScoringCoeffsAndEvaluate(String[] args) {

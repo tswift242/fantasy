@@ -29,7 +29,8 @@ public class QB extends Player
 			System.out.println("Error: QB.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		return (dot(passStats,coeffs[0]) + dot(rushStats,coeffs[1]) + dot(miscStats,coeffs[2]));
+		score = (dot(passStats,coeffs[0]) + dot(rushStats,coeffs[1]) + dot(miscStats,coeffs[2]));
+		return score;
 	}
 
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
