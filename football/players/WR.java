@@ -8,7 +8,6 @@ import football.categories.Misc;
 
 public class WR extends Player
 {
-	private final int numStats = 3;
 	private static final int yardsUnit = 10;
 	private final int numStatTypes = 2; //number of stat types used by player
 	private LinkedHashSet<Stat<Rec>> recStats;
@@ -30,8 +29,22 @@ public class WR extends Player
 		return (dot(recStats,coeffs[0]) + dot(miscStats,coeffs[1]));
 	}
 
-	public int getNumStats() {
-		return numStats;
+	public double parseScoringCoeffsAndEvaluate(String[] args) {
+		if(args.length < (getNumStats()+1)) {
+			System.out.println("Error: Not enough arguments");
+			System.exit(1);
+		}
+		//parse coefficients from command line arguments
+		int[] limits = cumsum(new int[]{Rec.size(),Misc.size()});
+		double[] recCoeffs = parseScoringCoeffs(args,1,limits[0]);
+		double[] miscCoeffs = parseScoringCoeffs(args,limits[0]+1,limits[1]);
+		//normalize coefficients to be per unit
+		recCoeffs[1] /= yardsUnit;
+		return evaluate(recCoeffs,miscCoeffs);
+	}
+
+	public static int getNumStats() {
+		return (Rec.size()+Misc.size());
 	}
 
 	public static int getYardsUnit() {

@@ -9,7 +9,6 @@ import football.categories.Misc;
 
 public class QB extends Player
 {
-	private final int numStats = 6;
 	private static final int yardsUnit = 25;
 	private final int numStatTypes = 3; //number of stat types used by player
 	private LinkedHashSet<Stat<Pass>> passStats;
@@ -33,8 +32,25 @@ public class QB extends Player
 		return (dot(passStats,coeffs[0]) + dot(rushStats,coeffs[1]) + dot(miscStats,coeffs[2]));
 	}
 
-	public int getNumStats() {
-		return numStats;
+	public double parseScoringCoeffsAndEvaluate(String[] args) {
+		if(args.length < (getNumStats()+1)) {
+			System.out.println("Error: Not enough arguments");
+			System.exit(1);
+		}
+		//parse coefficients from command line arguments
+		//TODO: put Pass,Rush,Misc(.size()?) in a list to enforce consistency btw this array and getNumStats()
+		int[] limits = cumsum(new int[]{Pass.size(),Rush.size(),Misc.size()});
+		double[] passCoeffs = parseScoringCoeffs(args,1,limits[0]);
+		double[] rushCoeffs = parseScoringCoeffs(args,limits[0]+1,limits[1]);
+		double[] miscCoeffs = parseScoringCoeffs(args,limits[1]+1,limits[2]);
+		//normalize coefficients to be per unit
+		passCoeffs[2] /= yardsUnit;
+		rushCoeffs[1] /= RB.getYardsUnit();
+		return evaluate(passCoeffs,rushCoeffs,miscCoeffs);
+	}
+
+	public static int getNumStats() {
+		return (Pass.size()+Rush.size()+Misc.size());
 	}
 
 	public static int getYardsUnit() {

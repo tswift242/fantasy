@@ -15,35 +15,36 @@ public final class Players {
 	public static final QB PEYTON = new QB("peyton",
 			newSet(new Stat<Pass>(Pass.COMP,400),new Stat<Pass>(Pass.INC,183),new Stat<Pass>(Pass.YDS,4659),new Stat<Pass>(Pass.TD,37),new Stat<Pass>(Pass.INT,11),new Stat<Pass>(Pass.SCK,21)),
 			
-			newSet(new Stat<Rush>(Rush.ATT,0)),newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB RODGERS = new QB("rodgers",
-		newSet(new Stat<Pass>(Pass.COMP,371),new Stat<Pass>(Pass.INC,181),new Stat<Pass>(Pass.YDS,4295),new Stat<Pass>(Pass.TD,39),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,51)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,371),new Stat<Pass>(Pass.INC,181),new Stat<Pass>(Pass.YDS,4295),new Stat<Pass>(Pass.TD,39),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,51)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB PALMER = new QB("palmer",
-		newSet(new Stat<Pass>(Pass.COMP,345),new Stat<Pass>(Pass.INC,220),new Stat<Pass>(Pass.YDS,4018),new Stat<Pass>(Pass.TD,22),new Stat<Pass>(Pass.INT,14),new Stat<Pass>(Pass.SCK,26)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,345),new Stat<Pass>(Pass.INC,220),new Stat<Pass>(Pass.YDS,4018),new Stat<Pass>(Pass.TD,22),new Stat<Pass>(Pass.INT,14),new Stat<Pass>(Pass.SCK,26)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB KOLB = new QB("kolb",
-		newSet(new Stat<Pass>(Pass.COMP,109),new Stat<Pass>(Pass.INC,74),new Stat<Pass>(Pass.YDS,1169),new Stat<Pass>(Pass.TD,8),new Stat<Pass>(Pass.INT,3),new Stat<Pass>(Pass.SCK,27)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,109),new Stat<Pass>(Pass.INC,74),new Stat<Pass>(Pass.YDS,1169),new Stat<Pass>(Pass.TD,8),new Stat<Pass>(Pass.INT,3),new Stat<Pass>(Pass.SCK,27)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB QUINN = new QB("quinn",
-		newSet(new Stat<Pass>(Pass.COMP,112),new Stat<Pass>(Pass.INC,85),new Stat<Pass>(Pass.YDS,1141),new Stat<Pass>(Pass.TD,2),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,21)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,112),new Stat<Pass>(Pass.INC,85),new Stat<Pass>(Pass.YDS,1141),new Stat<Pass>(Pass.TD,2),new Stat<Pass>(Pass.INT,8),new Stat<Pass>(Pass.SCK,21)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB LEINART = new QB("leinart",
-		newSet(new Stat<Pass>(Pass.COMP,16),new Stat<Pass>(Pass.INC,17),new Stat<Pass>(Pass.YDS,115),new Stat<Pass>(Pass.TD,0),new Stat<Pass>(Pass.INT,1),new Stat<Pass>(Pass.SCK,1)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,16),new Stat<Pass>(Pass.INC,17),new Stat<Pass>(Pass.YDS,115),new Stat<Pass>(Pass.TD,0),new Stat<Pass>(Pass.INT,1),new Stat<Pass>(Pass.SCK,1)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB SANCHEZ = new QB("sanchez",
-		newSet(new Stat<Pass>(Pass.COMP,246),new Stat<Pass>(Pass.INC,207),new Stat<Pass>(Pass.YDS,2883),new Stat<Pass>(Pass.TD,13),new Stat<Pass>(Pass.INT,18),new Stat<Pass>(Pass.SCK,34)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,246),new Stat<Pass>(Pass.INC,207),new Stat<Pass>(Pass.YDS,2883),new Stat<Pass>(Pass.TD,13),new Stat<Pass>(Pass.INT,18),new Stat<Pass>(Pass.SCK,34)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	public static final QB WEEDEN = new QB("weeden",
-		newSet(new Stat<Pass>(Pass.COMP,297),new Stat<Pass>(Pass.INC,220),new Stat<Pass>(Pass.YDS,3385),new Stat<Pass>(Pass.TD,14),new Stat<Pass>(Pass.INT,17),new Stat<Pass>(Pass.SCK,28)),
-		newSet(new Stat<Rush>(Rush.ATT,0)),
-		newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
+			newSet(new Stat<Pass>(Pass.COMP,297),new Stat<Pass>(Pass.INC,220),new Stat<Pass>(Pass.YDS,3385),new Stat<Pass>(Pass.TD,14),new Stat<Pass>(Pass.INT,17),new Stat<Pass>(Pass.SCK,28)),
+			newSet(new Stat<Rush>(Rush.ATT,0)),
+			newSet(new Stat<Misc>(Misc.FUMB_TD,0))); //TODO
 	//RB
 	public static final RB LYNCH = new RB("lynch",
 			newSet(new Stat<Rush>(Rush.ATT,315),new Stat<Rush>(Rush.YDS,1590),new Stat<Rush>(Rush.TD,11)),

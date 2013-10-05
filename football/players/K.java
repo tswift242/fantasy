@@ -7,8 +7,6 @@ import football.categories.Kick;
 
 public class K extends Player
 {
-	private final int numStats = 12;
-	private static final int yardsUnit = 10;
 	private final int numStatTypes = 1; //number of stat types used by player
 	private LinkedHashSet<Stat<Kick>> kickStats;
 
@@ -27,12 +25,19 @@ public class K extends Player
 		return dot(kickStats,coeffs[0]);
 	}
 
-	public int getNumStats() {
-		return numStats;
+	public double parseScoringCoeffsAndEvaluate(String[] args) {
+		int numKickStats = getNumStats();
+		if(args.length < (numKickStats+1)) {
+			System.out.println("Error: Not enough arguments");
+			System.exit(1);
+		}
+		//parse coefficients from command line arguments
+		double[] kickCoeffs = parseScoringCoeffs(args,1,numKickStats);
+		return evaluate(kickCoeffs);
 	}
 
-	public static int getYardsUnit() {
-		return yardsUnit;
+	public static int getNumStats() {
+		return Kick.size();
 	}
 
 	public String statsCats() {

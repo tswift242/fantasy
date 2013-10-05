@@ -7,7 +7,6 @@ import football.categories.Def;
 
 public class DEF extends Player
 {
-	private final int numStats = 8;
 	//TODO: check this
 	private static final int yardsUnit = 200;
 	private static final int ptsUnit = 7;
@@ -20,6 +19,7 @@ public class DEF extends Player
 		this.defStats = defStats;
 	}
 
+	//TODO: switch from vararg to fixed args??
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
 			System.out.println("Error: DEF.evalutae() expects " + numStatTypes + " arguments");
@@ -28,8 +28,22 @@ public class DEF extends Player
 		return dot(defStats,coeffs[0]);
 	}
 
-	public int getNumStats() {
-		return numStats;
+	public double parseScoringCoeffsAndEvaluate(String[] args) {
+		int numDefStats = getNumStats();
+		if(args.length < (numDefStats+1)) {
+			System.out.println("Error: Not enough arguments");
+			System.exit(1);
+		}
+		//parse coefficients from command line arguments
+		double[] defCoeffs = parseScoringCoeffs(args,1,numDefStats);
+		//normalize coefficients to be per unit
+		defCoeffs[6] /= yardsUnit;
+		defCoeffs[7] /= ptsUnit;
+		return evaluate(defCoeffs);
+	}
+
+	public static int getNumStats() {
+		return Def.size();
 	}
 
 	public static int getYardsUnit() {
