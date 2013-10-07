@@ -7,6 +7,8 @@ import football.Stat;
 
 public abstract class Player implements Comparable<Player>
 {
+	private final DecimalFormat scoreFmt = new DecimalFormat(".##"); //static
+
 	protected String name;
 	protected double score; //calculated and stored by evaluate
 
@@ -14,6 +16,10 @@ public abstract class Player implements Comparable<Player>
 	{
 		this.name = name;
 		score = 0.0; //initial value
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	//TODO: remove since covered by method below??
@@ -25,14 +31,13 @@ public abstract class Player implements Comparable<Player>
 
 	public int compareTo(Player other) {
 		if((this.score == 0) || (other.score == 0)) {
-			System.out.println("Warning: one of these players may not have been evaluated");
+			System.out.println("Warning: either " + name + " or " + other.getName() + " may not have been evaluated");
 		}
 		return Double.compare(this.score,other.score);
 	}
 
 	public String toString() {
-		DecimalFormat dfmt = new DecimalFormat(".##");
-		return (name + "\t\t" + dfmt.format(score));
+		return (name + "\t\t" + scoreFmt.format(score));
 	}
 
 	//TODO: get rid of this and use enum.toString()

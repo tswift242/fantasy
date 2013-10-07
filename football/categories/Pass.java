@@ -11,6 +11,7 @@ public enum Pass
 
 	private final String text;
 	private static final int size = values().length;
+	private static final String valuesString = EnumUtil.valuesToString(Pass.class);
 
 	private Pass(String text) {
 		this.text = text;
@@ -22,5 +23,9 @@ public enum Pass
 
 	public static int size() {
 		return size;
+	}
+
+	public static String valuesToString() {
+		return valuesString;
 	}
 }

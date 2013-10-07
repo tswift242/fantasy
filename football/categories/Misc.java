@@ -9,6 +9,7 @@ public enum Misc
 
 	private final String text;
 	private static final int size = values().length;
+	private static final String valuesString = EnumUtil.valuesToString(Misc.class);
 
 	private Misc(String text) {
 		this.text = text;
@@ -20,5 +21,9 @@ public enum Misc
 
 	public static int size() {
 		return size;
+	}
+
+	public static String valuesToString() {
+		return valuesString;
 	}
 }

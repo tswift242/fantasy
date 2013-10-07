@@ -17,6 +17,7 @@ public enum Kick
 
 	private final String text;
 	private static final int size = values().length;
+	private static final String valuesString = EnumUtil.valuesToString(Kick.class);
 
 	private Kick(String text) {
 		this.text = text;
@@ -28,5 +29,9 @@ public enum Kick
 
 	public static int size() {
 		return size;
+	}
+
+	public static String valuesToString() {
+		return valuesString;
 	}
 }

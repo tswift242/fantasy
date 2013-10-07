@@ -8,6 +8,7 @@ public enum Rec
 
 	private final String text;
 	private static final int size = values().length;
+	private static final String valuesString = EnumUtil.valuesToString(Rec.class);
 
 	private Rec(String text) {
 		this.text = text;
@@ -19,5 +20,9 @@ public enum Rec
 
 	public static int size() {
 		return size;
+	}
+
+	public static String valuesToString() {
+		return valuesString;
 	}
 }
