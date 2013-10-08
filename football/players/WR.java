@@ -21,6 +21,7 @@ public class WR extends Player
 		this.miscStats = miscStats;
 	}
 
+	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
 			System.out.println("Error: wr.evalutae() expects " + numStatTypes + " arguments");
@@ -30,6 +31,7 @@ public class WR extends Player
 		return score;
 	}
 
+	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		if(args.length < (getNumStats()+1)) {
 			System.out.println("Error: Not enough arguments");
@@ -52,6 +54,7 @@ public class WR extends Player
 		return yardsUnit;
 	}
 
+	@Override
 	public String categoriesToString() {
 		return (Rec.valuesToString() + "\t\t||\t\t" + Misc.valuesToString());
 	}

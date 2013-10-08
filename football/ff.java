@@ -71,7 +71,6 @@ public class ff
 			out.println(delimiter + "\n");
 			out.println(toSectionHeader("Custom scoring coefficients"));
 			out.println(sortedPlayers[0].categoriesToString()); //TODO: make this call static
-			System.out.println(sortedPlayers[0].getClass().toString());
 			printCoeffs(args,out);
 			/*out.println(toSectionHeader("Default scoring rules"));
 			printArray(players,out);*/

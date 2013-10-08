@@ -29,6 +29,7 @@ public abstract class Player implements Comparable<Player>
 	//parse scoring coefficients from cmd line arguments and then evaluate player
 	public abstract double parseScoringCoeffsAndEvaluate(String[] args);
 
+	@Override //implements
 	public int compareTo(Player other) {
 		if((this.score == 0) || (other.score == 0)) {
 			System.out.println("Warning: either " + name + " or " + other.getName() + " may not have been evaluated");
@@ -36,6 +37,7 @@ public abstract class Player implements Comparable<Player>
 		return Double.compare(this.score,other.score);
 	}
 
+	@Override
 	public String toString() {
 		return (name + "\t\t" + scoreFmt.format(score));
 	}

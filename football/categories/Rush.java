@@ -14,6 +14,7 @@ public enum Rush
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}

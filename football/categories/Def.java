@@ -19,6 +19,7 @@ public enum Def
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}

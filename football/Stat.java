@@ -19,6 +19,7 @@ public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
 		return value;
 	}
 
+	@Override
 	public String toString() {
 		return ("(" + category.toString() + "," + value + ")");
 	}
@@ -29,6 +30,7 @@ public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
 	}
 
 	//induce natural ordering on Stat using ordering of its enum
+	@Override //implements
 	public int compareTo(Stat<T> other) {
 		return this.category.compareTo(other.category);
 	}

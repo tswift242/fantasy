@@ -20,6 +20,7 @@ public class DEF extends Player
 	}
 
 	//TODO: switch from vararg to fixed args??
+	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
 			System.out.println("Error: DEF.evalutae() expects " + numStatTypes + " arguments");
@@ -29,6 +30,7 @@ public class DEF extends Player
 		return score;
 	}
 
+	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numDefStats = getNumStats();
 		if(args.length < (numDefStats+1)) {
@@ -55,6 +57,7 @@ public class DEF extends Player
 		return ptsUnit;
 	}
 
+	@Override
 	public String categoriesToString() {
 		return Def.valuesToString();
 	}

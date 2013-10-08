@@ -15,6 +15,7 @@ public enum Misc
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}

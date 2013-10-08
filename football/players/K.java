@@ -17,6 +17,7 @@ public class K extends Player
 		this.kickStats = kickStats;
 	}
 
+	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
 			System.out.println("Error: K.evalutae() expects " + numStatTypes + " arguments");
@@ -26,6 +27,7 @@ public class K extends Player
 		return score;
 	}
 
+	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numKickStats = getNumStats();
 		if(args.length < (numKickStats+1)) {
@@ -41,6 +43,7 @@ public class K extends Player
 		return Kick.size();
 	}
 
+	@Override
 	public String categoriesToString() {
 		return Kick.valuesToString();
 	}

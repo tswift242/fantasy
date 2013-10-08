@@ -17,6 +17,7 @@ public enum Pass
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}

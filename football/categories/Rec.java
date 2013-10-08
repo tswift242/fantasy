@@ -14,6 +14,7 @@ public enum Rec
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}

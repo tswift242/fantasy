@@ -23,6 +23,7 @@ public enum Kick
 		this.text = text;
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}
