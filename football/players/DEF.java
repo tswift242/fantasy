@@ -2,8 +2,8 @@ package football.players;
 
 import java.util.LinkedHashSet;
 
-import football.Stat;
-import football.categories.Def;
+import football.stats.Stat;
+import football.stats.categories.Def;
 
 public class DEF extends Player
 {

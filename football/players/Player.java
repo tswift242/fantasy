@@ -3,7 +3,7 @@ package football.players;
 import java.util.LinkedHashSet;
 import java.text.DecimalFormat;
 
-import football.Stat;
+import football.stats.Stat;
 
 public abstract class Player implements Comparable<Player>
 {

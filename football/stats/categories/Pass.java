@@ -1,4 +1,4 @@
-package football.categories;
+package football.stats.categories;
 
 public enum Pass
 {

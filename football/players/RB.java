@@ -2,10 +2,10 @@ package football.players;
 
 import java.util.LinkedHashSet;
 
-import football.Stat;
-import football.categories.Rush;
-import football.categories.Rec;
-import football.categories.Misc;
+import football.stats.Stat;
+import football.stats.categories.Rush;
+import football.stats.categories.Rec;
+import football.stats.categories.Misc;
 
 public class RB extends Player
 {

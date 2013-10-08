@@ -1,4 +1,4 @@
-package football;
+package football.stats;
 
 //TODO: make T extend Cat
 public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>

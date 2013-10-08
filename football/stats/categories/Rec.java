@@ -1,17 +1,16 @@
-package football.categories;
+package football.stats.categories;
 
-public enum Misc
+public enum Rec
 {
-	FUMB_TD("FUMB_TD"), //fumble recovered for td
-	TWO_PT_CONV("2_PT_CONV"),
-	FUMB_LOST("FUMB_LOST"),
-	FUMB("FUMB");
+	REC("REC"),
+	YDS("YDS"),
+	TD("TD");
 
 	private final String text;
 	private static final int size = values().length;
-	private static final String valuesString = EnumUtil.valuesToString(Misc.class);
+	private static final String valuesString = EnumUtil.valuesToString(Rec.class);
 
-	private Misc(String text) {
+	private Rec(String text) {
 		this.text = text;
 	}
 

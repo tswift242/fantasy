@@ -1,21 +1,16 @@
-package football.categories;
+package football.stats.categories;
 
-public enum Def
+public enum Rush
 {
-	SCK("SCK"),
-	INT("INT"),
-	FUMB("FUMB"),
-	SAF("SAF"),
-	TD("TD"),
-	RET("RET"),
-	PTS("PTS"),
-	YDS("YDS");
+	ATT("ATT"),
+	YDS("YDS"),
+	TD("TD");
 
 	private final String text;
 	private static final int size = values().length;
-	private static final String valuesString = EnumUtil.valuesToString(Def.class);
+	private static final String valuesString = EnumUtil.valuesToString(Rush.class);
 
-	private Def(String text) {
+	private Rush(String text) {
 		this.text = text;
 	}
 
