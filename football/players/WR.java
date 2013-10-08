@@ -52,7 +52,7 @@ public class WR extends Player
 		return yardsUnit;
 	}
 
-	public String statsCats() {
-		return ("rec\t\tyds\t\ttd");
+	public String categoriesToString() {
+		return (Rec.valuesToString() + "\t\t||\t\t" + Misc.valuesToString());
 	}
 }

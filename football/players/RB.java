@@ -57,7 +57,8 @@ public class RB extends Player
 		return yardsUnit;
 	}
 
-	public String statsCats() {
-		return ("att\t\tyds\t\ttd");
+	public String categoriesToString() {
+		String delimiter = "\t\t||\t\t";
+		return (Rush.valuesToString() + delimiter + Rec.valuesToString() + delimiter + Misc.valuesToString());
 	}
 }

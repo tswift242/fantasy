@@ -41,7 +41,7 @@ public class K extends Player
 		return Kick.size();
 	}
 
-	public String statsCats() {
-		return ("pat md\t\tpat ms\t\tfg md 0\t\fg md 20\t\tfg md 30\t\tfg md 40\t\tfg md 50\t\tfg ms 0\t\tfg ms 20\t\tfg ms 30\t\tfg ms 40\t\tfg ms 50");
+	public String categoriesToString() {
+		return Kick.valuesToString();
 	}
 }

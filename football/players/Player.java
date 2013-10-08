@@ -41,7 +41,7 @@ public abstract class Player implements Comparable<Player>
 	}
 
 	//TODO: get rid of this and use enum.toString()
-	public abstract String statsCats();
+	public abstract String categoriesToString();
 
 	//TODO: move this method and two that follow in Utils.java and make static
 	//utility helper function for evalute()

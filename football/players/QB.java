@@ -58,7 +58,8 @@ public class QB extends Player
 		return yardsUnit;
 	}
 
-	public String statsCats() {
-		return ("comp\t\tinc\t\tyds\t\ttd\t\tint\t\tsck");
+	public String categoriesToString() {
+		String delimiter = "\t\t||\t\t";
+		return (Pass.valuesToString() + delimiter + Rush.valuesToString() + delimiter + Misc.valuesToString());
 	}
 }

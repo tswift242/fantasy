@@ -55,7 +55,7 @@ public class DEF extends Player
 		return ptsUnit;
 	}
 
-	public String statsCats() {
-		return ("sck\t\tint\t\tfumb\t\tsaf\t\ttd\t\tret\t\tpts\t\tyds");
+	public String categoriesToString() {
+		return Def.valuesToString();
 	}
 }
