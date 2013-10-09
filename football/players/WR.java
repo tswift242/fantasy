@@ -24,7 +24,7 @@ public class WR extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
-			System.out.println("Error: wr.evalutae() expects " + numStatTypes + " arguments");
+			System.out.println("Error in WR.evaluate: " + numStatTypes + " arguments expected");
 			System.exit(1);
 		}
 		score = (PlayerUtil.dot(recStats,coeffs[0]) + PlayerUtil.dot(miscStats,coeffs[1]));
@@ -33,8 +33,9 @@ public class WR extends Player
 
 	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
-		if(args.length < (getNumStats()+1)) {
-			System.out.println("Error: Not enough arguments");
+		int numArgs = getNumStats()+1;
+		if(args.length != numArgs) {
+			System.out.println("Error in WR.parseScoringCoeffsAndEvaluate: " + numArgs + " command line arguments expected");
 			System.exit(1);
 		}
 		//parse coefficients from command line arguments

@@ -27,7 +27,7 @@ public class RB extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
-			System.out.println("Error: RB.evalutae() expects " + numStatTypes + " arguments");
+			System.out.println("Error in RB.evaluate: " + numStatTypes + " arguments expected");
 			System.exit(1);
 		}
 		score = (PlayerUtil.dot(rushStats,coeffs[0]) + PlayerUtil.dot(recStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
@@ -36,8 +36,9 @@ public class RB extends Player
 
 	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
-		if(args.length < (getNumStats()+1)) {
-			System.out.println("Error: Not enough arguments");
+		int numArgs = getNumStats()+1;
+		if(args.length != numArgs) {
+			System.out.println("Error in RB.parseScoringCoeffsAndEvaluate: " + numArgs + " command line arguments expected");
 			System.exit(1);
 		}
 		//parse coefficients from command line arguments

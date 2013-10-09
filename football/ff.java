@@ -24,7 +24,8 @@ public class ff
 	public static void main(String[] args)
 	{
 		if(args.length < 1) {
-			System.out.println("Error: mode not specified");
+			System.out.println("Error in main: mode not specified");
+			usage();
 			System.exit(1);
 		}
 		String mode = args[0];
@@ -50,7 +51,8 @@ public class ff
 				Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
 			K[] sortedKs = runKs(ks,args,kFilename);
 		} else {
-			System.out.println("Error: Invalid mode");
+			System.out.println("Error in main: Invalid mode");
+			usage();
 			System.exit(1);
 		}
 	}
@@ -79,7 +81,7 @@ public class ff
 			out.println(delimiter + "\n\n\n");
 			out.close();
 		} catch(IOException e) {
-			System.out.println("IO exception when writing to file " + filename);
+			System.out.println("Error in runPlayers: IO exception when writing to file " + filename);
 		}
 		return sortedPlayers;
 	}
@@ -107,6 +109,18 @@ public class ff
 	public static K[] runKs(K[] ks, String[] args, String filename)
 	{
 		return (K[])runPlayers(ks,args,filename);
+	}
+
+	private static void usage() {
+		String indent = "\t\t";
+		System.out.println("Usage: java ff <mode> <sc1> ... <scN>,\twhere");
+		System.out.println(indent + "mode := player position to simulate. Possible values are def, k, qb, rb, and wr.");
+		System.out.println(indent + "sc1 - scN := scoring coefficients representing all rules needed to score players at position given by mode. Necessary scoring coefficients per position are given below.");
+		/*System.out.println(indent + "def: " + DEF.categoriesToString());
+		System.out.println(indent + "k: " + K.categoriesToString());
+		System.out.println(indent + "qb: " + QB.categoriesToString());
+		System.out.println(indent + "rb: " + RB.categoriesToString());
+		System.out.println(indent + "wr: " + WR.categoriesToString());*/
 	}
 
 	//write players array to printwriter stream
