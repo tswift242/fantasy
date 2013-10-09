@@ -27,7 +27,7 @@ public class WR extends Player
 			System.out.println("Error: wr.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		score = (dot(recStats,coeffs[0]) + dot(miscStats,coeffs[1]));
+		score = (PlayerUtil.dot(recStats,coeffs[0]) + PlayerUtil.dot(miscStats,coeffs[1]));
 		return score;
 	}
 
@@ -38,9 +38,9 @@ public class WR extends Player
 			System.exit(1);
 		}
 		//parse coefficients from command line arguments
-		int[] limits = cumsum(new int[]{Rec.size(),Misc.size()});
-		double[] recCoeffs = parseScoringCoeffs(args,1,limits[0]);
-		double[] miscCoeffs = parseScoringCoeffs(args,limits[0]+1,limits[1]);
+		int[] limits = PlayerUtil.cumsum(new int[]{Rec.size(),Misc.size()});
+		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,1,limits[0]);
+		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,limits[0]+1,limits[1]);
 		//normalize coefficients to be per unit
 		recCoeffs[1] /= yardsUnit;
 		return evaluate(recCoeffs,miscCoeffs);

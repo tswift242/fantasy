@@ -30,7 +30,7 @@ public class QB extends Player
 			System.out.println("Error: QB.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		score = (dot(passStats,coeffs[0]) + dot(rushStats,coeffs[1]) + dot(miscStats,coeffs[2]));
+		score = (PlayerUtil.dot(passStats,coeffs[0]) + PlayerUtil.dot(rushStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
 		return score;
 	}
 
@@ -42,10 +42,10 @@ public class QB extends Player
 		}
 		//parse coefficients from command line arguments
 		//TODO: put Pass,Rush,Misc(.size()?) in a list to enforce consistency btw this array and getNumStats()
-		int[] limits = cumsum(new int[]{Pass.size(),Rush.size(),Misc.size()});
-		double[] passCoeffs = parseScoringCoeffs(args,1,limits[0]);
-		double[] rushCoeffs = parseScoringCoeffs(args,limits[0]+1,limits[1]);
-		double[] miscCoeffs = parseScoringCoeffs(args,limits[1]+1,limits[2]);
+		int[] limits = PlayerUtil.cumsum(new int[]{Pass.size(),Rush.size(),Misc.size()});
+		double[] passCoeffs = PlayerUtil.parseScoringCoeffs(args,1,limits[0]);
+		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,limits[0]+1,limits[1]);
+		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,limits[1]+1,limits[2]);
 		//normalize coefficients to be per unit
 		passCoeffs[2] /= yardsUnit;
 		rushCoeffs[1] /= RB.getYardsUnit();

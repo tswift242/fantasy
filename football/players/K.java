@@ -23,7 +23,7 @@ public class K extends Player
 			System.out.println("Error: K.evalutae() expects " + numStatTypes + " arguments");
 			System.exit(1);
 		}
-		score = dot(kickStats,coeffs[0]);
+		score = PlayerUtil.dot(kickStats,coeffs[0]);
 		return score;
 	}
 
@@ -35,7 +35,7 @@ public class K extends Player
 			System.exit(1);
 		}
 		//parse coefficients from command line arguments
-		double[] kickCoeffs = parseScoringCoeffs(args,1,numKickStats);
+		double[] kickCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numKickStats);
 		return evaluate(kickCoeffs);
 	}
 
