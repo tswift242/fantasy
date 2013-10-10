@@ -14,9 +14,9 @@ public class WR extends Player
 	private LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: rec, yds, td
-	public WR(String name, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
+	public WR(String name, double defaultScore, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
-		super(name);
+		super(name, defaultScore);
 		this.recStats = recStats;
 		this.miscStats = miscStats;
 	}

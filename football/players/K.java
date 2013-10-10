@@ -11,9 +11,9 @@ public class K extends Player
 	private LinkedHashSet<Stat<Kick>> kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
-	public K(String name, LinkedHashSet<Stat<Kick>> kickStats)
+	public K(String name, double defaultScore, LinkedHashSet<Stat<Kick>> kickStats)
 	{
-		super(name);
+		super(name, defaultScore);
 		this.kickStats = kickStats;
 	}
 

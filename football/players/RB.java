@@ -16,9 +16,9 @@ public class RB extends Player
 	private LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: atts, yds, td
-	public RB(String name, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
+	public RB(String name, double defaultScore, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
-		super(name);
+		super(name, defaultScore);
 		this.rushStats = rushStats;
 		this.recStats = recStats;
 		this.miscStats = miscStats;

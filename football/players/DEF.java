@@ -13,9 +13,9 @@ public class DEF extends Player
 	private final int numStatTypes = 1; //number of stat types used by player
 	private LinkedHashSet<Stat<Def>> defStats;
 
-	public DEF(String name, LinkedHashSet<Stat<Def>> defStats)
+	public DEF(String name, double defaultScore, LinkedHashSet<Stat<Def>> defStats)
 	{
-		super(name);
+		super(name, defaultScore);
 		this.defStats = defStats;
 	}
 

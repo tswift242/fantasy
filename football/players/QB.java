@@ -16,9 +16,9 @@ public class QB extends Player
 	private LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: comp, inc, yds, td, inter, sck
-	public QB(String name, LinkedHashSet<Stat<Pass>> passStats, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Misc>> miscStats)
+	public QB(String name, double defaultScore, LinkedHashSet<Stat<Pass>> passStats, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
-		super(name);
+		super(name, defaultScore);
 		this.passStats = passStats;
 		this.rushStats = rushStats;
 		this.miscStats = miscStats;

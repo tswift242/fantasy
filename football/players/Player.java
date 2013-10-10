@@ -12,10 +12,10 @@ public abstract class Player implements Comparable<Player>
 	protected String name;
 	protected double score; //calculated and stored by evaluate
 
-	public Player(String name)
+	public Player(String name, double defaultScore)
 	{
 		this.name = name;
-		score = 0.0; //initial value
+		score = defaultScore;
 	}
 
 	public String getName() {

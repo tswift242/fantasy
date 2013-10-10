@@ -59,6 +59,9 @@ public class ff
 
 	//could pass in PrintStream instead of filename string to make switching to System.out. easy
 	public static Player[] runPlayers(Player[] players, String[] args, String filename) {
+		//sort players according to default scores
+		Arrays.sort(players);
+		//printArray(players,new PrintWriter(System.out));
 		//make copy of players to preserve original order
 		Player[] sortedPlayers = Arrays.copyOf(players,players.length);
 		//evaluate all players
@@ -78,6 +81,7 @@ public class ff
 			printArray(players,out);*/
 			out.println(toSectionHeader("Custom scoring rules"));
 			printArray(sortedPlayers,out);
+			//TODO: calculate (dis)similarity btw sortedPlayers and players
 			out.println(delimiter + "\n\n\n");
 			out.close();
 		} catch(IOException e) {
@@ -130,6 +134,7 @@ public class ff
 			out.println(players[i].toString());
 		}
 		out.println("\n");
+		out.flush();
 	}
 
 	//TODO: format this better for players with different stat types
