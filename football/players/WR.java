@@ -9,7 +9,13 @@ import football.stats.categories.Misc;
 public class WR extends Player
 {
 	private static final int yardsUnit = 10;
-	private final int numStatTypes = 2; //number of stat types used by player
+	private static final int[] statTypeSizes = {Rec.size(),Misc.size()};
+	private static final int numStatTypes = statTypeSizes.length; //number of stat types used by player
+	//delimiting indices separating 2 different stat types in cmd line args
+	private static final int[] statTypeIdxLimits = PlayerUtil.cumsum(statTypeSizes);
+	//total number of stat categories affecting this player's score
+	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
+	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
 	private LinkedHashSet<Stat<Rec>> recStats;
 	private LinkedHashSet<Stat<Misc>> miscStats;
 
@@ -39,16 +45,15 @@ public class WR extends Player
 			System.exit(1);
 		}
 		//parse coefficients from command line arguments
-		int[] limits = PlayerUtil.cumsum(new int[]{Rec.size(),Misc.size()});
-		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,1,limits[0]);
-		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,limits[0]+1,limits[1]);
+		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
+		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
 		//normalize coefficients to be per unit
 		recCoeffs[1] /= yardsUnit;
 		return evaluate(recCoeffs,miscCoeffs);
 	}
 
 	public static int getNumStats() {
-		return (Rec.size()+Misc.size());
+		return numStats;
 	}
 
 	public static int getYardsUnit() {

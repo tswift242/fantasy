@@ -54,4 +54,13 @@ public final class PlayerUtil
 		}
 		return cumsum;
 	}
+
+	public static int sum(int[] a) {
+		int length = a.length;
+		int sum = 0;
+		for(int i = 0; i < length; i++) {
+			sum += a[i];
+		}
+		return sum;
+	}
 }

@@ -10,7 +10,13 @@ import football.stats.categories.Misc;
 public class QB extends Player
 {
 	private static final int yardsUnit = 25;
-	private final int numStatTypes = 3; //number of stat types used by player
+	private static final int[] statTypeSizes = {Pass.size(),Rush.size(),Misc.size()};
+	private static final int numStatTypes = statTypeSizes.length; //number of stat types used by player
+	//delimiting indices separating 2 different stat types in cmd line args
+	private static final int[] statTypeIdxLimits = PlayerUtil.cumsum(statTypeSizes);
+	//total number of stat categories affecting this player's score
+	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
+	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
 	private LinkedHashSet<Stat<Pass>> passStats;
 	private LinkedHashSet<Stat<Rush>> rushStats;
 	private LinkedHashSet<Stat<Misc>> miscStats;
@@ -42,11 +48,9 @@ public class QB extends Player
 			System.exit(1);
 		}
 		//parse coefficients from command line arguments
-		//TODO: put Pass,Rush,Misc(.size()?) in a list to enforce consistency btw this array and getNumStats()
-		int[] limits = PlayerUtil.cumsum(new int[]{Pass.size(),Rush.size(),Misc.size()});
-		double[] passCoeffs = PlayerUtil.parseScoringCoeffs(args,1,limits[0]);
-		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,limits[0]+1,limits[1]);
-		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,limits[1]+1,limits[2]);
+		double[] passCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
+		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
+		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2]);
 		//normalize coefficients to be per unit
 		passCoeffs[2] /= yardsUnit;
 		rushCoeffs[1] /= RB.getYardsUnit();
@@ -54,7 +58,7 @@ public class QB extends Player
 	}
 
 	public static int getNumStats() {
-		return (Pass.size()+Rush.size()+Misc.size());
+		return numStats;
 	}
 
 	public static int getYardsUnit() {
