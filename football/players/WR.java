@@ -48,7 +48,7 @@ public class WR extends Player
 		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
 		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
 		//normalize coefficients to be per unit
-		recCoeffs[1] /= yardsUnit;
+		recCoeffs[Rec.YDS.ordinal()] /= yardsUnit;
 		return evaluate(recCoeffs,miscCoeffs);
 	}
 

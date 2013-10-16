@@ -52,8 +52,8 @@ public class RB extends Player
 		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
 		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2]);
 		//normalize coefficients to be per unit
-		rushCoeffs[1] /= yardsUnit;
-		recCoeffs[1] /= WR.getYardsUnit();
+		rushCoeffs[Rush.YDS.ordinal()] /= yardsUnit;
+		recCoeffs[Rec.YDS.ordinal()] /= WR.getYardsUnit();
 		return evaluate(rushCoeffs,recCoeffs,miscCoeffs);
 	}
 

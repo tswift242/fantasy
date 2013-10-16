@@ -52,8 +52,8 @@ public class QB extends Player
 		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
 		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2]);
 		//normalize coefficients to be per unit
-		passCoeffs[2] /= yardsUnit;
-		rushCoeffs[1] /= RB.getYardsUnit();
+		passCoeffs[Pass.YDS.ordinal()] /= yardsUnit;
+		rushCoeffs[Rush.YDS.ordinal()] /= RB.getYardsUnit();
 		return evaluate(passCoeffs,rushCoeffs,miscCoeffs);
 	}
 

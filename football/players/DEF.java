@@ -41,8 +41,8 @@ public class DEF extends Player
 		//parse coefficients from command line arguments
 		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
 		//normalize coefficients to be per unit
-		defCoeffs[6] /= yardsUnit;
-		defCoeffs[7] /= ptsUnit;
+		defCoeffs[Def.YDS.ordinal()] /= yardsUnit;
+		defCoeffs[Def.PTS.ordinal()] /= ptsUnit;
 		return evaluate(defCoeffs);
 	}
 
