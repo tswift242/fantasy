@@ -9,7 +9,6 @@ import football.stats.categories.Misc;
 
 public class QB extends Player
 {
-	private static final int yardsUnit = 25;
 	private static final int[] statTypeSizes = {Pass.size(),Rush.size(),Misc.size()};
 	private static final int numStatTypes = statTypeSizes.length; //number of stat types used by player
 	//delimiting indices separating 2 different stat types in cmd line args
@@ -52,17 +51,13 @@ public class QB extends Player
 		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
 		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2]);
 		//normalize coefficients to be per unit
-		passCoeffs[Pass.YDS.ordinal()] /= yardsUnit;
-		rushCoeffs[Rush.YDS.ordinal()] /= RB.getYardsUnit();
+		passCoeffs[Pass.YDS.ordinal()] /= Pass.getYardsUnit();
+		rushCoeffs[Rush.YDS.ordinal()] /= Rush.getYardsUnit();
 		return evaluate(passCoeffs,rushCoeffs,miscCoeffs);
 	}
 
 	public static int getNumStats() {
 		return numStats;
-	}
-
-	public static int getYardsUnit() {
-		return yardsUnit;
 	}
 
 	@Override

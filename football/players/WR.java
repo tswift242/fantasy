@@ -8,7 +8,6 @@ import football.stats.categories.Misc;
 
 public class WR extends Player
 {
-	private static final int yardsUnit = 10;
 	private static final int[] statTypeSizes = {Rec.size(),Misc.size()};
 	private static final int numStatTypes = statTypeSizes.length; //number of stat types used by player
 	//delimiting indices separating 2 different stat types in cmd line args
@@ -48,16 +47,12 @@ public class WR extends Player
 		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
 		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
 		//normalize coefficients to be per unit
-		recCoeffs[Rec.YDS.ordinal()] /= yardsUnit;
+		recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();
 		return evaluate(recCoeffs,miscCoeffs);
 	}
 
 	public static int getNumStats() {
 		return numStats;
-	}
-
-	public static int getYardsUnit() {
-		return yardsUnit;
 	}
 
 	@Override

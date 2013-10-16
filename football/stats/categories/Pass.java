@@ -11,6 +11,7 @@ public enum Pass
 
 	private final String text;
 	private static final int size = values().length;
+	private static final int yardsUnit = 25;
 	private static final String valuesString = EnumUtil.valuesToString(Pass.class);
 
 	private Pass(String text) {
@@ -24,6 +25,10 @@ public enum Pass
 
 	public static int size() {
 		return size;
+	}
+
+	public static int getYardsUnit() {
+		return yardsUnit;
 	}
 
 	public static String valuesToString() {

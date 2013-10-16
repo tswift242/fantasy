@@ -8,6 +8,7 @@ public enum Rush
 
 	private final String text;
 	private static final int size = values().length;
+	private static final int yardsUnit = 10;
 	private static final String valuesString = EnumUtil.valuesToString(Rush.class);
 
 	private Rush(String text) {
@@ -21,6 +22,10 @@ public enum Rush
 
 	public static int size() {
 		return size;
+	}
+
+	public static int getYardsUnit() {
+		return yardsUnit;
 	}
 
 	public static String valuesToString() {

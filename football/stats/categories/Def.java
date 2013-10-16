@@ -13,6 +13,8 @@ public enum Def
 
 	private final String text;
 	private static final int size = values().length;
+	private static final int yardsUnit = 200;
+	private static final int pointsUnit = 7;
 	private static final String valuesString = EnumUtil.valuesToString(Def.class);
 
 	private Def(String text) {
@@ -26,6 +28,14 @@ public enum Def
 
 	public static int size() {
 		return size;
+	}
+
+	public static int getYardsUnit() {
+		return yardsUnit;
+	}
+
+	public static int getPointsUnit() {
+		return pointsUnit;
 	}
 
 	public static String valuesToString() {

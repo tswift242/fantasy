@@ -7,9 +7,6 @@ import football.stats.categories.Def;
 
 public class DEF extends Player
 {
-	//TODO: check this
-	private static final int yardsUnit = 200;
-	private static final int ptsUnit = 7;
 	private final int numStatTypes = 1; //number of stat types used by player
 	private LinkedHashSet<Stat<Def>> defStats;
 
@@ -41,21 +38,13 @@ public class DEF extends Player
 		//parse coefficients from command line arguments
 		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
 		//normalize coefficients to be per unit
-		defCoeffs[Def.YDS.ordinal()] /= yardsUnit;
-		defCoeffs[Def.PTS.ordinal()] /= ptsUnit;
+		defCoeffs[Def.YDS.ordinal()] /= Def.getYardsUnit();
+		defCoeffs[Def.PTS.ordinal()] /= Def.getPointsUnit();
 		return evaluate(defCoeffs);
 	}
 
 	public static int getNumStats() {
 		return Def.size();
-	}
-
-	public static int getYardsUnit() {
-		return yardsUnit;
-	}
-
-	public static int getPointsUnit() {
-		return ptsUnit;
 	}
 
 	@Override
