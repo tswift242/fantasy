@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import football.stats.Stat;
 import football.stats.categories.Rec;
 import football.stats.categories.Misc;
+import football.util.PlayerUtil;
 
 public class WR extends Player
 {

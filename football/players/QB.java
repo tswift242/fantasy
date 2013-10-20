@@ -6,6 +6,7 @@ import football.stats.Stat;
 import football.stats.categories.Pass;
 import football.stats.categories.Rush;
 import football.stats.categories.Misc;
+import football.util.PlayerUtil;
 
 public class QB extends Player
 {

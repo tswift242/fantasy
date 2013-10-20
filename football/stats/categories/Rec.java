@@ -1,5 +1,7 @@
 package football.stats.categories;
 
+import football.util.EnumUtil;
+
 public enum Rec
 {
 	REC("REC"),

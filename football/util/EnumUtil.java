@@ -1,4 +1,4 @@
-package football.stats.categories;
+package football.util;
 
 public final class EnumUtil
 {

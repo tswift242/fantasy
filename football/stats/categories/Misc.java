@@ -1,5 +1,7 @@
 package football.stats.categories;
 
+import football.util.EnumUtil;
+
 public enum Misc
 {
 	FUMB_TD("FUMB_TD"), //fumble recovered for td

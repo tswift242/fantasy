@@ -4,6 +4,7 @@ import java.util.LinkedHashSet;
 
 import football.stats.Stat;
 import football.stats.categories.Def;
+import football.util.PlayerUtil;
 
 public class DEF extends Player
 {

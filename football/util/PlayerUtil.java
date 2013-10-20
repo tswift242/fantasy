@@ -1,4 +1,4 @@
-package football.players;
+package football.util;
 
 import java.util.LinkedHashSet;
 
