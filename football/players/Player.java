@@ -22,6 +22,13 @@ public abstract class Player implements Comparable<Player>
 		return name;
 	}
 
+	public double getScore() {
+		return score;
+	}
+
+	//makes a deep copy of this player
+	public abstract Player deepCopy();
+
 	//TODO: remove since covered by method below??
 	//evaluate player by assigning them a score
 	public abstract double evaluate(double[] ... coeffs);
@@ -42,6 +49,5 @@ public abstract class Player implements Comparable<Player>
 		return (name + "\t\t" + scoreFmt.format(score));
 	}
 
-	//TODO: get rid of this and use enum.toString()
 	public abstract String categoriesToString();
 }

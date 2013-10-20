@@ -17,6 +17,20 @@ public class DEF extends Player
 		this.defStats = defStats;
 	}
 
+	//copy constructor. Note: does not copy stat sets.
+	public DEF(DEF other) {
+		this(other.getName(), other.getScore(), other.getDefStats());
+	}
+
+	public LinkedHashSet<Stat<Def>> getDefStats() {
+		return defStats;
+	}
+
+	@Override
+	public DEF deepCopy() {
+		return new DEF(this);
+	}
+
 	//TODO: switch from vararg to fixed args??
 	@Override
 	public double evaluate(double[] ... coeffs) {

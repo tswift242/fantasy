@@ -30,6 +30,28 @@ public class QB extends Player
 		this.miscStats = miscStats;
 	}
 
+	//copy constructor. Note: does not copy stat sets.
+	public QB(QB other) {
+		this(other.getName(), other.getScore(), other.getPassStats(), other.getRushStats(), other.getMiscStats());
+	}
+
+	public LinkedHashSet<Stat<Pass>> getPassStats() {
+		return passStats;
+	}
+
+	public LinkedHashSet<Stat<Rush>> getRushStats() {
+		return rushStats;
+	}
+
+	public LinkedHashSet<Stat<Misc>> getMiscStats() {
+		return miscStats;
+	}
+
+	@Override
+	public QB deepCopy() {
+		return new QB(this);
+	}
+
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {

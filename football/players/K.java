@@ -18,6 +18,20 @@ public class K extends Player
 		this.kickStats = kickStats;
 	}
 
+	//copy constructor. Note: does not copy stat sets.
+	public K(K other) {
+		this(other.getName(), other.getScore(), other.getKickStats());
+	}
+
+	public LinkedHashSet<Stat<Kick>> getKickStats() {
+		return kickStats;
+	}
+
+	@Override
+	public K deepCopy() {
+		return new K(this);
+	}
+
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {

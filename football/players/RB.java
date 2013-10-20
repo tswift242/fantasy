@@ -30,6 +30,28 @@ public class RB extends Player
 		this.miscStats = miscStats;
 	}
 
+	//copy constructor. Note: does not copy stat sets.
+	public RB(RB other) {
+		this(other.getName(), other.getScore(), other.getRushStats(), other.getRecStats(), other.getMiscStats());
+	}
+
+	public LinkedHashSet<Stat<Rush>> getRushStats() {
+		return rushStats;
+	}
+
+	public LinkedHashSet<Stat<Rec>> getRecStats() {
+		return recStats;
+	}
+
+	public LinkedHashSet<Stat<Misc>> getMiscStats() {
+		return miscStats;
+	}
+
+	@Override
+	public RB deepCopy() {
+		return new RB(this);
+	}
+
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {

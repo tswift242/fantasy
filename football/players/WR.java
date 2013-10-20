@@ -27,6 +27,24 @@ public class WR extends Player
 		this.miscStats = miscStats;
 	}
 
+	//copy constructor. Note: does not copy stat sets.
+	public WR(WR other) {
+		this(other.getName(), other.getScore(), other.getRecStats(), other.getMiscStats());
+	}
+
+	public LinkedHashSet<Stat<Rec>> getRecStats() {
+		return recStats;
+	}
+
+	public LinkedHashSet<Stat<Misc>> getMiscStats() {
+		return miscStats;
+	}
+
+	@Override
+	public WR deepCopy() {
+		return new WR(this);
+	}
+
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {

@@ -33,23 +33,23 @@ public class ff
 		if(mode.equals("qb")) {
 			QB[] qbs = {Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
 				Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
-			QB[] sortedQBs = runQBs(qbs,args,qbFilename);
+			Player[] customQBs = runPlayers(qbs,args,qbFilename);
 		} else if(mode.equals("rb")) {
 			RB[] rbs = {Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
 				Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
-			RB[] sortedRBs = runRBs(rbs,args,rbFilename);
+			Player[] customRBs = runPlayers(rbs,args,rbFilename);
 		} else if(mode.equals("wr")) {
 			WR[] wrs = {Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
 				Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
-			WR[] sortedWRs = runWRs(wrs,args,wrFilename);
+			Player[] customWRs = runPlayers(wrs,args,wrFilename);
 		} else if(mode.equals("def")) {
 			DEF[] defs = {Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
 				Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
-			DEF[] sortedDEFs = runDEFs(defs,args,defFilename);
+			Player[] customDEFs = runPlayers(defs,args,defFilename);
 		} else if(mode.equals("k")) {
 			K[] ks = {Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
 				Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
-			K[] sortedKs = runKs(ks,args,kFilename);
+			Player[] customKs = runPlayers(ks,args,kFilename);
 		} else {
 			System.out.println("Error in main: Invalid mode");
 			usage();
@@ -58,61 +58,39 @@ public class ff
 	}
 
 	//could pass in PrintStream instead of filename string to make switching to System.out. easy
-	public static Player[] runPlayers(Player[] players, String[] args, String filename) {
+	public static Player[] runPlayers(Player[] defaultPlayers, String[] args, String filename) {
 		//sort players according to default scores
-		Arrays.sort(players);
-		//printArray(players,new PrintWriter(System.out));
+		Arrays.sort(defaultPlayers);
 		//make copy of players to preserve original order
-		Player[] sortedPlayers = Arrays.copyOf(players,players.length);
-		//evaluate all players
-		int numPlayers = sortedPlayers.length;
+		int numPlayers = defaultPlayers.length;
+		Player[] customPlayers = new Player[numPlayers];
 		for(int i = 0; i < numPlayers; i++) {
-			sortedPlayers[i].parseScoringCoeffsAndEvaluate(args);
+			customPlayers[i] = defaultPlayers[i].deepCopy();
 		}
-		Arrays.sort(sortedPlayers); //sort players based on score
+		//evaluate all players with custom rules
+		for(int i = 0; i < numPlayers; i++) {
+			customPlayers[i].parseScoringCoeffsAndEvaluate(args);
+		}
+		Arrays.sort(customPlayers); //sort players based on score
 		//write results to file
 		try {
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(new File(resultsDir,filename),true)));
 			out.println(delimiter + "\n");
 			out.println(toSectionHeader("Custom scoring coefficients"));
-			out.println(sortedPlayers[0].categoriesToString()); //TODO: make this call static
+			out.println(customPlayers[0].categoriesToString()); //TODO: make this call static
 			printCoeffs(args,out);
 			/*out.println(toSectionHeader("Default scoring rules"));
-			printArray(players,out);*/
+			printArray(defaultPlayers,out);*/
 			out.println(toSectionHeader("Custom scoring rules"));
-			printArray(sortedPlayers,out);
-			//TODO: calculate (dis)similarity btw sortedPlayers and players
+			printArray(customPlayers,out);
+			//TODO: calculate (dis)similarity btw customPlayers and players
+			//printArray(defaultPlayers,new PrintWriter(System.out));
 			out.println(delimiter + "\n\n\n");
 			out.close();
 		} catch(IOException e) {
 			System.out.println("Error in runPlayers: IO exception when writing to file " + filename);
 		}
-		return sortedPlayers;
-	}
-
-	public static QB[] runQBs(QB[] qbs, String[] args, String filename)
-	{
-		return (QB[])runPlayers(qbs,args,filename);
-	}
-
-	public static RB[] runRBs(RB[] rbs, String[] args, String filename)
-	{
-		return (RB[])runPlayers(rbs,args,filename);
-	}
-
-	public static WR[] runWRs(WR[] wrs, String[] args, String filename)
-	{
-		return (WR[])runPlayers(wrs,args,filename);
-	}
-
-	public static DEF[] runDEFs(DEF[] defs, String[] args, String filename)
-	{
-		return (DEF[])runPlayers(defs,args,filename);
-	}
-
-	public static K[] runKs(K[] ks, String[] args, String filename)
-	{
-		return (K[])runPlayers(ks,args,filename);
+		return customPlayers;
 	}
 
 	private static void usage() {
