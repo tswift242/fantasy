@@ -141,7 +141,7 @@ public final class Players {
 
 	//utility for easy set construction
 	//constructs LinkedHashSet to maintain insertion order
-	@SafeVarargs //ingore "unchecked generic array creation for varargs" -- Java 7 ONLY
+	@SafeVarargs //ignore "unchecked generic array creation for varargs" -- Java 7 ONLY
 	private static <T extends Enum<T>> LinkedHashSet<Stat<T>> newSet(Stat<T> ... stats) {
 		LinkedHashSet<Stat<T>> set = new LinkedHashSet<Stat<T>>();
 		for(Stat<T> stat : stats) {
