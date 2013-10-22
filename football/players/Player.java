@@ -1,5 +1,6 @@
 package football.players;
 
+import java.util.Objects;
 import java.util.LinkedHashSet;
 import java.text.DecimalFormat;
 
@@ -9,7 +10,7 @@ public abstract class Player implements Comparable<Player>
 {
 	private final DecimalFormat scoreFmt = new DecimalFormat(".##"); //static
 
-	protected String name;
+	protected String name; //uniquely identifies player
 	protected double score; //calculated and stored by evaluate
 
 	public Player(String name, double defaultScore)
@@ -35,6 +36,24 @@ public abstract class Player implements Comparable<Player>
 
 	//parse scoring coefficients from cmd line arguments and then evaluate player
 	public abstract double parseScoringCoeffsAndEvaluate(String[] args);
+
+	//players consider equal if their names match
+	@Override
+	public boolean equals(Object o) {
+		if((o == null) || (this.getClass() != o.getClass())) {
+			return false;
+		}
+		if(this == o) {
+			return true;
+		}
+		Player other = (Player)o;
+		return this.name.equals(other.name);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(name);
+	}
 
 	@Override //implements
 	public int compareTo(Player other) {

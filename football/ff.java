@@ -117,7 +117,7 @@ public class ff
 			out.println(player.toString());
 		}
 		out.println("\n");
-		out.flush();
+		out.flush(); //for System.out casted to printwriter
 	}
 
 	//TODO: format this better for players with different stat types
