@@ -35,7 +35,7 @@ public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
 		if(this == o) {
 			return true;
 		}
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //unavoidable
 		Stat<T> other = (Stat<T>)o;
 		return (this.category == other.category);
 	}

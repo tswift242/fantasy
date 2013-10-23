@@ -10,5 +10,5 @@ import football.players.Player;
 
 public interface Metric
 {
-	public <T extends Player> double distance(List<T> players1, List<T> players2);
+	public <E extends Player> double distance(List<E> players1, List<E> players2);
 }
