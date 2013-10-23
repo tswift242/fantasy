@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 
 import football.players.*;
+import football.util.metrics.Metric;
+import football.util.metrics.SortOrderMetric;
 
 public class ff
 {
@@ -89,6 +91,8 @@ public class ff
 			out.println(toSectionHeader("Custom scoring rules"));
 			printList(customPlayers,out);
 			//TODO: calculate (dis)similarity btw customPlayers and players
+			/*Metric metric = new SortOrderMetric();
+			double dist = metric.distance(defaultPlayers,customPlayers);*/
 			//printList(defaultPlayers,new PrintWriter(System.out));
 			out.println(delimiter + "\n\n\n");
 			out.close();
