@@ -42,9 +42,11 @@ public class StatisticsMetric implements Metric
 	public <E extends Player> double distance(List<E> players1, List<E> players2) {
 		Statistics stats1 = getStatisticalQuantities(players1);
 		Statistics stats2 = getStatisticalQuantities(players2);
-		return ((minWeight * Math.abs(stats1.min - stats2.min)) + 
+		//sum the absolute differences in the stats (weighted by the weights), 
+		//then negate because distance should be maximized
+		return (-1 * ((minWeight * Math.abs(stats1.min - stats2.min)) + 
 				(maxWeight * Math.abs(stats1.max - stats2.max)) +
-				(meanWeight * Math.abs(stats1.mean - stats2.mean)));
+				(meanWeight * Math.abs(stats1.mean - stats2.mean))));
 	}
 
 	//calculate all statistical quantities in one pass for increased efficiency
