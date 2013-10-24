@@ -65,7 +65,7 @@ public abstract class Player implements Comparable<Player>
 
 	@Override
 	public String toString() {
-		return (name + "\t\t" + scoreFmt.format(score));
+		return String.format("%-15s %-8s",name,scoreFmt.format(score));
 	}
 
 	public abstract String categoriesToString();

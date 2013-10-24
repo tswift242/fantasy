@@ -76,6 +76,6 @@ public class WR extends Player
 
 	@Override
 	public String categoriesToString() {
-		return (Rec.valuesToString() + "\t\t||\t\t" + Misc.valuesToString());
+		return (Rec.valuesToString() + "\t\t" + Misc.valuesToString());
 	}
 }

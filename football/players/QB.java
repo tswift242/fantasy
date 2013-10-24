@@ -85,7 +85,7 @@ public class QB extends Player
 
 	@Override
 	public String categoriesToString() {
-		String delimiter = "\t\t||\t\t";
+		String delimiter = "\t\t";
 		return (Pass.valuesToString() + delimiter + Rush.valuesToString() + delimiter + Misc.valuesToString());
 	}
 }

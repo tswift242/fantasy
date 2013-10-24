@@ -85,19 +85,17 @@ public class ff
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(new File(resultsDir,filename),true)));
 			out.println(delimiter + "\n");
 			out.println(toSectionHeader("Custom scoring coefficients"));
-			//TODO: get next two lines to have their outputs line up
 			out.println(customPlayers.get(0).categoriesToString()); //TODO: make this call static
 			printCoeffs(args,out);
 			out.println(toSectionHeader("Default scoring rules"));
 			printList(defaultPlayers,out);
 			out.println(toSectionHeader("Custom scoring rules"));
 			printList(customPlayers,out);
-			//TODO: calculate (dis)similarity btw customPlayers and players
+			//calculate (dis)similarity btw customPlayers and defaultPlayers
 			Metric metric = new SortOrderMetric();
 			double dist = metric.distance(defaultPlayers,customPlayers);
 			out.println("Distance between default and custom is: " + dist);
-			//printList(defaultPlayers,new PrintWriter(System.out));
-			out.println(delimiter + "\n\n\n");
+			out.println("\n" + delimiter + "\n\n\n");
 			out.close();
 		} catch(IOException e) {
 			System.out.println("Error in runPlayers: IO exception when writing to file " + filename);
@@ -132,7 +130,7 @@ public class ff
 	private static void printCoeffs(String[] args, PrintWriter out) {
 		int numCoeffs = args.length;
 		for(int i = 1; i < numCoeffs; i++) { //skip mode argument
-			out.print(args[i] + "\t\t");
+			out.printf("%-10s ",args[i]);
 		}
 		out.println("\n");
 	}
