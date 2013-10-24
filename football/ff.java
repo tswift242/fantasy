@@ -88,14 +88,14 @@ public class ff
 			//TODO: get next two lines to have their outputs line up
 			out.println(customPlayers.get(0).categoriesToString()); //TODO: make this call static
 			printCoeffs(args,out);
-			/*out.println(toSectionHeader("Default scoring rules"));
-			printList(defaultPlayers,out);*/
+			out.println(toSectionHeader("Default scoring rules"));
+			printList(defaultPlayers,out);
 			out.println(toSectionHeader("Custom scoring rules"));
 			printList(customPlayers,out);
 			//TODO: calculate (dis)similarity btw customPlayers and players
 			Metric metric = new SortOrderMetric();
 			double dist = metric.distance(defaultPlayers,customPlayers);
-			System.out.println("distance between default and custom is: " + dist);
+			out.println("Distance between default and custom is: " + dist);
 			//printList(defaultPlayers,new PrintWriter(System.out));
 			out.println(delimiter + "\n\n\n");
 			out.close();

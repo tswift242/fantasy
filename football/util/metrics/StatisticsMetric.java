@@ -20,6 +20,25 @@ public class StatisticsMetric implements Metric
 		this.meanWeight = meanWeight;
 	}
 
+	public void setMinWeight(double minWeight) {
+		this.minWeight = minWeight;
+	}
+
+	public void setMaxWeight(double maxWeight) {
+		this.maxWeight = maxWeight;
+	}
+
+	public void setMeanWeight(double meanWeight) {
+		this.meanWeight = meanWeight;
+	}
+
+	//set all weights
+	public void setWeights(double minWeight, double maxWeight, double meanWeight) {
+		this.minWeight = minWeight;
+		this.maxWeight = maxWeight;
+		this.meanWeight = meanWeight;
+	}
+
 	public <E extends Player> double distance(List<E> players1, List<E> players2) {
 		Statistics stats1 = getStatisticalQuantities(players1);
 		Statistics stats2 = getStatisticalQuantities(players2);
@@ -63,4 +82,3 @@ public class StatisticsMetric implements Metric
 		}
 	}
 }
-
