@@ -1,7 +1,8 @@
 JCC = javac
 JAVA = java
 JCCFLAGS = -g -Xlint
-SRCDIR = football
+SRCDIR = src
+MAINDIR = football
 BUILDDIR = build
 CLASSDIR = $(BUILDDIR)/classes
 RESULTSDIR = results
@@ -29,11 +30,11 @@ $(RESULTSDIR):
 
 # Compile java files into class files
 %.class: %.java
-	$(JCC) -d $(CLASSDIR) $(JCCFLAGS) $<
+	$(JCC) -sourcepath $(SRCDIR) -d $(CLASSDIR) $(JCCFLAGS) $<
 
 # mode and coeffs passed in through cmd line
 run:
-	$(JAVA) -cp $(CLASSDIR) $(SRCDIR)/ff $(mode) $(coeffs)
+	$(JAVA) -cp $(CLASSDIR) $(MAINDIR)/ff $(mode) $(coeffs)
 
 clean:
 	@$(RM) $(shell find $(CLASSDIR) -type f -name '*.class')
