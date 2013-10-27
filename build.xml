@@ -37,7 +37,7 @@
 	<target name="run" depends="jar,cmdlineargs" description="Run the program">
 		<java jar="${jardir}/${ant.project.name}.jar" fork="true">
 			<arg value="${mode}"/>
-			<arg value="${coeffs}"/>
+			<arg line="${coeffs}"/>
 		</java>
 	</target>
 
