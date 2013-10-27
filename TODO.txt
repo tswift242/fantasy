@@ -1,0 +1,18 @@
+Revisions/Refactoring:
+-- make categoriesToString() static
+-- make evaluate() use fixed # args instead of var # args
+-- replace some System.exit(1)'s with throwing exceptions?
+-- make some local variables/arguments final?
+-- work on cmd line interface?
+***** cmd line flags
+
+New features:
+-- Metrics
+-- Get player stats from online source (e.g. nfl.com)
+-- GUI?
+***** tabs/radio button for position (include all as option)
+***** side-by-side grids, each with own edit boxes for scoring coeffs within each tab
+***** default scoring coeffs from nfl.com; button to revert to default coeffs
+***** capability to remember smallest/largest metric value (display min/max/mean?)
+***** solve for best coeffs based on some reference player rankings
+***** option to update player data/choose stats year?

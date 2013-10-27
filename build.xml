@@ -1,0 +1,65 @@
+<project name="FantasyFootball" basedir="." default="compile">
+
+	<description>
+		Program for testing various custom fantasy football scoring rules
+	</description>
+
+	<!-- Set global properties for this build -->
+	<property name="srcdir" location="${basedir}/src"/>
+	<property name="resultsdir" location="${basedir}/results"/>
+	<property name="builddir" location="${basedir}/build"/>
+	<property name="classdir" location="${builddir}/classes"/>
+	<property name="jardir" location="${builddir}/jar"/>
+	<property name="main-class" value="football.ff"/>
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp/>
+		<!-- Create the build directory structure used by compile, jar, and run -->
+		<mkdir dir="${resultsdir}"/>
+		<mkdir dir="${classdir}"/>
+		<mkdir dir="${jardir}"/>
+	</target>
+
+	<target name="compile" depends="init" description="Compile source files" >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac debug="true" srcdir="${srcdir}" destdir="${classdir}" includeantruntime="false"/>
+	</target>
+
+	<target name="jar" depends="compile" description="Create jar file">
+		<jar basedir="${classdir}" destfile="${jardir}/${ant.project.name}.jar">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends="jar,cmdlineargs" description="Run the program">
+		<java jar="${jardir}/${ant.project.name}.jar" fork="true">
+			<arg value="${mode}"/>
+			<arg value="${coeffs}"/>
+		</java>
+	</target>
+
+	<!--
+	<target name="run" depends="compile,cmdlineargs" description="Run the program">
+		<java classname="${main-class}">
+			<arg value="${mode}"/>
+			<arg value="${coeffs}"/>
+		</java>
+	</target>
+	-->
+
+	<target name="cmdlineargs" unless="mode,coeffs" description="Prompts for command line arguments">
+		<input addProperty="mode" message="Enter the player mode:"/>
+		<input addProperty="coeffs" message="Enter custom scoring coeffs:"/>
+	</target>
+
+	<target name="clean" description="Delete all build artifacts" >
+		<!-- Delete the ${build} directory -->
+		<delete dir="${builddir}"/>
+	</target>
+
+	<target name="all" depends="clean,compile" description="Clean build dir, and then compile sources"/>
+
+</project>
