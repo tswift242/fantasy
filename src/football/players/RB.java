@@ -55,8 +55,7 @@ public class RB extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
-			System.out.println("Error in RB.evaluate: " + numStatTypes + " arguments expected");
-			System.exit(1);
+			throw new IllegalArgumentException(numStatTypes + " arguments expected; found " + coeffs.length);
 		}
 		score = (PlayerUtil.dot(rushStats,coeffs[0]) + PlayerUtil.dot(recStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
 		return score;
@@ -66,8 +65,7 @@ public class RB extends Player
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numArgs = getNumStats()+1;
 		if(args.length != numArgs) {
-			System.out.println("Error in RB.parseScoringCoeffsAndEvaluate: " + numArgs + " command line arguments expected");
-			System.exit(1);
+			throw new IllegalArgumentException(numArgs + " command line arguments expected; found " + args.length);
 		}
 		//parse coefficients from command line arguments
 		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);

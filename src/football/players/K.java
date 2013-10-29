@@ -35,8 +35,7 @@ public class K extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
-			System.out.println("Error in K.evaluate: " + numStatTypes + " arguments expected");
-			System.exit(1);
+			throw new IllegalArgumentException(numStatTypes + " arguments expected; found " + coeffs.length);
 		}
 		score = PlayerUtil.dot(kickStats,coeffs[0]);
 		return score;
@@ -47,8 +46,7 @@ public class K extends Player
 		int numKickStats = getNumStats();
 		int numArgs = numKickStats+1;
 		if(args.length != numArgs) {
-			System.out.println("Error in K.parseScoringCoeffsAndEvaluate: " + numArgs + " command line arguments expected");
-			System.exit(1);
+			throw new IllegalArgumentException(numArgs + " command line arguments expected; found " + args.length);
 		}
 		//parse coefficients from command line arguments
 		double[] kickCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numKickStats);

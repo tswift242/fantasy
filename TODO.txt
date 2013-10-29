@@ -1,8 +1,9 @@
 Revisions/Refactoring:
+-- make classes as immutable as possible
+***** make some local variables/arguments final?
+-- put IllegalArgumentException checking in Player.java to avoid code repetition?
 -- make categoriesToString() static
 -- make evaluate() use fixed # args instead of var # args
--- replace some System.exit(1)'s with throwing exceptions?
--- make some local variables/arguments final?
 -- work on cmd line interface?
 ***** cmd line flags
 

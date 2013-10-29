@@ -12,8 +12,7 @@ public final class PlayerUtil
 	//takes dot product of stats set and coeffs array
 	public static <T extends Enum<T>> double dot(LinkedHashSet<Stat<T>> stats, double[] coeffs) {
 		if(stats.size() != coeffs.length) {
-			System.out.println("Error in PlayerUtil.dot: inputs don't have the same length");
-			System.exit(1);
+			throw new IllegalArgumentException("Argument stats' size, " + stats.size() + ", does not equal argument coeffs' length, " + coeffs.length);
 		}
 
 		double sum = 0.0;
@@ -29,12 +28,10 @@ public final class PlayerUtil
 	//Parses elements in args between startIdx and endIdx (inclusive) into doubles and returns them in an array
 	public static double[] parseScoringCoeffs(String[] args, int startIdx, int endIdx) {
 		if(endIdx < startIdx) {
-			System.out.println("Error in PlayerUtil.parseScoringCoeffs: input endIdx is smaller than input startIdx");
-			System.exit(1);
+			throw new IllegalArgumentException("Argument endIdx, " + endIdx + ", is smaller than argument startIdx, " + startIdx);
 		}
 		if(endIdx >= args.length) {
-			System.out.println("Error in PlayerUtil.parseScoringCoeffs: input endIdx is too large for args array");
-			System.exit(1);
+			throw new IllegalArgumentException("Argument endIdx, " + endIdx + ", is greater than or equal to length of argument args, " + args.length);
 		}
 		double[] coeffs = new double[endIdx-startIdx+1];
 		for(int i = startIdx; i <= endIdx; i++) {

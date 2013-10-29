@@ -35,8 +35,7 @@ public class DEF extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		if(coeffs.length != numStatTypes) {
-			System.out.println("Error in DEF.evaluate: " + numStatTypes + " arguments expected");
-			System.exit(1);
+			throw new IllegalArgumentException(numStatTypes + " arguments expected; found " + coeffs.length);
 		}
 		score = PlayerUtil.dot(defStats,coeffs[0]);
 		return score;
@@ -47,8 +46,7 @@ public class DEF extends Player
 		int numDefStats = getNumStats();
 		int numArgs = numDefStats+1;
 		if(args.length != numArgs) {
-			System.out.println("Error in DEF.parseScoringCoeffsAndEvaluate: " + numArgs + " command line arguments expected");
-			System.exit(1);
+			throw new IllegalArgumentException(numArgs + " command line arguments expected; found " + args.length);
 		}
 		//parse coefficients from command line arguments
 		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
