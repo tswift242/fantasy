@@ -9,7 +9,7 @@ import football.util.PlayerUtil;
 public class DEF extends Player
 {
 	private final int numStatTypes = 1; //number of stat types used by player
-	private LinkedHashSet<Stat<Def>> defStats;
+	private final LinkedHashSet<Stat<Def>> defStats;
 
 	public DEF(String name, double defaultScore, LinkedHashSet<Stat<Def>> defStats)
 	{

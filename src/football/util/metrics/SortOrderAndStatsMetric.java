@@ -32,11 +32,16 @@ public class SortOrderAndStatsMetric
 		statMetric.setMeanWeight(meanWeight);
 	}
 
+	public void setOrderWeight(double orderWeight) {
+		this.orderWeight = orderWeight;
+	}
+
 	//set all weights
-	public void setWeights(double minWeight, double maxWeight, double meanWeight) {
-		statMetric.setMinWeight(minWeight);
-		statMetric.setMaxWeight(maxWeight);
-		statMetric.setMeanWeight(meanWeight);
+	public void setWeights(double orderWeight, double minWeight, double maxWeight, double meanWeight) {
+		setMinWeight(minWeight);
+		setMaxWeight(maxWeight);
+		setMeanWeight(meanWeight);
+		setOrderWeight(orderWeight);
 	}
 
 

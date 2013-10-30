@@ -5,8 +5,8 @@ import java.util.Objects;
 //TODO: make T extend Cat
 public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
 {
-	private T category;
-	private int value;
+	private final T category;
+	private final int value;
 
 	public Stat(T category, int value) {
 		this.category = category;

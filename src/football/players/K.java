@@ -9,7 +9,7 @@ import football.util.PlayerUtil;
 public class K extends Player
 {
 	private final int numStatTypes = 1; //number of stat types used by player
-	private LinkedHashSet<Stat<Kick>> kickStats;
+	private final LinkedHashSet<Stat<Kick>> kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
 	public K(String name, double defaultScore, LinkedHashSet<Stat<Kick>> kickStats)

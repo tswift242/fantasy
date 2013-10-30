@@ -16,8 +16,8 @@ public class WR extends Player
 	//total number of stat categories affecting this player's score
 	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
 	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
-	private LinkedHashSet<Stat<Rec>> recStats;
-	private LinkedHashSet<Stat<Misc>> miscStats;
+	private final LinkedHashSet<Stat<Rec>> recStats;
+	private final LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: rec, yds, td
 	public WR(String name, double defaultScore, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)

@@ -10,7 +10,7 @@ public abstract class Player implements Comparable<Player>
 {
 	private final DecimalFormat scoreFmt = new DecimalFormat(".##"); //static
 
-	protected String name; //uniquely identifies player
+	protected final String name; //uniquely identifies player
 	protected double score; //calculated and stored by evaluate
 
 	public Player(String name, double defaultScore)

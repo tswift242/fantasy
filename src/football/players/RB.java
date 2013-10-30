@@ -17,9 +17,9 @@ public class RB extends Player
 	//total number of stat categories affecting this player's score
 	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
 	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
-	private LinkedHashSet<Stat<Rush>> rushStats;
-	private LinkedHashSet<Stat<Rec>> recStats;
-	private LinkedHashSet<Stat<Misc>> miscStats;
+	private final LinkedHashSet<Stat<Rush>> rushStats;
+	private final LinkedHashSet<Stat<Rec>> recStats;
+	private final LinkedHashSet<Stat<Misc>> miscStats;
 
 	//stats ordered: atts, yds, td
 	public RB(String name, double defaultScore, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
