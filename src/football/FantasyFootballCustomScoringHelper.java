@@ -18,64 +18,58 @@ public class FantasyFootballCustomScoringHelper
 {
 	//files to write results to
 	public static final String resultsDir = "results";
-	public static final String qbFilename = "QBresults.txt";
-	public static final String rbFilename = "RBresults.txt";
-	public static final String wrFilename = "WRresults.txt";
-	public static final String defFilename = "DEFresults.txt";
-	public static final String kFilename = "Kresults.txt";
 	public static final String sectionDenoter = "********";
 	public static final String delimiter = "***********************************************************";
 
 	public static void main(String[] args)
 	{
 		if(args.length < 1) {
-			System.out.println("Error in main: mode not specified");
+			System.out.println("Error in main: Mode not specified");
 			usage();
 			System.exit(1);
 		}
 		String mode = args[0];
 
+		//quickly initialize group of players based on mode
+		Player[] players = null;
 		if(mode.equals("qb")) {
-			List<QB> qbs = new ArrayList<QB>(Arrays.asList(Players.SANCHEZ,Players.WEEDEN,Players.LEINART,
-				Players.QUINN,Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS));
-			List<QB> customQBs = runPlayers(qbs,args,qbFilename);
+			players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
+				Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
 		} else if(mode.equals("rb")) {
-			List<RB> rbs = new ArrayList<RB>(Arrays.asList(Players.REDMAN,Players.HILLMAN,Players.MATHEWS,
-				Players.JONESDREW,Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER));
-			List<RB> customRBs = runPlayers(rbs,args,rbFilename);
+			players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
+				Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
 		} else if(mode.equals("wr")) {
-			List<WR> wrs = new ArrayList<WR>(Arrays.asList(Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,
-				Players.MANNINGHAM,Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON));
-			List<WR> customWRs = runPlayers(wrs,args,wrFilename);
+			players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
+				Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
 		} else if(mode.equals("def")) {
-			List<DEF> defs = new ArrayList<DEF>(Arrays.asList(Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
-				Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO));
-			List<DEF> customDEFs = runPlayers(defs,args,defFilename);
+			players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
+				Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
 		} else if(mode.equals("k")) {
-			List<K> ks = new ArrayList<K>(Arrays.asList(Players.CUNDIFF,Players.FOLK,Players.CROSBY,
-				Players.FORBATH,Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER));
-			List<K> customKs = runPlayers(ks,args,kFilename);
+			players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
+				Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
 		} else {
 			System.out.println("Error in main: Invalid mode");
 			usage();
 			System.exit(1);
 		}
+
+		String filename = (mode.toUpperCase() + "results.txt");
+		List<Player> defaultPlayers = new ArrayList<Player>(Arrays.asList(players));
+		List<Player> customPlayers = runPlayers(defaultPlayers,args,filename);
 	}
 
 	//TODO: replace List<Player> with List<T extends Player>
 	//could pass in PrintStream instead of filename string to make switching to System.out. easy
-	public static <E extends Player> List<E> runPlayers(List<E> defaultPlayers, String[] args, String filename) {
+	public static List<Player> runPlayers(List<Player> defaultPlayers, String[] args, String filename) {
 		//sort players according to default scores
 		Collections.sort(defaultPlayers);
 		//make copy of players to preserve original order
-		List<E> customPlayers = new ArrayList<E>(defaultPlayers.size());
-		for(E player : defaultPlayers) {
-			@SuppressWarnings("unchecked") //TODO: see if I can avoid this
-			E copyPlayer = (E)(player.deepCopy());
-			customPlayers.add(copyPlayer);
+		List<Player> customPlayers = new ArrayList<Player>(defaultPlayers.size());
+		for(Player player : defaultPlayers) {
+			customPlayers.add(player.deepCopy());
 		}
 		//evaluate all players with custom rules
-		for(E player : customPlayers) {
+		for(Player player : customPlayers) {
 			player.parseScoringCoeffsAndEvaluate(args);
 		}
 		//sort players according to custom scores
