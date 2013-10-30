@@ -14,7 +14,7 @@ import football.players.*;
 import football.util.metrics.Metric;
 import football.util.metrics.SortOrderMetric;
 
-public class ff
+public class FantasyFootballCustomScoringHelper
 {
 	//files to write results to
 	public static final String resultsDir = "results";

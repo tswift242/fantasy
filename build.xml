@@ -1,4 +1,4 @@
-<project name="FantasyFootball" basedir="." default="compile">
+<project name="FantasyFootballCustomScoringHelper" basedir="." default="jar">
 
 	<description>
 		Program for testing various custom fantasy football scoring rules
@@ -10,7 +10,7 @@
 	<property name="builddir" location="${basedir}/build"/>
 	<property name="classdir" location="${builddir}/classes"/>
 	<property name="jardir" location="${builddir}/jar"/>
-	<property name="main-class" value="football.ff"/>
+	<property name="main-class" value="football.FantasyFootballCustomScoringHelper"/>
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -45,7 +45,7 @@
 	<target name="run" depends="compile,cmdlineargs" description="Run the program">
 		<java classname="${main-class}">
 			<arg value="${mode}"/>
-			<arg value="${coeffs}"/>
+			<arg line="${coeffs}"/>
 		</java>
 	</target>
 	-->
@@ -60,6 +60,6 @@
 		<delete dir="${builddir}"/>
 	</target>
 
-	<target name="all" depends="clean,compile" description="Clean build dir, and then compile sources"/>
+	<target name="all" depends="clean,jar" description="Clean build dir, and then compile sources"/>
 
 </project>
