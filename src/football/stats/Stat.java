@@ -2,8 +2,9 @@ package football.stats;
 
 import java.util.Objects;
 
-//TODO: make T extend Cat
-public class Stat<T extends Enum<T>> implements Comparable<Stat<T>>
+import football.stats.StatType;
+
+public class Stat<T extends Enum<T> & StatType> implements Comparable<Stat<T>>
 {
 	private final T category;
 	private final int value;

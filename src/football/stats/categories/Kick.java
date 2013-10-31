@@ -1,8 +1,9 @@
 package football.stats.categories;
 
+import football.stats.StatType;
 import football.util.EnumUtil;
 
-public enum Kick
+public enum Kick implements StatType
 {
 	PAT_MD("PAT_MD"),
 	PAT_MS("PAT_MS"),

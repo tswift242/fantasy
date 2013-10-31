@@ -3,6 +3,7 @@ package football.players;
 import java.util.LinkedHashSet;
 
 import football.stats.Stat;
+import football.stats.StatType;
 import football.stats.categories.*;
 
 public final class Players {
@@ -142,7 +143,7 @@ public final class Players {
 	//utility for easy set construction
 	//constructs LinkedHashSet to maintain insertion order
 	@SafeVarargs //ignore "unchecked generic array creation for varargs" -- Java 7 ONLY
-	private static <T extends Enum<T>> LinkedHashSet<Stat<T>> newSet(Stat<T> ... stats) {
+	private static <T extends Enum<T> & StatType> LinkedHashSet<Stat<T>> newSet(Stat<T> ... stats) {
 		LinkedHashSet<Stat<T>> set = new LinkedHashSet<Stat<T>>();
 		for(Stat<T> stat : stats) {
 			set.add(stat);

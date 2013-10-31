@@ -1,8 +1,9 @@
 package football.stats.categories;
 
+import football.stats.StatType;
 import football.util.EnumUtil;
 
-public enum Rush
+public enum Rush implements StatType
 {
 	ATT("ATT"),
 	YDS("YDS"),

@@ -1,8 +1,9 @@
 package football.stats.categories;
 
+import football.stats.StatType;
 import football.util.EnumUtil;
 
-public enum Def
+public enum Def implements StatType
 {
 	SCK("SCK"),
 	INT("INT"),

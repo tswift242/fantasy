@@ -1,8 +1,9 @@
 package football.stats.categories;
 
+import football.stats.StatType;
 import football.util.EnumUtil;
 
-public enum Misc
+public enum Misc implements StatType
 {
 	FUMB_TD("FUMB_TD"), //fumble recovered for td
 	TWO_PT_CONV("2_PT_CONV"),

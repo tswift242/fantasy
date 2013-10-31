@@ -37,7 +37,7 @@
 	<target name="run" depends="jar,cmdlineargs" description="Run the program">
 		<java jar="${jardir}/${ant.project.name}.jar" fork="true">
 			<arg value="${mode}"/>
-			<arg line="${coeffs}"/>
+			<arg line="${rules}"/>
 		</java>
 	</target>
 
@@ -45,14 +45,14 @@
 	<target name="run" depends="compile,cmdlineargs" description="Run the program">
 		<java classname="${main-class}">
 			<arg value="${mode}"/>
-			<arg line="${coeffs}"/>
+			<arg line="${rules}"/>
 		</java>
 	</target>
 	-->
 
-	<target name="cmdlineargs" unless="mode,coeffs" description="Prompts for command line arguments">
+	<target name="cmdlineargs" unless="mode,rules" description="Prompts for command line arguments">
 		<input addProperty="mode" message="Enter the player mode:"/>
-		<input addProperty="coeffs" message="Enter custom scoring coeffs:"/>
+		<input addProperty="rules" message="Enter custom scoring rules:"/>
 	</target>
 
 	<target name="clean" description="Delete all build artifacts" >

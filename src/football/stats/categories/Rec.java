@@ -1,8 +1,9 @@
 package football.stats.categories;
 
+import football.stats.StatType;
 import football.util.EnumUtil;
 
-public enum Rec
+public enum Rec implements StatType
 {
 	REC("REC"),
 	YDS("YDS"),

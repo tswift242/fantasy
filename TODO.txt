@@ -1,6 +1,9 @@
 Revisions/Refactoring:
 -- StatType "tag" interface for football.stats.categories/
 -- add null checks to public methods
+-- look into:
+***** repeated field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
+***** repeated working parsing coeffs -- get once in main (switch based on mode)
 -- put IllegalArgumentException checking in Player.java/PlayerUtil.java to avoid code repetition?
 -- make categoriesToString() static
 -- make evaluate() use fixed # args instead of var # args

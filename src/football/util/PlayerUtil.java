@@ -3,6 +3,7 @@ package football.util;
 import java.util.LinkedHashSet;
 
 import football.stats.Stat;
+import football.stats.StatType;
 
 public final class PlayerUtil
 {
@@ -10,7 +11,7 @@ public final class PlayerUtil
 
 	//utility helper function for evalute()
 	//takes dot product of stats set and coeffs array
-	public static <T extends Enum<T>> double dot(LinkedHashSet<Stat<T>> stats, double[] coeffs) {
+	public static <T extends Enum<T> & StatType> double dot(LinkedHashSet<Stat<T>> stats, double[] coeffs) {
 		if(stats.size() != coeffs.length) {
 			throw new IllegalArgumentException("Argument stats' size, " + stats.size() + ", does not equal argument coeffs' length, " + coeffs.length);
 		}

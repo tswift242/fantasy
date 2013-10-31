@@ -1,8 +1,9 @@
 package football.stats.categories;
 
+import football.stats.StatType;
 import football.util.EnumUtil;
 
-public enum Pass
+public enum Pass implements StatType
 {
 	COMP("COMP"),
 	INC("INC"),
