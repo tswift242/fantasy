@@ -7,12 +7,21 @@
 	<!-- Set global properties for this build -->
 	<property name="srcdir" location="${basedir}/src"/>
 	<property name="mainjavadir" location="${srcdir}/main/java"/>
+	<property name="libdir" location="${basedir}/lib"/>
 	<property name="builddir" location="${basedir}/build"/>
 	<property name="classdir" location="${builddir}/classes"/>
 	<property name="distdir" location="${basedir}/dist"/>
 	<property name="resultsdir" location="${basedir}/results"/>
 	<property name="main-class" value="football.FantasyFootballCustomScoringHelper"/>
 	<property name="jar-name" value="${distdir}/${ant.project.name}.jar"/>
+
+	<path id="build-classpath">
+		<fileset dir="${libdir}" includes="*.jar"/>
+	</path>
+
+	<manifestclasspath property="jar-classpath" jarfile="${jar-name}">
+		<classpath refid="build-classpath"/>
+	</manifestclasspath>
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -25,13 +34,14 @@
 
 	<target name="compile" depends="init" description="Compile source files" >
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac debug="true" srcdir="${mainjavadir}" destdir="${classdir}" includeantruntime="false"/>
+		<javac debug="true" srcdir="${mainjavadir}" destdir="${classdir}" classpathref="build-classpath" includeantruntime="false"/>
 	</target>
 
 	<target name="jar" depends="compile" description="Create jar file">
 		<jar basedir="${classdir}" destfile="${jar-name}">
 			<manifest>
 				<attribute name="Main-Class" value="${main-class}"/>
+				<attribute name="Class-Path" value="${jar-classpath}"/>
 			</manifest>
 		</jar>
 	</target>
