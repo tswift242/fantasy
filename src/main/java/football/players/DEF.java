@@ -5,6 +5,8 @@ import java.util.LinkedHashSet;
 import football.stats.Stat;
 import football.stats.categories.Def;
 import football.util.PlayerUtil;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class DEF extends Player
 {
@@ -14,6 +16,8 @@ public class DEF extends Player
 	public DEF(String name, double defaultScore, LinkedHashSet<Stat<Def>> defStats)
 	{
 		super(name, defaultScore);
+		checkNotNull(defStats, "defStats is null");
+		checkArgument(defStats.size() == Def.size(), "defStats' size %d does not equal %d",defStats.size(),Def.size());
 		this.defStats = defStats;
 	}
 
@@ -34,9 +38,8 @@ public class DEF extends Player
 	//TODO: switch from vararg to fixed args??
 	@Override
 	public double evaluate(double[] ... coeffs) {
-		if(coeffs.length != numStatTypes) {
-			throw new IllegalArgumentException(numStatTypes + " arguments expected; found " + coeffs.length);
-		}
+		checkNotNull(coeffs, "coeffs is null");
+		checkArgument(coeffs.length == numStatTypes, "Expected %d arguments; found %d arguments",numStatTypes,coeffs.length);
 		score = PlayerUtil.dot(defStats,coeffs[0]);
 		return score;
 	}
@@ -45,9 +48,7 @@ public class DEF extends Player
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numDefStats = getNumStats();
 		int numArgs = numDefStats+1;
-		if(args.length != numArgs) {
-			throw new IllegalArgumentException(numArgs + " command line arguments expected; found " + args.length);
-		}
+		checkArgument(args.length == numArgs, "Expected %d command line arguments; found %d arguments", numArgs, args.length);
 		//parse coefficients from command line arguments
 		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
 		//normalize coefficients to be per unit

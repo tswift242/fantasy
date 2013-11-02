@@ -7,6 +7,8 @@ import football.stats.categories.Pass;
 import football.stats.categories.Rush;
 import football.stats.categories.Misc;
 import football.util.PlayerUtil;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class QB extends Player
 {
@@ -25,6 +27,12 @@ public class QB extends Player
 	public QB(String name, double defaultScore, LinkedHashSet<Stat<Pass>> passStats, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
 		super(name, defaultScore);
+		checkNotNull(passStats, "passStats is null");
+		checkArgument(passStats.size() == Pass.size(), "passStats' size %d does not equal %d",passStats.size(),Pass.size());
+		checkNotNull(rushStats, "rushStats is null");
+		checkArgument(rushStats.size() == Rush.size(), "rushStats' size %d does not equal %d",rushStats.size(),Rush.size());
+		checkNotNull(miscStats, "miscStats is null");
+		checkArgument(miscStats.size() == Misc.size(), "miscStats' size %d does not equal %d",miscStats.size(),Misc.size());
 		this.passStats = passStats;
 		this.rushStats = rushStats;
 		this.miscStats = miscStats;
@@ -54,9 +62,8 @@ public class QB extends Player
 
 	@Override
 	public double evaluate(double[] ... coeffs) {
-		if(coeffs.length != numStatTypes) {
-			throw new IllegalArgumentException(numStatTypes + " arguments expected; found " + coeffs.length);
-		}
+		checkNotNull(coeffs, "coeffs is null");
+		checkArgument(coeffs.length == numStatTypes, "Expected %d arguments; found %d arguments",numStatTypes,coeffs.length);
 		score = (PlayerUtil.dot(passStats,coeffs[0]) + PlayerUtil.dot(rushStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
 		return score;
 	}
@@ -64,9 +71,7 @@ public class QB extends Player
 	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numArgs = getNumStats()+1;
-		if(args.length != numArgs) {
-			throw new IllegalArgumentException(numArgs + " command line arguments expected; found " + args.length);
-		}
+		checkArgument(args.length == numArgs, "Expected %d command line arguments; found %d arguments", numArgs, args.length);
 		//parse coefficients from command line arguments
 		double[] passCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
 		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);

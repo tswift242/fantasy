@@ -3,6 +3,7 @@ package football.stats;
 import java.util.Objects;
 
 import football.stats.StatType;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Stat<T extends Enum<T> & StatType> implements Comparable<Stat<T>>
 {
@@ -49,6 +50,7 @@ public class Stat<T extends Enum<T> & StatType> implements Comparable<Stat<T>>
 	//induce natural ordering on Stat using ordering of its enum
 	@Override //implements
 	public int compareTo(Stat<T> other) {
+		checkNotNull(other, "other is null");
 		return this.category.compareTo(other.category);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.HashMap;
 
 import football.players.Player;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /*
  * Compares order of two sorted player lists
@@ -15,6 +16,8 @@ public class SortOrderMetric implements Metric
 
 	//O(n) runtime; O(n) space
 	public <E extends Player> double distance(List<E> players1, List<E> players2) {
+		checkNotNull(players1, "players1 is null");
+		checkNotNull(players2, "players2 is null");
 		//map all players in players1 to their list index for easy comparison with players2
 		HashMap<E,Integer> map = new HashMap<E,Integer>();
 		int i = 0; //keep track of index

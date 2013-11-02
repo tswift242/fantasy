@@ -1,10 +1,8 @@
 Revisions/Refactoring:
--- add null checks to public methods
-***** guava Predictions library -- add classpath to ant
+-- avoid code repetition in argument validation in players classes
 -- look into:
 ***** repeated field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
 ***** repeated working parsing coeffs -- get once in main (switch based on mode)
--- put IllegalArgumentException checking in Player.java/PlayerUtil.java to avoid code repetition?
 -- make categoriesToString() static
 -- make evaluate() use fixed # args instead of var # args
 -- work on cmd line interface?

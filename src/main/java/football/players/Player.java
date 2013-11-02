@@ -3,6 +3,8 @@ package football.players;
 import java.util.Objects;
 import java.util.LinkedHashSet;
 import java.text.DecimalFormat;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import football.stats.Stat;
 
@@ -15,6 +17,8 @@ public abstract class Player implements Comparable<Player>
 
 	public Player(String name, double defaultScore)
 	{
+		checkNotNull(name, "name is null");
+		checkArgument(!name.equals(""), "name is empty");
 		this.name = name;
 		score = defaultScore;
 	}
@@ -57,6 +61,7 @@ public abstract class Player implements Comparable<Player>
 
 	@Override //implements
 	public int compareTo(Player other) {
+		checkNotNull(other, "other is null");
 		if((this.score == 0) || (other.score == 0)) {
 			System.out.println("Warning: either " + name + " or " + other.getName() + " may not have been evaluated");
 		}

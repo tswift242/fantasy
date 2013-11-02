@@ -3,6 +3,7 @@ package football.util.metrics;
 import java.util.List;
 
 import football.players.Player;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /*
  * Compares statistical quantities of scores between two lists of players
@@ -40,6 +41,8 @@ public class StatisticsMetric implements Metric
 	}
 
 	public <E extends Player> double distance(List<E> players1, List<E> players2) {
+		checkNotNull(players1, "players1 is null");
+		checkNotNull(players2, "players2 is null");
 		Statistics stats1 = getStatisticalQuantities(players1);
 		Statistics stats2 = getStatisticalQuantities(players2);
 		//sum the absolute differences in the stats (weighted by the weights), 
