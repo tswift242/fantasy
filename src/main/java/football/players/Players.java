@@ -1,6 +1,7 @@
 package football.players;
 
 import java.util.LinkedHashSet;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.Stat;
 import football.stats.StatType;
@@ -146,6 +147,7 @@ public final class Players {
 	private static <T extends Enum<T> & StatType> LinkedHashSet<Stat<T>> newSet(Stat<T> ... stats) {
 		LinkedHashSet<Stat<T>> set = new LinkedHashSet<Stat<T>>();
 		for(Stat<T> stat : stats) {
+			checkNotNull(stat, "stat %s is null", stat.toString());
 			set.add(stat);
 		}
 		return set;

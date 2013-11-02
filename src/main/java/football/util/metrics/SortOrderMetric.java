@@ -20,7 +20,7 @@ public class SortOrderMetric implements Metric
 		checkNotNull(players2, "players2 is null");
 		//map all players in players1 to their list index for easy comparison with players2
 		HashMap<E,Integer> map = new HashMap<E,Integer>();
-		int i = 0; //keep track of index
+		int i = 0; //keep track of index to avoid having to rely on get()
 		for(E player : players1) {
 			map.put(player, new Integer(i));
 			i++;
@@ -34,7 +34,7 @@ public class SortOrderMetric implements Metric
 				int j = index.intValue(); //index of this player in players1 
 				sum += Math.abs(j - i); //difference btw indices of this player in two lists
 			} else {
-				System.out.println("Warning in distance: player " + player.getName() + " not contained in HashMap");
+				System.out.println("Warning: player " + player.getName() + " not contained in HashMap");
 			}
 			i++;
 		}

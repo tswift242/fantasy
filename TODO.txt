@@ -1,8 +1,7 @@
 Revisions/Refactoring:
--- avoid code repetition in argument validation in players classes
--- look into:
-***** repeated field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
-***** repeated working parsing coeffs -- get once in main (switch based on mode)
+-- avoid code repetition in argument validation in Player subclasses
+-- avoid code repetition in field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
+-- avoid repeated work working parsing coeffs -- get once in main (switch based on mode)
 -- make categoriesToString() static
 -- make evaluate() use fixed # args instead of var # args
 -- work on cmd line interface?

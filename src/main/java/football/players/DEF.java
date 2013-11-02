@@ -1,14 +1,14 @@
 package football.players;
 
 import java.util.LinkedHashSet;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import football.stats.Stat;
 import football.stats.categories.Def;
 import football.util.PlayerUtil;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
-public class DEF extends Player
+public final class DEF extends Player
 {
 	private final int numStatTypes = 1; //number of stat types used by player
 	private final LinkedHashSet<Stat<Def>> defStats;
@@ -16,9 +16,9 @@ public class DEF extends Player
 	public DEF(String name, double defaultScore, LinkedHashSet<Stat<Def>> defStats)
 	{
 		super(name, defaultScore);
-		checkNotNull(defStats, "defStats is null");
-		checkArgument(defStats.size() == Def.size(), "defStats' size %d does not equal %d",defStats.size(),Def.size());
-		this.defStats = defStats;
+		this.defStats = new LinkedHashSet<Stat<Def>>(defStats);
+		checkNotNull(this.defStats, "defStats is null");
+		checkArgument(this.defStats.size() == Def.size(), "defStats' size %s does not equal %s",this.defStats.size(),Def.size());
 	}
 
 	//copy constructor. Note: does not copy stat sets.
@@ -27,7 +27,8 @@ public class DEF extends Player
 	}
 
 	public LinkedHashSet<Stat<Def>> getDefStats() {
-		return defStats;
+		//TODO: return Collections.unmodifiableSet() if type changed from LinkedHashSet to Set
+		return new LinkedHashSet<Stat<Def>>(defStats);
 	}
 
 	@Override
@@ -39,7 +40,7 @@ public class DEF extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		checkNotNull(coeffs, "coeffs is null");
-		checkArgument(coeffs.length == numStatTypes, "Expected %d arguments; found %d arguments",numStatTypes,coeffs.length);
+		checkArgument(coeffs.length == numStatTypes, "Expected %s arguments; found %s arguments",numStatTypes,coeffs.length);
 		score = PlayerUtil.dot(defStats,coeffs[0]);
 		return score;
 	}
@@ -48,7 +49,7 @@ public class DEF extends Player
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numDefStats = getNumStats();
 		int numArgs = numDefStats+1;
-		checkArgument(args.length == numArgs, "Expected %d command line arguments; found %d arguments", numArgs, args.length);
+		checkArgument(args.length == numArgs, "Expected %s command line arguments; found %s arguments", numArgs, args.length);
 		//parse coefficients from command line arguments
 		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
 		//normalize coefficients to be per unit

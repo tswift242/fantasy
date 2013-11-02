@@ -5,7 +5,8 @@ import java.util.Objects;
 import football.stats.StatType;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class Stat<T extends Enum<T> & StatType> implements Comparable<Stat<T>>
+//immutable class
+public final class Stat<T extends Enum<T> & StatType> implements Comparable<Stat<T>>
 {
 	private final T category;
 	private final int value;

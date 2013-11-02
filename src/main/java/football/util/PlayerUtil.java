@@ -1,6 +1,8 @@
 package football.util;
 
 import java.util.LinkedHashSet;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkPositionIndex;
 
 import football.stats.Stat;
 import football.stats.StatType;
@@ -12,10 +14,7 @@ public final class PlayerUtil
 	//utility helper function for evalute()
 	//takes dot product of stats set and coeffs array
 	public static <T extends Enum<T> & StatType> double dot(LinkedHashSet<Stat<T>> stats, double[] coeffs) {
-		if(stats.size() != coeffs.length) {
-			throw new IllegalArgumentException("Argument stats' size, " + stats.size() + ", does not equal argument coeffs' length, " + coeffs.length);
-		}
-
+		checkArgument(stats.size() == coeffs.length, "stats' size %s  does not equal coeffs' length %s", stats.size(), coeffs.length);
 		double sum = 0.0;
 		int i = 0;
 		for(Stat<T> stat : stats) {
@@ -28,12 +27,10 @@ public final class PlayerUtil
 	//utility helper function for parseScoringCoeffsAndEvaluate()
 	//Parses elements in args between startIdx and endIdx (inclusive) into doubles and returns them in an array
 	public static double[] parseScoringCoeffs(String[] args, int startIdx, int endIdx) {
-		if(endIdx < startIdx) {
-			throw new IllegalArgumentException("Argument endIdx, " + endIdx + ", is smaller than argument startIdx, " + startIdx);
-		}
-		if(endIdx >= args.length) {
-			throw new IllegalArgumentException("Argument endIdx, " + endIdx + ", is greater than or equal to length of argument args, " + args.length);
-		}
+		int argsLength = args.length;
+		checkPositionIndex(startIdx, argsLength, "startIdx " + startIdx + " is out of bounds of array with length " + argsLength);
+		checkPositionIndex(endIdx, argsLength, "endIdx " + endIdx + " is out of bounds of array with length " + argsLength);
+		checkArgument(endIdx >= startIdx, "endIdx %s is smaller than startIdx", endIdx, startIdx);
 		double[] coeffs = new double[endIdx-startIdx+1];
 		for(int i = startIdx; i <= endIdx; i++) {
 			coeffs[i-startIdx] = Double.parseDouble(args[i]);

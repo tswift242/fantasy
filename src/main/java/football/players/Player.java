@@ -20,7 +20,7 @@ public abstract class Player implements Comparable<Player>
 		checkNotNull(name, "name is null");
 		checkArgument(!name.equals(""), "name is empty");
 		this.name = name;
-		score = defaultScore;
+		this.score = defaultScore;
 	}
 
 	public String getName() {

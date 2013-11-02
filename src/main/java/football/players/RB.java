@@ -1,16 +1,16 @@
 package football.players;
 
 import java.util.LinkedHashSet;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import football.stats.Stat;
 import football.stats.categories.Rush;
 import football.stats.categories.Rec;
 import football.stats.categories.Misc;
 import football.util.PlayerUtil;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
-public class RB extends Player
+public final class RB extends Player
 {
 	private static final int[] statTypeSizes = {Rush.size(),Rec.size(),Misc.size()};
 	private static final int numStatTypes = statTypeSizes.length; //number of stat types used by player
@@ -27,15 +27,15 @@ public class RB extends Player
 	public RB(String name, double defaultScore, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
 	{
 		super(name, defaultScore);
-		checkNotNull(rushStats, "rushStats is null");
-		checkArgument(rushStats.size() == Rush.size(), "rushStats' size %d does not equal %d",rushStats.size(),Rush.size());
-		checkNotNull(recStats, "recStats is null");
-		checkArgument(recStats.size() == Rec.size(), "recStats' size %d does not equal %d",recStats.size(),Rec.size());
-		checkNotNull(miscStats, "miscStats is null");
-		checkArgument(miscStats.size() == Misc.size(), "miscStats' size %d does not equal %d",miscStats.size(),Misc.size());
-		this.rushStats = rushStats;
-		this.recStats = recStats;
-		this.miscStats = miscStats;
+		this.rushStats = new LinkedHashSet<Stat<Rush>>(rushStats);
+		this.recStats = new LinkedHashSet<Stat<Rec>>(recStats);
+		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
+		checkNotNull(this.rushStats, "rushStats is null");
+		checkArgument(this.rushStats.size() == Rush.size(), "rushStats' size %s does not equal %s",this.rushStats.size(),Rush.size());
+		checkNotNull(this.recStats, "recStats is null");
+		checkArgument(this.recStats.size() == Rec.size(), "recStats' size %s does not equal %s",this.recStats.size(),Rec.size());
+		checkNotNull(this.miscStats, "miscStats is null");
+		checkArgument(this.miscStats.size() == Misc.size(), "miscStats' size %s does not equal %s",this.miscStats.size(),Misc.size());
 	}
 
 	//copy constructor. Note: does not copy stat sets.
@@ -44,15 +44,15 @@ public class RB extends Player
 	}
 
 	public LinkedHashSet<Stat<Rush>> getRushStats() {
-		return rushStats;
+		return new LinkedHashSet<Stat<Rush>>(rushStats);
 	}
 
 	public LinkedHashSet<Stat<Rec>> getRecStats() {
-		return recStats;
+		return new LinkedHashSet<Stat<Rec>>(recStats);
 	}
 
 	public LinkedHashSet<Stat<Misc>> getMiscStats() {
-		return miscStats;
+		return new LinkedHashSet<Stat<Misc>>(miscStats);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class RB extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		checkNotNull(coeffs, "coeffs is null");
-		checkArgument(coeffs.length == numStatTypes, "Expected %d arguments; found %d arguments",numStatTypes,coeffs.length);
+		checkArgument(coeffs.length == numStatTypes, "Expected %s arguments; found %s arguments",numStatTypes,coeffs.length);
 		score = (PlayerUtil.dot(rushStats,coeffs[0]) + PlayerUtil.dot(recStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
 		return score;
 	}
@@ -71,7 +71,7 @@ public class RB extends Player
 	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
 		int numArgs = getNumStats()+1;
-		checkArgument(args.length == numArgs, "Expected %d command line arguments; found %d arguments", numArgs, args.length);
+		checkArgument(args.length == numArgs, "Expected %s command line arguments; found %s arguments", numArgs, args.length);
 		//parse coefficients from command line arguments
 		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
 		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
