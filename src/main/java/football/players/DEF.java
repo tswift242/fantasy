@@ -2,11 +2,12 @@ package football.players;
 
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
 import football.stats.Stat;
 import football.stats.categories.Def;
 import football.util.PlayerUtil;
+import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
+import static football.util.ValidateUtil.checkArrayLength;
 
 public final class DEF extends Player
 {
@@ -17,8 +18,7 @@ public final class DEF extends Player
 	{
 		super(name, defaultScore);
 		this.defStats = new LinkedHashSet<Stat<Def>>(defStats);
-		checkNotNull(this.defStats, "defStats is null");
-		checkArgument(this.defStats.size() == Def.size(), "defStats' size %s does not equal %s",this.defStats.size(),Def.size());
+		checkStatsSetNotNullWithCorrectSize(this.defStats,Def.class);
 	}
 
 	//copy constructor. Note: does not copy stat sets.
@@ -40,16 +40,17 @@ public final class DEF extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		checkNotNull(coeffs, "coeffs is null");
-		checkArgument(coeffs.length == numStatTypes, "Expected %s arguments; found %s arguments",numStatTypes,coeffs.length);
+		checkArrayLength(coeffs,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,coeffs.length));
 		score = PlayerUtil.dot(defStats,coeffs[0]);
 		return score;
 	}
 
 	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
+		checkNotNull(args, "args is null");
 		int numDefStats = getNumStats();
 		int numArgs = numDefStats+1;
-		checkArgument(args.length == numArgs, "Expected %s command line arguments; found %s arguments", numArgs, args.length);
+		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
 		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
 		//normalize coefficients to be per unit

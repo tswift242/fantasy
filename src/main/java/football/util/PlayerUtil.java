@@ -28,8 +28,8 @@ public final class PlayerUtil
 	//Parses elements in args between startIdx and endIdx (inclusive) into doubles and returns them in an array
 	public static double[] parseScoringCoeffs(String[] args, int startIdx, int endIdx) {
 		int argsLength = args.length;
-		checkPositionIndex(startIdx, argsLength, "startIdx " + startIdx + " is out of bounds of array with length " + argsLength);
-		checkPositionIndex(endIdx, argsLength, "endIdx " + endIdx + " is out of bounds of array with length " + argsLength);
+		checkPositionIndex(startIdx, argsLength, String.format("startIdx %d is out of bounds of array with length %d",startIdx,argsLength));
+		checkPositionIndex(endIdx, argsLength, String.format("endIdx %d is out of bounds of array with length %d",endIdx,argsLength));
 		checkArgument(endIdx >= startIdx, "endIdx %s is smaller than startIdx", endIdx, startIdx);
 		double[] coeffs = new double[endIdx-startIdx+1];
 		for(int i = startIdx; i <= endIdx; i++) {

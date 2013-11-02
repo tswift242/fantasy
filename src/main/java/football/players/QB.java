@@ -2,13 +2,14 @@ package football.players;
 
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
 import football.stats.Stat;
 import football.stats.categories.Pass;
 import football.stats.categories.Rush;
 import football.stats.categories.Misc;
 import football.util.PlayerUtil;
+import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
+import static football.util.ValidateUtil.checkArrayLength;
 
 public final class QB extends Player
 {
@@ -30,12 +31,9 @@ public final class QB extends Player
 		this.passStats = new LinkedHashSet<Stat<Pass>>(passStats);
 		this.rushStats = new LinkedHashSet<Stat<Rush>>(rushStats);
 		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
-		checkNotNull(this.passStats, "passStats is null");
-		checkArgument(this.passStats.size() == Pass.size(), "passStats' size %s does not equal %s",this.passStats.size(),Pass.size());
-		checkNotNull(this.rushStats, "rushStats is null");
-		checkArgument(this.rushStats.size() == Rush.size(), "rushStats' size %s does not equal %s",this.rushStats.size(),Rush.size());
-		checkNotNull(this.miscStats, "miscStats is null");
-		checkArgument(this.miscStats.size() == Misc.size(), "miscStats' size %s does not equal %s",this.miscStats.size(),Misc.size());
+		checkStatsSetNotNullWithCorrectSize(this.passStats,Pass.class);
+		checkStatsSetNotNullWithCorrectSize(this.rushStats,Rush.class);
+		checkStatsSetNotNullWithCorrectSize(this.miscStats,Misc.class);
 	}
 
 	//copy constructor. Note: does not copy stat sets.
@@ -63,15 +61,16 @@ public final class QB extends Player
 	@Override
 	public double evaluate(double[] ... coeffs) {
 		checkNotNull(coeffs, "coeffs is null");
-		checkArgument(coeffs.length == numStatTypes, "Expected %s arguments; found %s arguments",numStatTypes,coeffs.length);
+		checkArrayLength(coeffs,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,coeffs.length));
 		score = (PlayerUtil.dot(passStats,coeffs[0]) + PlayerUtil.dot(rushStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
 		return score;
 	}
 
 	@Override
 	public double parseScoringCoeffsAndEvaluate(String[] args) {
+		checkNotNull(args, "args is null");
 		int numArgs = getNumStats()+1;
-		checkArgument(args.length == numArgs, "Expected %s command line arguments; found %s arguments", numArgs, args.length);
+		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
 		double[] passCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
 		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);

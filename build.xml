@@ -35,7 +35,7 @@
 	<target name="compile" depends="init" description="Compile source files" >
 		<!-- Compile the java code from ${src} into ${build} -->
 		<javac debug="true" srcdir="${mainjavadir}" destdir="${classdir}" classpathref="build-classpath" includeantruntime="false">
-			<exclude name="**/ValidateUtil.java"/>
+			<!--<exclude name="**/ValidateUtil.java"/>-->
 		</javac>
 	</target>
 

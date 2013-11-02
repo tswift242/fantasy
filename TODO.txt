@@ -1,7 +1,12 @@
 Revisions/Refactoring:
+--
+**** call static method of generic type
+**** generic primitives -- change double[] coeffs to Double[] coeffs?
+**** reuse abstract method code
 -- avoid code repetition in argument validation in Player subclasses
 -- avoid code repetition in field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
 -- avoid repeated work working parsing coeffs -- get once in main (switch based on mode)
+-- change LinkedHashSet to Set?
 -- make categoriesToString() static
 -- make evaluate() use fixed # args instead of var # args
 -- work on cmd line interface?
