@@ -11,11 +11,14 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 public final class Rule<T extends Enum<T> & StatType> extends TypedValue<T,Double>
 {
-	private final int unit;
+	private final int unit; //could probably get away with eliminating this field
+	//Value normalized by unit. Computed once for efficiency, as this will be used in evaluate() computations.
+	private final double normalizedValue;
 
 	public Rule(T category, Double value, int unit) {
 		super(category,value);
 		this.unit = unit;
+		this.normalizedValue = (this.value / this.unit);
 	}
 
 	//uses default unit of 1
@@ -23,11 +26,26 @@ public final class Rule<T extends Enum<T> & StatType> extends TypedValue<T,Doubl
 		this(category,value,1);
 	}
 
+	public int getUnit() {
+		return unit;
+	}
+
+	public double getNormalizedValue() {
+		return normalizedValue;
+	}
+
+	//possibly setter for unit which also updates normalizedValue -- probably better than constructing new Rule if just unit changes
+	/*public void setUnit(int unit) {
+		this.unit = unit;
+		this.normalizedValue = (this.value / this.unit);
+	}*/
+
+	//Evaluate a stat using this rule
 	public double evaluate(Stat<T> stat) {
 		checkNotNull(stat, "stat is null");
 		T ruleCategory = this.category;
 		T statCategory = stat.getCategory();
 		checkArgument(ruleCategory == statCategory,"rule category %s does not equal stat category %s",ruleCategory.toString(),statCategory.toString());
-		return (this.value * (stat.getValue() / this.unit));
+		return (this.normalizedValue * stat.getIntValue());
 	}
 }

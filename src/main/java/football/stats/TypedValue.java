@@ -36,6 +36,7 @@ public abstract class TypedValue<T extends Enum<T> & StatType, V extends Number>
 	}
 
 	//typedvalues considered equal if they're of the same category
+	//(can't compare values anyway since Number doesn't implement Comparable)
 	@Override
 	public boolean equals(Object o) {
 		if((o == null) || (this.getClass() != o.getClass())) {

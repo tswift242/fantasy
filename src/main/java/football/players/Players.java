@@ -148,7 +148,9 @@ public final class Players {
 		LinkedHashSet<Stat<T>> set = new LinkedHashSet<Stat<T>>();
 		for(Stat<T> stat : stats) {
 			checkNotNull(stat, "stat %s is null", stat.toString());
-			set.add(stat);
+			if(!set.add(stat)) {
+				System.err.println("Warning: set already contained stat " + stat.toString());
+			}
 		}
 		return set;
 	}
