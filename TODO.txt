@@ -1,5 +1,5 @@
 Revisions/Refactoring:
---
+***************** -- Rules class (?) similar to Stat but with unit field (TypedValue superclass for both?); evaluator which takes in Stat<T> and Rule<T> and checks categories match
 **** call static method of generic type
 **** generic primitives -- change double[] coeffs to Double[] coeffs?
 **** reuse abstract method code
