@@ -10,7 +10,7 @@ import football.stats.StatType;
  * except that the first object must be an enum StatType, and the second value must be a number.
  */
 
-public abstract class TypedValue<T extends Enum<T> & StatType, V extends Number> implements Comparable<T,V>
+public abstract class TypedValue<T extends Enum<T> & StatType, V extends Number> implements Comparable<TypedValue<T,V>>
 {
 	protected final T category;
 	protected final V value;
@@ -29,6 +29,8 @@ public abstract class TypedValue<T extends Enum<T> & StatType, V extends Number>
 	public V getValue() {
 		return value;
 	}
+
+	//TODO: add abstract intValue() and doubleValue()??
 
 	@Override
 	public String toString() {

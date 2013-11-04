@@ -3,7 +3,9 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import football.stats.Rule;
 import football.stats.Stat;
+import football.stats.StatType;
 import football.stats.categories.Rec;
 import football.stats.categories.Misc;
 import football.util.PlayerUtil;
@@ -51,24 +53,24 @@ public final class WR extends Player
 	}
 
 	@Override
-	public double evaluate(double[] ... coeffs) {
-		checkNotNull(coeffs, "coeffs is null");
-		checkArrayLength(coeffs,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,coeffs.length));
-		score = (PlayerUtil.dot(recStats,coeffs[0]) + PlayerUtil.dot(miscStats,coeffs[1]));
+	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+		checkNotNull(rules, "rules is null");
+		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = (PlayerUtil.dot(recStats,rules[0]) + PlayerUtil.dot(miscStats,rules[1]));
 		return score;
 	}
 
 	@Override
-	public double parseScoringCoeffsAndEvaluate(String[] args) {
+	public double parseScoringRulesAndEvaluate(String[] args) {
 		checkNotNull(args, "args is null");
 		int numArgs = getNumStats()+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
-		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
+		LinkedHashSet<Rule<Rec>> recRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Rec.class);
+		LinkedHashSet<Rule<Misc>> miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Misc.class);
 		//normalize coefficients to be per unit
-		recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();
-		return evaluate(recCoeffs,miscCoeffs);
+		/*recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();*/
+		return evaluate(recRules,miscRules);
 	}
 
 	public static int getNumStats() {

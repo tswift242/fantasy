@@ -1,4 +1,11 @@
 Revisions/Refactoring:
+-- incorporate Rule into PlayerUtil and players classes
+-- HashMap/EnumMap across all Rule's and HashSet for each player across all Stat's?? ***No duplicate keys
+**** can change all references to Set/Map
+**** HashMap: get rule for a given type in constant time
+**** EnumMap: "extremely compact and efficient", but all keys must be from same enum type
+-- get rid of getYardsUnit() in categories classes?
+
 ***************** -- Rules class (?) similar to Stat but with unit field (TypedValue superclass for both?); evaluator which takes in Stat<T> and Rule<T> and checks categories match
 **** call static method of generic type
 **** generic primitives -- change double[] coeffs to Double[] coeffs?

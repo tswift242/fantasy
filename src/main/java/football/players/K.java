@@ -3,7 +3,9 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import football.stats.Rule;
 import football.stats.Stat;
+import football.stats.StatType;
 import football.stats.categories.Kick;
 import football.util.PlayerUtil;
 import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
@@ -37,22 +39,22 @@ public final class K extends Player
 	}
 
 	@Override
-	public double evaluate(double[] ... coeffs) {
-		checkNotNull(coeffs, "coeffs is null");
-		checkArrayLength(coeffs,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,coeffs.length));
-		score = PlayerUtil.dot(kickStats,coeffs[0]);
+	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+		checkNotNull(rules, "rules is null");
+		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = PlayerUtil.dot(kickStats,rules[0]);
 		return score;
 	}
 
 	@Override
-	public double parseScoringCoeffsAndEvaluate(String[] args) {
+	public double parseScoringRulesAndEvaluate(String[] args) {
 		checkNotNull(args, "args is null");
 		int numKickStats = getNumStats();
 		int numArgs = numKickStats+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		double[] kickCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numKickStats);
-		return evaluate(kickCoeffs);
+		LinkedHashSet<Rule<Kick>> kickRules = PlayerUtil.parseScoringRules(args,1,numKickStats,Kick.class);
+		return evaluate(kickRules);
 	}
 
 	public static int getNumStats() {

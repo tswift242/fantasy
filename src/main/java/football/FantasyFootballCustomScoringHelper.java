@@ -54,7 +54,7 @@ public class FantasyFootballCustomScoringHelper
 		List<Player> customPlayers = deepCopyList(defaultPlayers);
 		//evaluate all players with custom rules
 		for(Player player : customPlayers) {
-			player.parseScoringCoeffsAndEvaluate(args);
+			player.parseScoringRulesAndEvaluate(args);
 		}
 		//sort players according to default rules
 		Collections.sort(defaultPlayers);
@@ -97,10 +97,10 @@ public class FantasyFootballCustomScoringHelper
 		//out.flush(); //for System.out casted to printwriter
 	}
 
-	//write coeffs array to printwriter stream
-	private static void printCoeffs(String[] args, PrintWriter out) {
-		int numCoeffs = args.length;
-		for(int i = 1; i < numCoeffs; i++) { //skip mode argument
+	//write rules array to printwriter stream
+	private static void printRules(String[] args, PrintWriter out) {
+		int numRules = args.length;
+		for(int i = 1; i < numRules; i++) { //skip mode argument
 			out.printf("%-10s ",args[i]);
 		}
 		out.println("\n");
@@ -119,7 +119,7 @@ public class FantasyFootballCustomScoringHelper
 		out.println(delimiter + "\n");
 		out.println(toSectionHeader("Custom scoring rules",sectionDenoter));
 		out.println(customPlayers.get(0).categoriesToString()); //TODO: make this call static
-		printCoeffs(args,out);
+		printRules(args,out);
 		out.println(toSectionHeader("Scores using default rules",sectionDenoter));
 		printList(defaultPlayers,out);
 		out.println(toSectionHeader("Scores using custom rules",sectionDenoter));

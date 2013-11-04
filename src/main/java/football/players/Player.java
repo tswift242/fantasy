@@ -6,7 +6,9 @@ import java.text.DecimalFormat;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
+import football.stats.Rule;
 import football.stats.Stat;
+import football.stats.StatType;
 
 public abstract class Player implements Comparable<Player>
 {
@@ -36,10 +38,10 @@ public abstract class Player implements Comparable<Player>
 
 	//TODO: remove since covered by method below??
 	//evaluate player by assigning them a score
-	public abstract double evaluate(double[] ... coeffs);
+	public abstract <? extends Enum<?> & StatType> double evaluate(LinkedHashSet<Rule<?>> ... rules);
 
 	//parse scoring coefficients from cmd line arguments and then evaluate player
-	public abstract double parseScoringCoeffsAndEvaluate(String[] args);
+	public abstract double parseScoringRulesAndEvaluate(String[] args);
 
 	//players consider equal if their names match
 	@Override

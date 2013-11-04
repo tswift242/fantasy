@@ -3,7 +3,9 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import football.stats.Rule;
 import football.stats.Stat;
+import football.stats.StatType;
 import football.stats.categories.Def;
 import football.util.PlayerUtil;
 import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
@@ -38,25 +40,25 @@ public final class DEF extends Player
 
 	//TODO: switch from vararg to fixed args??
 	@Override
-	public double evaluate(double[] ... coeffs) {
-		checkNotNull(coeffs, "coeffs is null");
-		checkArrayLength(coeffs,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,coeffs.length));
-		score = PlayerUtil.dot(defStats,coeffs[0]);
+	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+		checkNotNull(rules, "rules is null");
+		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = PlayerUtil.dot(defStats,rules[0]);
 		return score;
 	}
 
 	@Override
-	public double parseScoringCoeffsAndEvaluate(String[] args) {
+	public double parseScoringRulesAndEvaluate(String[] args) {
 		checkNotNull(args, "args is null");
 		int numDefStats = getNumStats();
 		int numArgs = numDefStats+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		double[] defCoeffs = PlayerUtil.parseScoringCoeffs(args,1,numDefStats);
+		LinkedHashSet<Rule<Def>> defRules = PlayerUtil.parseScoringRules(args,1,numDefStats,Def.class);
 		//normalize coefficients to be per unit
-		defCoeffs[Def.YDS.ordinal()] /= Def.getYardsUnit();
-		defCoeffs[Def.PTS.ordinal()] /= Def.getPointsUnit();
-		return evaluate(defCoeffs);
+		/*defCoeffs[Def.YDS.ordinal()] /= Def.getYardsUnit();
+		defCoeffs[Def.PTS.ordinal()] /= Def.getPointsUnit();*/
+		return evaluate(defRules);
 	}
 
 	public static int getNumStats() {

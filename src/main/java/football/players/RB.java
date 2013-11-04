@@ -3,7 +3,9 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import football.stats.Rule;
 import football.stats.Stat;
+import football.stats.StatType;
 import football.stats.categories.Rush;
 import football.stats.categories.Rec;
 import football.stats.categories.Misc;
@@ -59,26 +61,26 @@ public final class RB extends Player
 	}
 
 	@Override
-	public double evaluate(double[] ... coeffs) {
-		checkNotNull(coeffs, "coeffs is null");
-		checkArrayLength(coeffs,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,coeffs.length));
-		score = (PlayerUtil.dot(rushStats,coeffs[0]) + PlayerUtil.dot(recStats,coeffs[1]) + PlayerUtil.dot(miscStats,coeffs[2]));
+	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+		checkNotNull(rules, "rules is null");
+		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = (PlayerUtil.dot(rushStats,rules[0]) + PlayerUtil.dot(recStats,rules[1]) + PlayerUtil.dot(miscStats,rules[2]));
 		return score;
 	}
 
 	@Override
-	public double parseScoringCoeffsAndEvaluate(String[] args) {
+	public double parseScoringRulesAndEvaluate(String[] args) {
 		checkNotNull(args, "args is null");
 		int numArgs = getNumStats()+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		double[] rushCoeffs = PlayerUtil.parseScoringCoeffs(args,1,statTypeIdxLimits[0]);
-		double[] recCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1]);
-		double[] miscCoeffs = PlayerUtil.parseScoringCoeffs(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2]);
+		LinkedHashSet<Rule<Rush>> rushRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Rush.class);
+		LinkedHashSet<Rule<Rec>> recRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Rec.class);
+		LinkedHashSet<Rule<Misc>> miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2],Misc.class);
 		//normalize coefficients to be per unit
-		rushCoeffs[Rush.YDS.ordinal()] /= Rush.getYardsUnit();
-		recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();
-		return evaluate(rushCoeffs,recCoeffs,miscCoeffs);
+		/*rushCoeffs[Rush.YDS.ordinal()] /= Rush.getYardsUnit();
+		recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();*/
+		return evaluate(rushRules,recRules,miscRules);
 	}
 
 	public static int getNumStats() {
