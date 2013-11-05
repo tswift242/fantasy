@@ -38,11 +38,12 @@ public final class K extends Player
 		return new K(this);
 	}
 
-	@Override
-	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-		checkNotNull(rules, "rules is null");
-		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = PlayerUtil.dot(kickStats,rules[0]);
+	//@Override
+	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+	public double evaluate(LinkedHashSet<Rule<Kick>> kickRules) {
+		//checkNotNull(rules, "rules is null");
+		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = PlayerUtil.dot(kickStats,kickRules);
 		return score;
 	}
 

@@ -39,11 +39,12 @@ public final class DEF extends Player
 	}
 
 	//TODO: switch from vararg to fixed args??
-	@Override
-	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-		checkNotNull(rules, "rules is null");
-		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = PlayerUtil.dot(defStats,rules[0]);
+	//@Override
+	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+	public double evaluate(LinkedHashSet<Rule<Def>> defRules) {
+		//checkNotNull(rules, "rules is null");
+		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = PlayerUtil.dot(defStats,defRules);
 		return score;
 	}
 

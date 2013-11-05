@@ -60,11 +60,12 @@ public final class QB extends Player
 		return new QB(this);
 	}
 
-	@Override
-	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-		checkNotNull(rules, "rules is null");
-		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = (PlayerUtil.dot(passStats,rules[0]) + PlayerUtil.dot(rushStats,rules[1]) + PlayerUtil.dot(miscStats,rules[2]));
+	//@Override
+	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+	public double evaluate(LinkedHashSet<Rule<Pass>> passRules, LinkedHashSet<Rule<Rush>> rushRules, LinkedHashSet<Rule<Misc>> miscRules) {
+		//checkNotNull(rules, "rules is null");
+		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = (PlayerUtil.dot(passStats,passRules) + PlayerUtil.dot(rushStats,rushRules) + PlayerUtil.dot(miscStats,miscRules));
 		return score;
 	}
 

@@ -52,11 +52,12 @@ public final class WR extends Player
 		return new WR(this);
 	}
 
-	@Override
-	public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-		checkNotNull(rules, "rules is null");
-		checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = (PlayerUtil.dot(recStats,rules[0]) + PlayerUtil.dot(miscStats,rules[1]));
+	//@Override
+	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
+	public double evaluate(LinkedHashSet<Rule<Rec>> recRules, LinkedHashSet<Rule<Misc>> miscRules) {
+		//checkNotNull(rules, "rules is null");
+		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
+		score = (PlayerUtil.dot(recStats,recRules) + PlayerUtil.dot(miscStats,miscRules));
 		return score;
 	}
 

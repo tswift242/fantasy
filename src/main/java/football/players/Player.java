@@ -38,7 +38,7 @@ public abstract class Player implements Comparable<Player>
 
 	//TODO: remove since covered by method below??
 	//evaluate player by assigning them a score
-	public abstract <? extends Enum<?> & StatType> double evaluate(LinkedHashSet<Rule<?>> ... rules);
+	//public abstract <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules);
 
 	//parse scoring coefficients from cmd line arguments and then evaluate player
 	public abstract double parseScoringRulesAndEvaluate(String[] args);

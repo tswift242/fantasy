@@ -18,10 +18,11 @@ public final class PlayerUtil
 	public static <T extends Enum<T> & StatType> double dot(LinkedHashSet<Stat<T>> stats, LinkedHashSet<Rule<T>> rules) {
 		checkArgument(stats.size() == rules.size(), "stats' size %s  does not equal rules' size %s", stats.size(), rules.size());
 		double sum = 0.0;
-		for(Iterator<Stat<T>> statsIter = stats.iterator() && Iterator<Rule<T>> rulesIter = rules.iterator();
-				statsIter.hasNext() && rulesIter.hasNext(); ) {
+		Iterator<Stat<T>> statsIter = stats.iterator();
+		Iterator<Rule<T>> rulesIter = rules.iterator();
+		while(statsIter.hasNext() && rulesIter.hasNext()) {
 			Stat<T> stat = statsIter.next();
-			Rule<T> rule = statsIter.next();
+			Rule<T> rule = rulesIter.next();
 			sum += rule.evaluate(stat);
 		}
 		return sum;
