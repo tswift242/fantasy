@@ -56,7 +56,7 @@ public abstract class Player implements Comparable<Player>
 			return true;
 		}
 		Player other = (Player)o;
-		return this.name.equals(other.name);
+		return this.name.equalsIgnoreCase(other.name);
 	}
 
 	@Override
@@ -70,7 +70,8 @@ public abstract class Player implements Comparable<Player>
 		if((this.score == 0) || (other.score == 0)) {
 			System.out.println("Warning: either " + name + " or " + other.name + " may not have been evaluated");
 		}
-		return Double.compare(this.score,other.score);
+		int scoreCmpResult = Double.compare(this.score,other.score);
+		return (scoreCmpResult == 0 ? this.name.compareTo(other.name) : scoreCmpResult);
 	}
 
 	@Override

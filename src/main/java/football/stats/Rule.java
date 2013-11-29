@@ -35,7 +35,7 @@ public final class Rule<T extends Enum<T> & StatType> extends TypedValue<T,Doubl
 		return normalizedValue;
 	}
 
-	//possibly setter for unit which also updates normalizedValue -- probably better than constructing new Rule if just unit changes
+	//possible setter for unit which also updates normalizedValue -- probably better than constructing new Rule if just unit changes
 	/*public void setUnit(int unit) {
 		this.unit = unit;
 		this.normalizedValue = (this.value / this.unit);

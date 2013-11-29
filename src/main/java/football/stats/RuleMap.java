@@ -30,6 +30,7 @@ public final class RuleMap
 		T ruleCategory = rule.getCategory();
 		checkArgument(ruleCategory == category,"rule category %s does not equal category key %s",
 				ruleCategory.toString(),category.toString());
+		//TODO: make defensive copy of rule if Rule becomes mutable
 		map.put(category,rule);
 	}
 

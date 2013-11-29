@@ -7,6 +7,7 @@ Revisions/Refactoring:
 **** reuse abstract method code
 -- avoid code repetition in argument validation in Player subclasses
 -- avoid code repetition in field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
+-- look into Java logger
 -- make categoriesToString() static
 -- get rid of getYardsUnit() in categories classes?
 -- work on cmd line interface?

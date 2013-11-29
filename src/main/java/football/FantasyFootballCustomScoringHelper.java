@@ -30,17 +30,6 @@ public class FantasyFootballCustomScoringHelper
 		}
 		String mode = args[0];
 
-		// testing new rule map
-		/*RuleMap map = new RuleMap();
-		map.put(Pass.TD, new Rule<Pass>(Pass.TD, 4.0));
-		map.put(Rush.TD, new Rule<Rush>(Rush.TD, 6.0));
-		map.put(Pass.INT, new Rule<Pass>(Pass.INT, 2.0));
-		System.out.println(map.toString());
-		Rule<Pass> rule = map.get(Pass.TD);
-		System.out.println(rule.toString());
-		Rule<Pass> rule2 = map.get(Pass.YDS);
-		System.out.println(rule2);*/
-
 		//quickly initialize group of players based on mode
 		Player[] players = null;
 		if(mode.equals("qb")) {
