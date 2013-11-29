@@ -34,7 +34,9 @@
 
 	<target name="compile" depends="init" description="Compile source files" >
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac debug="true" srcdir="${mainjavadir}" destdir="${classdir}" classpathref="build-classpath" includeantruntime="false">
+		<javac debug="true" srcdir="${mainjavadir}" destdir="${classdir}" 
+			classpathref="build-classpath" includeantruntime="false">
+			<compilerarg value="-Xlint"/>
 			<!--<exclude name="**/ValidateUtil.java"/>-->
 		</javac>
 	</target>

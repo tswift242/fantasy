@@ -1,8 +1,9 @@
 package football.stats;
 
-import football.stats.StatType;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
+
+import football.stats.StatType;
 
 /*
  * Class representing a fantasy football scoring rule. Permits floating point values.
@@ -45,7 +46,8 @@ public final class Rule<T extends Enum<T> & StatType> extends TypedValue<T,Doubl
 		checkNotNull(stat, "stat is null");
 		T ruleCategory = this.category;
 		T statCategory = stat.getCategory();
-		checkArgument(ruleCategory == statCategory,"rule category %s does not equal stat category %s",ruleCategory.toString(),statCategory.toString());
+		checkArgument(ruleCategory == statCategory,"rule category %s does not equal stat category %s",
+				ruleCategory.toString(),statCategory.toString());
 		return (this.normalizedValue * stat.getIntValue());
 	}
 }
