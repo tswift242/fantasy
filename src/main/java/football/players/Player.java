@@ -1,7 +1,6 @@
 package football.players;
 
 import java.util.Objects;
-import java.util.LinkedHashSet;
 import java.text.DecimalFormat;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;

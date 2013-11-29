@@ -1,6 +1,7 @@
 package football.players;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.HashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -21,17 +22,17 @@ public final class QB extends Player
 	//total number of stat categories affecting this player's score
 	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
 	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
-	private final LinkedHashSet<Stat<Pass>> passStats;
-	private final LinkedHashSet<Stat<Rush>> rushStats;
-	private final LinkedHashSet<Stat<Misc>> miscStats;
+	private final Set<Stat<Pass>> passStats;
+	private final Set<Stat<Rush>> rushStats;
+	private final Set<Stat<Misc>> miscStats;
 
 	//stats ordered: comp, inc, yds, td, inter, sck
-	public QB(String name, double defaultScore, LinkedHashSet<Stat<Pass>> passStats, LinkedHashSet<Stat<Rush>> rushStats, LinkedHashSet<Stat<Misc>> miscStats)
+	public QB(String name, double defaultScore, Set<Stat<Pass>> passStats, Set<Stat<Rush>> rushStats, Set<Stat<Misc>> miscStats)
 	{
 		super(name, defaultScore);
-		this.passStats = new LinkedHashSet<Stat<Pass>>(passStats);
-		this.rushStats = new LinkedHashSet<Stat<Rush>>(rushStats);
-		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
+		this.passStats = new HashSet<Stat<Pass>>(passStats);
+		this.rushStats = new HashSet<Stat<Rush>>(rushStats);
+		this.miscStats = new HashSet<Stat<Misc>>(miscStats);
 		checkStatsSetNotNullWithCorrectSize(this.passStats,Pass.class);
 		checkStatsSetNotNullWithCorrectSize(this.rushStats,Rush.class);
 		checkStatsSetNotNullWithCorrectSize(this.miscStats,Misc.class);
@@ -39,19 +40,19 @@ public final class QB extends Player
 
 	//copy constructor. Note: does not copy stat sets.
 	public QB(QB other) {
-		this(other.getName(), other.getScore(), other.getPassStats(), other.getRushStats(), other.getMiscStats());
+		this(other.name, other.score, other.passStats, other.rushStats, other.miscStats);
 	}
 
-	public LinkedHashSet<Stat<Pass>> getPassStats() {
-		return new LinkedHashSet<Stat<Pass>>(passStats);
+	public Set<Stat<Pass>> getPassStats() {
+		return new HashSet<Stat<Pass>>(passStats);
 	}
 
-	public LinkedHashSet<Stat<Rush>> getRushStats() {
-		return new LinkedHashSet<Stat<Rush>>(rushStats);
+	public Set<Stat<Rush>> getRushStats() {
+		return new HashSet<Stat<Rush>>(rushStats);
 	}
 
-	public LinkedHashSet<Stat<Misc>> getMiscStats() {
-		return new LinkedHashSet<Stat<Misc>>(miscStats);
+	public Set<Stat<Misc>> getMiscStats() {
+		return new HashSet<Stat<Misc>>(miscStats);
 	}
 
 	@Override

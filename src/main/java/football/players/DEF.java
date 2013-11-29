@@ -1,6 +1,7 @@
 package football.players;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.HashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -13,24 +14,24 @@ import static football.util.ValidateUtil.checkArrayLength;
 public final class DEF extends Player
 {
 	private final int numStatTypes = 1; //number of stat types used by player
-	private final LinkedHashSet<Stat<Def>> defStats;
+	private final Set<Stat<Def>> defStats;
 
-	public DEF(String name, double defaultScore, LinkedHashSet<Stat<Def>> defStats)
+	public DEF(String name, double defaultScore, Set<Stat<Def>> defStats)
 	{
 		super(name, defaultScore);
-		this.defStats = new LinkedHashSet<Stat<Def>>(defStats);
+		this.defStats = new HashSet<Stat<Def>>(defStats);
 		checkStatsSetNotNullWithCorrectSize(this.defStats,Def.class);
 		//TODO: check all elements of set are non-null?
 	}
 
 	//copy constructor. Note: does not copy stat sets.
 	public DEF(DEF other) {
-		this(other.getName(), other.getScore(), other.getDefStats());
+		this(other.name, other.score, other.defStats);
 	}
 
-	public LinkedHashSet<Stat<Def>> getDefStats() {
+	public Set<Stat<Def>> getDefStats() {
 		//TODO: return Collections.unmodifiableSet() if type changed from LinkedHashSet to Set
-		return new LinkedHashSet<Stat<Def>>(defStats);
+		return new HashSet<Stat<Def>>(defStats);
 	}
 
 	@Override

@@ -1,13 +1,14 @@
 Revisions/Refactoring:
--- change all references from LinkedHashSet to Set
-****** avoid repeated work working parsing coeffs -- get once in main (switch based on mode)
--- get rid of getYardsUnit() in categories classes?
+****** avoid repeated work in parsing coeffs -- get once in main (switch based on mode)
+-- look into computing entire RuleMap in one call of parseScoringRules()
+-- review error checking
 
 **** call static method of generic type
 **** reuse abstract method code
 -- avoid code repetition in argument validation in Player subclasses
 -- avoid code repetition in field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
 -- make categoriesToString() static
+-- get rid of getYardsUnit() in categories classes?
 -- work on cmd line interface?
 ***** cmd line flags
 
@@ -15,6 +16,7 @@ New features:
 -- Metrics
 -- Get player stats from online source (e.g. nfl.com)
 -- GUI?
+***** use MVC!!!!!
 ***** tabs/radio button for position (include all as option)
 ***** side-by-side grids, each with own edit boxes for scoring coeffs within each tab
 ***** default scoring coeffs from nfl.com; button to revert to default coeffs

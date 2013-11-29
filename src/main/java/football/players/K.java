@@ -1,6 +1,7 @@
 package football.players;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.HashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -13,23 +14,23 @@ import static football.util.ValidateUtil.checkArrayLength;
 public final class K extends Player
 {
 	private final int numStatTypes = 1; //number of stat types used by player
-	private final LinkedHashSet<Stat<Kick>> kickStats;
+	private final Set<Stat<Kick>> kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
-	public K(String name, double defaultScore, LinkedHashSet<Stat<Kick>> kickStats)
+	public K(String name, double defaultScore, Set<Stat<Kick>> kickStats)
 	{
 		super(name, defaultScore);
-		this.kickStats = new LinkedHashSet<Stat<Kick>>(kickStats);
+		this.kickStats = new HashSet<Stat<Kick>>(kickStats);
 		checkStatsSetNotNullWithCorrectSize(this.kickStats,Kick.class);
 	}
 
 	//copy constructor. Note: does not copy stat sets.
 	public K(K other) {
-		this(other.getName(), other.getScore(), other.getKickStats());
+		this(other.name, other.score, other.kickStats);
 	}
 
-	public LinkedHashSet<Stat<Kick>> getKickStats() {
-		return new LinkedHashSet<Stat<Kick>>(kickStats);
+	public Set<Stat<Kick>> getKickStats() {
+		return new HashSet<Stat<Kick>>(kickStats);
 	}
 
 	@Override

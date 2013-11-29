@@ -1,6 +1,7 @@
 package football.players;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.HashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -20,30 +21,30 @@ public final class WR extends Player
 	//total number of stat categories affecting this player's score
 	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
 	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
-	private final LinkedHashSet<Stat<Rec>> recStats;
-	private final LinkedHashSet<Stat<Misc>> miscStats;
+	private final Set<Stat<Rec>> recStats;
+	private final Set<Stat<Misc>> miscStats;
 
 	//stats ordered: rec, yds, td
-	public WR(String name, double defaultScore, LinkedHashSet<Stat<Rec>> recStats, LinkedHashSet<Stat<Misc>> miscStats)
+	public WR(String name, double defaultScore, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
 	{
 		super(name, defaultScore);
-		this.recStats = new LinkedHashSet<Stat<Rec>>(recStats);
-		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
+		this.recStats = new HashSet<Stat<Rec>>(recStats);
+		this.miscStats = new HashSet<Stat<Misc>>(miscStats);
 		checkStatsSetNotNullWithCorrectSize(this.recStats,Rec.class);
 		checkStatsSetNotNullWithCorrectSize(this.miscStats,Misc.class);
 	}
 
 	//copy constructor. Note: does not copy stat sets.
 	public WR(WR other) {
-		this(other.getName(), other.getScore(), other.getRecStats(), other.getMiscStats());
+		this(other.name, other.score, other.recStats, other.miscStats);
 	}
 
-	public LinkedHashSet<Stat<Rec>> getRecStats() {
-		return new LinkedHashSet<Stat<Rec>>(recStats);
+	public Set<Stat<Rec>> getRecStats() {
+		return new HashSet<Stat<Rec>>(recStats);
 	}
 
-	public LinkedHashSet<Stat<Misc>> getMiscStats() {
-		return new LinkedHashSet<Stat<Misc>>(miscStats);
+	public Set<Stat<Misc>> getMiscStats() {
+		return new HashSet<Stat<Misc>>(miscStats);
 	}
 
 	@Override

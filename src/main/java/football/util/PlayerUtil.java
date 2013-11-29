@@ -1,6 +1,6 @@
 package football.util;
 
-import java.util.LinkedHashSet;
+import java.util.Set;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
@@ -14,8 +14,8 @@ public final class PlayerUtil
 	private PlayerUtil() {} //NEVER USE THIS
 
 	//utility helper function for evalute()
-	//takes dot product of stats set and coeffs array
-	public static <T extends Enum<T> & StatType> double dot(LinkedHashSet<Stat<T>> stats, RuleMap rules) {
+	//takes dot product of stats set and corresponding set of rules in RuleMap
+	public static <T extends Enum<T> & StatType> double dot(Set<Stat<T>> stats, RuleMap rules) {
 		double sum = 0.0;
 		for(Stat<T> stat : stats) {
 			Rule<T> rule = rules.get(stat.getCategory());
@@ -33,7 +33,6 @@ public final class PlayerUtil
 		checkPositionIndex(startIdx, argsLength, String.format("startIdx %d is out of bounds of array with length %d",startIdx,argsLength));
 		checkPositionIndex(endIdx, argsLength, String.format("endIdx %d is out of bounds of array with length %d",endIdx,argsLength));
 		checkArgument(endIdx >= startIdx, "endIdx %s is smaller than startIdx", endIdx, startIdx);
-		//LinkedHashSet<Rule<T>> rulesSet = new LinkedHashSet<Rule<T>>();
 		RuleMap rules = new RuleMap();
 		T[] categories = enumType.getEnumConstants();
 		for(int i = startIdx; i <= endIdx; i++) {
@@ -45,21 +44,17 @@ public final class PlayerUtil
 				Double value = Double.valueOf(ruleArray[0]);
 				int unit = Integer.parseInt(ruleArray[1]);
 				rules.put(category, new Rule<T>(category,value,unit));
-				//rulesSet.add(new Rule<T>(category,value,unit));
 			} else {
 				Double value = Double.valueOf(arg);
 				rules.put(category, new Rule<T>(category,value));
-				//rulesSet.add(new Rule<T>(category,value)); //use default unit of 1
 			}
-			/*Double value = Double.valueOf(arg);
-			rulesSet.add(new Rule<T>(category,value));*/
 		}
-		//return rulesSet;
 		return rules;
 	}
 
 	//utility helper function for parseScoringRulesAndEvaluate()
-	//calculates cumulative sum of array a; each element in output array is sum of elements in input array up to that index
+	//calculates cumulative sum of array a; each element in output array is the sum of elements 
+	//in input array up to that index
 	public static int[] cumsum(int[] a) {
 		int length = a.length;
 		int[] cumsum = new int[length];
