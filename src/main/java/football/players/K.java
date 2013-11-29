@@ -3,9 +3,8 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import football.stats.Rule;
+import football.stats.RuleMap;
 import football.stats.Stat;
-import football.stats.StatType;
 import football.stats.categories.Kick;
 import football.util.PlayerUtil;
 import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
@@ -38,12 +37,10 @@ public final class K extends Player
 		return new K(this);
 	}
 
-	//@Override
-	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-	public double evaluate(LinkedHashSet<Rule<Kick>> kickRules) {
+	@Override
+	public double evaluate(RuleMap rules) {
 		//checkNotNull(rules, "rules is null");
-		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = PlayerUtil.dot(kickStats,kickRules);
+		score = PlayerUtil.dot(kickStats,rules);
 		return score;
 	}
 
@@ -54,8 +51,8 @@ public final class K extends Player
 		int numArgs = numKickStats+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		LinkedHashSet<Rule<Kick>> kickRules = PlayerUtil.parseScoringRules(args,1,numKickStats,Kick.class);
-		return evaluate(kickRules);
+		RuleMap rules = PlayerUtil.parseScoringRules(args,1,numKickStats,Kick.class);
+		return evaluate(rules);
 	}
 
 	public static int getNumStats() {

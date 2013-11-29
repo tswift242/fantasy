@@ -3,9 +3,8 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import football.stats.Rule;
+import football.stats.RuleMap;
 import football.stats.Stat;
-import football.stats.StatType;
 import football.stats.categories.Rec;
 import football.stats.categories.Misc;
 import football.util.PlayerUtil;
@@ -52,12 +51,10 @@ public final class WR extends Player
 		return new WR(this);
 	}
 
-	//@Override
-	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-	public double evaluate(LinkedHashSet<Rule<Rec>> recRules, LinkedHashSet<Rule<Misc>> miscRules) {
+	@Override
+	public double evaluate(RuleMap rules) {
 		//checkNotNull(rules, "rules is null");
-		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = (PlayerUtil.dot(recStats,recRules) + PlayerUtil.dot(miscStats,miscRules));
+		score = (PlayerUtil.dot(recStats,rules) + PlayerUtil.dot(miscStats,rules));
 		return score;
 	}
 
@@ -67,11 +64,13 @@ public final class WR extends Player
 		int numArgs = getNumStats()+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		LinkedHashSet<Rule<Rec>> recRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Rec.class);
-		LinkedHashSet<Rule<Misc>> miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Misc.class);
-		//normalize coefficients to be per unit
-		/*recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();*/
-		return evaluate(recRules,miscRules);
+		RuleMap recRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Rec.class);
+		RuleMap miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Misc.class);
+		//combine rule maps
+		RuleMap rules = new RuleMap();
+		rules.putAll(recRules);
+		rules.putAll(miscRules);
+		return evaluate(rules);
 	}
 
 	public static int getNumStats() {

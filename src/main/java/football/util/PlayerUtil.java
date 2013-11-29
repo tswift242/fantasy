@@ -1,11 +1,11 @@
 package football.util;
 
 import java.util.LinkedHashSet;
-import java.util.Iterator;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
 import football.stats.Rule;
+import football.stats.RuleMap;
 import football.stats.Stat;
 import football.stats.StatType;
 
@@ -15,14 +15,11 @@ public final class PlayerUtil
 
 	//utility helper function for evalute()
 	//takes dot product of stats set and coeffs array
-	public static <T extends Enum<T> & StatType> double dot(LinkedHashSet<Stat<T>> stats, LinkedHashSet<Rule<T>> rules) {
-		checkArgument(stats.size() == rules.size(), "stats' size %s  does not equal rules' size %s", stats.size(), rules.size());
+	public static <T extends Enum<T> & StatType> double dot(LinkedHashSet<Stat<T>> stats, RuleMap rules) {
 		double sum = 0.0;
-		Iterator<Stat<T>> statsIter = stats.iterator();
-		Iterator<Rule<T>> rulesIter = rules.iterator();
-		while(statsIter.hasNext() && rulesIter.hasNext()) {
-			Stat<T> stat = statsIter.next();
-			Rule<T> rule = rulesIter.next();
+		for(Stat<T> stat : stats) {
+			Rule<T> rule = rules.get(stat.getCategory());
+			//TODO: check that rule is not null (and stat?)
 			sum += rule.evaluate(stat);
 		}
 		return sum;
@@ -30,12 +27,14 @@ public final class PlayerUtil
 
 	//utility helper function for parseScoringRulesAndEvaluate()
 	//Parses elements in args between startIdx and endIdx (inclusive) into doubles and returns them in an array
-	public static <T extends Enum<T> & StatType> LinkedHashSet<Rule<T>> parseScoringRules(String[] args, int startIdx, int endIdx, Class<T> enumType) {
+	//TODO: try making version in which final arg is List<Class<? extends Enum<?>>> and see how it goes
+	public static <T extends Enum<T> & StatType> RuleMap parseScoringRules(String[] args, int startIdx, int endIdx, Class<T> enumType) {
 		int argsLength = args.length;
 		checkPositionIndex(startIdx, argsLength, String.format("startIdx %d is out of bounds of array with length %d",startIdx,argsLength));
 		checkPositionIndex(endIdx, argsLength, String.format("endIdx %d is out of bounds of array with length %d",endIdx,argsLength));
 		checkArgument(endIdx >= startIdx, "endIdx %s is smaller than startIdx", endIdx, startIdx);
-		LinkedHashSet<Rule<T>> rulesSet = new LinkedHashSet<Rule<T>>();
+		//LinkedHashSet<Rule<T>> rulesSet = new LinkedHashSet<Rule<T>>();
+		RuleMap rules = new RuleMap();
 		T[] categories = enumType.getEnumConstants();
 		for(int i = startIdx; i <= endIdx; i++) {
 			String arg = args[i];
@@ -45,15 +44,18 @@ public final class PlayerUtil
 				String[] ruleArray = arg.split("/");
 				Double value = Double.valueOf(ruleArray[0]);
 				int unit = Integer.parseInt(ruleArray[1]);
-				rulesSet.add(new Rule<T>(category,value,unit));
+				rules.put(category, new Rule<T>(category,value,unit));
+				//rulesSet.add(new Rule<T>(category,value,unit));
 			} else {
 				Double value = Double.valueOf(arg);
-				rulesSet.add(new Rule<T>(category,value)); //use default unit of 1
+				rules.put(category, new Rule<T>(category,value));
+				//rulesSet.add(new Rule<T>(category,value)); //use default unit of 1
 			}
 			/*Double value = Double.valueOf(arg);
 			rulesSet.add(new Rule<T>(category,value));*/
 		}
-		return rulesSet;
+		//return rulesSet;
+		return rules;
 	}
 
 	//utility helper function for parseScoringRulesAndEvaluate()

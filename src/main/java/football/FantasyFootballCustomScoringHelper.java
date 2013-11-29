@@ -14,6 +14,11 @@ import football.players.*;
 import football.util.metrics.Metric;
 import football.util.metrics.SortOrderMetric;
 
+import java.util.LinkedHashSet;
+import football.stats.*;
+import football.stats.categories.*;
+import football.stats.Rule;
+
 public class FantasyFootballCustomScoringHelper
 {
 	public static void main(String[] args) throws IOException
@@ -24,6 +29,17 @@ public class FantasyFootballCustomScoringHelper
 			System.exit(1);
 		}
 		String mode = args[0];
+
+		// testing new rule map
+		/*RuleMap map = new RuleMap();
+		map.put(Pass.TD, new Rule<Pass>(Pass.TD, 4.0));
+		map.put(Rush.TD, new Rule<Rush>(Rush.TD, 6.0));
+		map.put(Pass.INT, new Rule<Pass>(Pass.INT, 2.0));
+		System.out.println(map.toString());
+		Rule<Pass> rule = map.get(Pass.TD);
+		System.out.println(rule.toString());
+		Rule<Pass> rule2 = map.get(Pass.YDS);
+		System.out.println(rule2);*/
 
 		//quickly initialize group of players based on mode
 		Player[] players = null;
@@ -53,6 +69,7 @@ public class FantasyFootballCustomScoringHelper
 		//make copy of players to preserve original order
 		List<Player> customPlayers = deepCopyList(defaultPlayers);
 		//evaluate all players with custom rules
+		//TODO: parse rules only once!!
 		for(Player player : customPlayers) {
 			player.parseScoringRulesAndEvaluate(args);
 		}

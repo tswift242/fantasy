@@ -6,9 +6,13 @@ import java.text.DecimalFormat;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
-import football.stats.Rule;
-import football.stats.Stat;
-import football.stats.StatType;
+import football.stats.RuleMap;
+
+/*
+ * Class representing a fantasy football player.
+ * A player has a name, as a unique identifier, and a score, representing
+ * their fantasy value given a set of fantasy scoring rules.
+ */
 
 public abstract class Player implements Comparable<Player>
 {
@@ -36,10 +40,10 @@ public abstract class Player implements Comparable<Player>
 	//makes a deep copy of this player
 	public abstract Player deepCopy();
 
-	//TODO: remove since covered by method below??
 	//evaluate player by assigning them a score
-	//public abstract <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules);
+	public abstract double evaluate(RuleMap rules);
 
+	//TODO: parse rules in main() and remove this
 	//parse scoring coefficients from cmd line arguments and then evaluate player
 	public abstract double parseScoringRulesAndEvaluate(String[] args);
 
@@ -65,7 +69,7 @@ public abstract class Player implements Comparable<Player>
 	public int compareTo(Player other) {
 		checkNotNull(other, "other is null");
 		if((this.score == 0) || (other.score == 0)) {
-			System.out.println("Warning: either " + name + " or " + other.getName() + " may not have been evaluated");
+			System.out.println("Warning: either " + name + " or " + other.name + " may not have been evaluated");
 		}
 		return Double.compare(this.score,other.score);
 	}

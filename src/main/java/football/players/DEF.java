@@ -3,9 +3,8 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import football.stats.Rule;
+import football.stats.RuleMap;
 import football.stats.Stat;
-import football.stats.StatType;
 import football.stats.categories.Def;
 import football.util.PlayerUtil;
 import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
@@ -21,6 +20,7 @@ public final class DEF extends Player
 		super(name, defaultScore);
 		this.defStats = new LinkedHashSet<Stat<Def>>(defStats);
 		checkStatsSetNotNullWithCorrectSize(this.defStats,Def.class);
+		//TODO: check all elements of set are non-null?
 	}
 
 	//copy constructor. Note: does not copy stat sets.
@@ -38,13 +38,10 @@ public final class DEF extends Player
 		return new DEF(this);
 	}
 
-	//TODO: switch from vararg to fixed args??
-	//@Override
-	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-	public double evaluate(LinkedHashSet<Rule<Def>> defRules) {
+	@Override
+	public double evaluate(RuleMap rules) {
 		//checkNotNull(rules, "rules is null");
-		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = PlayerUtil.dot(defStats,defRules);
+		score = PlayerUtil.dot(defStats,rules);
 		return score;
 	}
 
@@ -55,11 +52,8 @@ public final class DEF extends Player
 		int numArgs = numDefStats+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		LinkedHashSet<Rule<Def>> defRules = PlayerUtil.parseScoringRules(args,1,numDefStats,Def.class);
-		//normalize coefficients to be per unit
-		/*defCoeffs[Def.YDS.ordinal()] /= Def.getYardsUnit();
-		defCoeffs[Def.PTS.ordinal()] /= Def.getPointsUnit();*/
-		return evaluate(defRules);
+		RuleMap rules = PlayerUtil.parseScoringRules(args,1,numDefStats,Def.class);
+		return evaluate(rules);
 	}
 
 	public static int getNumStats() {

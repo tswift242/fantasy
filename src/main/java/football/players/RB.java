@@ -3,9 +3,8 @@ package football.players;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import football.stats.Rule;
+import football.stats.RuleMap;
 import football.stats.Stat;
-import football.stats.StatType;
 import football.stats.categories.Rush;
 import football.stats.categories.Rec;
 import football.stats.categories.Misc;
@@ -60,12 +59,10 @@ public final class RB extends Player
 		return new RB(this);
 	}
 
-	//@Override
-	//public <T extends Enum<T> & StatType> double evaluate(LinkedHashSet<Rule<T>> ... rules) {
-	public double evaluate(LinkedHashSet<Rule<Rush>> rushRules, LinkedHashSet<Rule<Rec>> recRules, LinkedHashSet<Rule<Misc>> miscRules) {
+	@Override
+	public double evaluate(RuleMap rules) {
 		//checkNotNull(rules, "rules is null");
-		//checkArrayLength(rules,numStatTypes,String.format("Expected %s arguments; found %s arguments",numStatTypes,rules.length));
-		score = (PlayerUtil.dot(rushStats,rushRules) + PlayerUtil.dot(recStats,recRules) + PlayerUtil.dot(miscStats,miscRules));
+		score = (PlayerUtil.dot(rushStats,rules) + PlayerUtil.dot(recStats,rules) + PlayerUtil.dot(miscStats,rules));
 		return score;
 	}
 
@@ -75,13 +72,15 @@ public final class RB extends Player
 		int numArgs = getNumStats()+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		LinkedHashSet<Rule<Rush>> rushRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Rush.class);
-		LinkedHashSet<Rule<Rec>> recRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Rec.class);
-		LinkedHashSet<Rule<Misc>> miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2],Misc.class);
-		//normalize coefficients to be per unit
-		/*rushCoeffs[Rush.YDS.ordinal()] /= Rush.getYardsUnit();
-		recCoeffs[Rec.YDS.ordinal()] /= Rec.getYardsUnit();*/
-		return evaluate(rushRules,recRules,miscRules);
+		RuleMap rushRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Rush.class);
+		RuleMap recRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Rec.class);
+		RuleMap miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2],Misc.class);
+		//combine rule maps
+		RuleMap rules = new RuleMap();
+		rules.putAll(rushRules);
+		rules.putAll(recRules);
+		rules.putAll(miscRules);
+		return evaluate(rules);
 	}
 
 	public static int getNumStats() {
