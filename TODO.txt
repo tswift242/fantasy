@@ -1,6 +1,7 @@
 Revisions/Refactoring:
-****** avoid repeated work in parsing coeffs -- get once in main (switch based on mode)
 -- look into computing entire RuleMap in one call of parseScoringRules()
+-- try to make parseScoringRules() more OO and less static
+-- put all logic in main class into separate class
 -- review error checking
 
 **** call static method of generic type

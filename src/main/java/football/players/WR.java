@@ -59,8 +59,7 @@ public final class WR extends Player
 		return score;
 	}
 
-	@Override
-	public double parseScoringRulesAndEvaluate(String[] args) {
+	public static RuleMap parseScoringRules(String[] args) {
 		checkNotNull(args, "args is null");
 		int numArgs = getNumStats()+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
@@ -71,7 +70,7 @@ public final class WR extends Player
 		RuleMap rules = new RuleMap();
 		rules.putAll(recRules);
 		rules.putAll(miscRules);
-		return evaluate(rules);
+		return rules;
 	}
 
 	public static int getNumStats() {

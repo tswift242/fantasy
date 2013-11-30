@@ -42,10 +42,6 @@ public abstract class Player implements Comparable<Player>
 	//evaluate player by assigning them a score
 	public abstract double evaluate(RuleMap rules);
 
-	//TODO: parse rules in main() and remove this
-	//parse scoring coefficients from cmd line arguments and then evaluate player
-	public abstract double parseScoringRulesAndEvaluate(String[] args);
-
 	//players consider equal if their names match
 	@Override
 	public boolean equals(Object o) {
@@ -70,7 +66,9 @@ public abstract class Player implements Comparable<Player>
 		if((this.score == 0) || (other.score == 0)) {
 			System.out.println("Warning: either " + name + " or " + other.name + " may not have been evaluated");
 		}
+		//compare scores
 		int scoreCmpResult = Double.compare(this.score,other.score);
+		//compare names iff scores are equal
 		return (scoreCmpResult == 0 ? this.name.compareTo(other.name) : scoreCmpResult);
 	}
 

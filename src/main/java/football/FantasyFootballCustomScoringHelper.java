@@ -13,11 +13,10 @@ import java.io.IOException;
 import football.players.*;
 import football.util.metrics.Metric;
 import football.util.metrics.SortOrderMetric;
-
-import java.util.LinkedHashSet;
 import football.stats.*;
 import football.stats.categories.*;
 import football.stats.Rule;
+import football.stats.RuleMap;
 
 public class FantasyFootballCustomScoringHelper
 {
@@ -32,21 +31,27 @@ public class FantasyFootballCustomScoringHelper
 
 		//quickly initialize group of players based on mode
 		Player[] players = null;
+		RuleMap rules = null;
 		if(mode.equals("qb")) {
 			players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
 				Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
+			rules = QB.parseScoringRules(args);
 		} else if(mode.equals("rb")) {
 			players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
 				Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
+			rules = RB.parseScoringRules(args);
 		} else if(mode.equals("wr")) {
 			players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
 				Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
+			rules = WR.parseScoringRules(args);
 		} else if(mode.equals("def")) {
 			players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
 				Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
+			rules = DEF.parseScoringRules(args);
 		} else if(mode.equals("k")) {
 			players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
 				Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
+			rules = K.parseScoringRules(args);
 		} else {
 			System.out.println("Error in main: Invalid mode");
 			usage();
@@ -58,9 +63,8 @@ public class FantasyFootballCustomScoringHelper
 		//make copy of players to preserve original order
 		List<Player> customPlayers = deepCopyList(defaultPlayers);
 		//evaluate all players with custom rules
-		//TODO: parse rules only once!!
 		for(Player player : customPlayers) {
-			player.parseScoringRulesAndEvaluate(args);
+			player.evaluate(rules);
 		}
 		//sort players according to default rules
 		Collections.sort(defaultPlayers);
