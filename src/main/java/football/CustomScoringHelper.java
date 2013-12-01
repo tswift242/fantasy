@@ -4,27 +4,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.PrintWriter;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.File;
 import java.io.IOException;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
 import football.players.*;
-import football.util.metrics.Metric;
-import football.util.metrics.SortOrderMetric;
-import football.stats.*;
-import football.stats.categories.*;
-import football.stats.Rule;
 import football.stats.RuleMap;
+import football.util.logging.ResultsLogger;
 
 public class CustomScoringHelper
 {
 	public CustomScoringHelper() { }
 
 	// TODO: make mode and rules inputs when/if we make a GUI (or have setters)
-	public void run(String[] args) throws IOException {
+	public void run(String[] args) {
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		String mode = args[0];
 
@@ -39,9 +31,14 @@ public class CustomScoringHelper
 		//sort players according to custom rules
 		Collections.sort(customPlayers);
 		//write results to file filename in directory resultsDirectory
-		String resultsDirectory = "results";
+		String resultsDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "results";
 		String filename = (mode.toUpperCase() + "results.txt");
-		logResults(resultsDirectory,filename,defaultPlayers,customPlayers,args);
+		try {
+			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
+			logger.logResults(args,defaultPlayers,customPlayers);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// get list of players to score based on input mode
@@ -123,51 +120,5 @@ public class CustomScoringHelper
 		result += (indent + "rb: " + RB.categoriesToString() + "\n");
 		result += (indent + "wr: " + WR.categoriesToString() + "\n");*/
 		return result;
-	}
-
-	//TODO: add this method and ones below to separate ResultsLogger class
-	private void logResults(String resultsDirectory, String filename, List<Player> defaultPlayers, 
-			List<Player> customPlayers, String[] args) throws IOException {
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(new File(resultsDirectory,filename),true)));
-		String delimiter = "***********************************************************";
-		String sectionDenoter = "********";
-		out.println(delimiter + "\n");
-		out.println(toSectionHeader("Custom scoring rules",sectionDenoter));
-		out.println(customPlayers.get(0).categoriesToString()); //TODO: make this call static
-		printRules(args,out);
-		out.println(toSectionHeader("Scores using default rules",sectionDenoter));
-		printList(defaultPlayers,out);
-		out.println(toSectionHeader("Scores using custom rules",sectionDenoter));
-		printList(customPlayers,out);
-		//calculate (dis)similarity btw customPlayers and defaultPlayers
-		Metric metric = new SortOrderMetric();
-		double dist = metric.distance(defaultPlayers,customPlayers);
-		out.println("Distance between default and custom rules is: " + dist);
-		out.println("\n" + delimiter + "\n\n\n");
-		out.close();
-	}
-
-
-	// TODO: consider just using players.toString()
-	// write players list to printwriter stream
-	private <E extends Player> void printList(List<E> players, PrintWriter out) {
-		for(E player : players) {
-			out.println(player.toString());
-		}
-		out.println("\n");
-	}
-
-	// write rules array to printwriter stream
-	private void printRules(String[] args, PrintWriter out) {
-		int numRules = args.length;
-		for(int i = 1; i < numRules; i++) { //skip mode argument
-			out.printf("%-10s ",args[i]);
-		}
-		out.println("\n");
-	}
-
-	// surrounds sectionTitle on both sides by sectionDenoter to create section header
-	private String toSectionHeader(String sectionTitle, String sectionDenoter) {
-		return (sectionDenoter + " " + sectionTitle + " " + sectionDenoter);
 	}
 }
