@@ -18,9 +18,13 @@ public final class PlayerUtil
 	public static <T extends Enum<T> & StatType> double dot(Set<Stat<T>> stats, RuleMap rules) {
 		double sum = 0.0;
 		for(Stat<T> stat : stats) {
-			Rule<T> rule = rules.get(stat.getCategory());
-			//TODO: check that rule is not null (and stat?)
-			sum += rule.evaluate(stat);
+			T category = stat.getCategory();
+			Rule<T> rule = rules.get(category);
+			if(rule != null) {
+				sum += rule.evaluate(stat);
+			} else {
+				System.err.println("Warning: rule for category " + category.toString() + " is null");
+			}
 		}
 		return sum;
 	}

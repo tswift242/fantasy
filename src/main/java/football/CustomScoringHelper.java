@@ -1,15 +1,17 @@
 package football;
 
-import java.util.Collections;
-import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
 import football.players.*;
 import football.stats.RuleMap;
 import football.util.logging.ResultsLogger;
+import football.util.metrics.Metric;
+import football.util.metrics.SortOrderMetric;
 
 public class CustomScoringHelper
 {
@@ -22,20 +24,24 @@ public class CustomScoringHelper
 
 		RuleMap rules = parseScoringRules(mode, args);
 		List<Player> defaultPlayers = getPlayers(mode);
-		//make copy of players to preserve original order
+		// make copy of players to preserve original order
 		List<Player> customPlayers = deepCopyList(defaultPlayers);
 		//evaluate all players with custom rules
 		scorePlayers(customPlayers, rules);
-		//sort players according to default rules
+		// sort players according to default rules
 		Collections.sort(defaultPlayers);
-		//sort players according to custom rules
+		// sort players according to custom rules
 		Collections.sort(customPlayers);
-		//write results to file filename in directory resultsDirectory
+		// calculate (dis)similarity btw customPlayers and defaultPlayers
+		Metric metric = new SortOrderMetric();
+		double distance = metric.distance(defaultPlayers,customPlayers);
+		// write results to file filename in directory resultsDirectory
 		String resultsDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "results";
 		String filename = (mode.toUpperCase() + "results.txt");
 		try {
 			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
-			logger.logResults(args,defaultPlayers,customPlayers);
+			logger.logResults(args,defaultPlayers,customPlayers,distance);
+			logger.close();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +70,7 @@ public class CustomScoringHelper
 			throw new IllegalArgumentException("Error: Invalid mode\n" + getUsage());
 		}
 
-		//put players into list
+		// put players into list
 		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
 		return playersList;
 	}

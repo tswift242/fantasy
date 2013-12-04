@@ -1,15 +1,13 @@
 package football.util.logging;
 
-import java.io.PrintWriter;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 import football.players.Player;
-import football.util.metrics.Metric;
-import football.util.metrics.SortOrderMetric;
 
 /*
  * A class for logging player scoring and ranking results to a file.
@@ -36,12 +34,12 @@ public class ResultsLogger
 		this(resultsDirectory, filename, true);
 	}
 
-	public void logResults(String[] args, List<Player> defaultPlayers, List<Player> customPlayers) throws IOException {
-		//Logger logger = Logger.getLogger(CustomScoringHelper.class.getName());
-		//logger.setLevel(Level.INFO);
-		//FileHandler fh = new FileHandler(resultsDirectory + "/" + filename, true);
-		//fh.setFormatter(new SimpleFormatter());
-		//logger.addHandler(fh);
+	public void logResults(String[] args, List<Player> defaultPlayers, List<Player> customPlayers, double distance) throws IOException {
+		/*logger logger = Logger.getLogger(CustomScoringHelper.class.getName());
+		logger.setLevel(Level.INFO);
+		FileHandler fh = new FileHandler(resultsDirectory + "/" + filename, true);
+		fh.setFormatter(new SimpleFormatter());
+		logger.addHandler(fh);*/
 
 		out.println(delimiter + "\n");
 		out.println(toSectionHeader("Mode",sectionDenoter));
@@ -53,12 +51,11 @@ public class ResultsLogger
 		out.println(listToString(defaultPlayers));
 		out.println(toSectionHeader("Scores using custom rules",sectionDenoter));
 		out.println(listToString(customPlayers));
-		//TODO: move metric calculation to run() and pass in dist
-		//calculate (dis)similarity btw customPlayers and defaultPlayers
-		Metric metric = new SortOrderMetric();
-		double dist = metric.distance(defaultPlayers,customPlayers);
-		out.println("Distance between default and custom rules is: " + dist);
+		out.println("Distance between default and custom rules is: " + distance);
 		out.println("\n" + delimiter + "\n\n\n");
+	}
+
+	public void close() {
 		out.close();
 	}
 

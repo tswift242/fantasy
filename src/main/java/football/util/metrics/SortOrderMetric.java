@@ -34,7 +34,7 @@ public class SortOrderMetric implements Metric
 				int j = index.intValue(); //index of this player in players1 
 				sum += Math.abs(j - i); //difference btw indices of this player in two lists
 			} else {
-				System.out.println("Warning: player " + player.getName() + " not contained in HashMap");
+				System.err.println("Warning: player " + player.getName() + " in list players2 not contained in list players1");
 			}
 			i++;
 		}
