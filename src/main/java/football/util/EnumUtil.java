@@ -12,4 +12,15 @@ public final class EnumUtil
 		}
 		return values.trim();
 	}
+
+	public static <T extends Enum<T>> T fromString(Class<T> enumType, String text) {
+		if(text != null) {
+			for(T value : enumType.getEnumConstants()) {
+				if(text.equalsIgnoreCase(value.toString())) {
+					return value;
+				}
+			}
+		}
+		throw new IllegalArgumentException("No constant with text " + text + " found");
+	}
 }

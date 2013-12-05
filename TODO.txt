@@ -1,10 +1,9 @@
 Revisions/Refactoring:
--- make enum for player modes (and enummap them to correct list of players)
+-- enummap Modes to corresponding list of players
 ---- class/function to initialize these lists and map, as well as default RuleMap
 -- mirror process for customPlayers with defaultPlayers (2 sets of RuleMap's)
 -- look into computing entire RuleMap in one call of parseScoringRules()
 -- try to make parseScoringRules() more OO and less static
--- review error checking
 
 **** call static method of generic type
 **** reuse abstract method code
