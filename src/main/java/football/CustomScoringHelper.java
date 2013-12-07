@@ -24,11 +24,8 @@ public final class CustomScoringHelper
 	private static Map<Modes,List<Player>> modesToPlayersMap2;
 
 	public CustomScoringHelper() {
-		//TODO: add mappings for these dynamically as the modes are used in 
-		//run(), instead of statically adding all possible mappings at 
-		//construction time
-		modesToPlayersMap = initModesToPlayersMap();
-		modesToPlayersMap2 = deepCopyModesMap(modesToPlayersMap);
+		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
+		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
 	}
 
 	// TODO: make mode and rules inputs when/if we make a GUI (or have setters)
@@ -37,10 +34,10 @@ public final class CustomScoringHelper
 		Modes mode = Modes.fromString(args[0]);
 
 		RuleMap rules = mode.parseScoringRules(args);
-		/*if(!modesToPlayersMap.containsKey(mode)) {
-			addMapping(mode); // adds mapping for mode
+		// add mapping for this mode if there isn't one already
+		if(!modesToPlayersMap.containsKey(mode)) {
+			addMapping(mode);
 		}
-		List<Player> defaultPlayers = modesToPlayersMap.get(mode);*/
 		List<Player> defaultPlayers = modesToPlayersMap.get(mode);
 		// make copy of players to preserve original order
 		List<Player> customPlayers = modesToPlayersMap2.get(mode);
@@ -65,62 +62,73 @@ public final class CustomScoringHelper
 		}
 	}
 
-	// creates and initializes a map a player modes to corresponding lists of players
-	// to evaluate for that mode
-	private Map<Modes,List<Player>> initModesToPlayersMap() {
-		Map<Modes,List<Player>> map = new EnumMap<Modes,List<Player>>(Modes.class);
-		// form list of players for each player position
-		QB[] qbs = new QB[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
-					Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
-		List<Player> qbList = new ArrayList<Player>(Arrays.asList(qbs));
-		RB[] rbs = new RB[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
-			Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
-		List<Player> rbList = new ArrayList<Player>(Arrays.asList(rbs));
-		WR[] wrs = new WR[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
-			Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
-		List<Player> wrList = new ArrayList<Player>(Arrays.asList(wrs));
-		K[] ks = new K[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
-			Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
-		List<Player> kList = new ArrayList<Player>(Arrays.asList(ks));
-		DEF[] defs = new DEF[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
-			Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
-		List<Player> defList = new ArrayList<Player>(Arrays.asList(defs));
-		// create list of all players for Modes.ALL mode
-		List<Player> playersList = new ArrayList<Player>();
-		playersList.addAll(qbList);
-		playersList.addAll(rbList);
-		playersList.addAll(wrList);
-		playersList.addAll(kList);
-		playersList.addAll(defList);
-		// map mode to corresponding list of players
-		map.put(Modes.QB,qbList);
-		map.put(Modes.RB,rbList);
-		map.put(Modes.WR,wrList);
-		map.put(Modes.K,kList);
-		map.put(Modes.DEF,defList);
-		map.put(Modes.ALL,playersList);
-		return map;
+	// add mapping for mode to modes, and corresponding copy mapping to copy of modes map
+	// Allows for dynamically populating the modes map so that we don't spend unnecessary
+	// computation creating lists of players for modes that aren't used
+	private void addMapping(Modes mode) {
+		// quickly initialize group of players based on mode
+		Player[] players = null;
+		switch(mode) {
+				case QB:
+						players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
+								Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
+						break;
+				case RB:
+						players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
+								Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
+						break;
+				case WR:
+						players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
+								Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
+						break;
+				case K:
+						players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
+								Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
+						break;
+				case DEF:
+						players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
+								Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
+						break;
+				case ALL:
+						populateModesToPlayersMap();
+						return;
+				default:
+						throw new IllegalArgumentException("Error: Invalid mode\n" + getUsage());
+		}
+
+		// put players into list
+		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
+		// map mode to players list
+		modesToPlayersMap.put(mode, playersList);
+		modesToPlayersMap2.put(mode, deepCopyList(playersList));
 	}
 
-	// creates a deep copy of the input modes map by deep copying each players list 
-	// in map.values() and reassociating the list copy with the same mode enum in a
-	// new map
-	private Map<Modes,List<Player>> deepCopyModesMap(Map<Modes,List<Player>> map) {
-		Map<Modes,List<Player>> mapCopy = new EnumMap<Modes,List<Player>>(Modes.class);
-		// rebuild list of all players into list below by adding in every list we copy
-		List<Player> playersList = new ArrayList<Player>();
-		for(Modes mode : map.keySet()) {
-			// skip over list for Modes.ALL so that we avoid deep copying every player
-			// a second time, and instead incrementally build the listCopy for this case
-			// from all the other cases
-			if(mode != Modes.ALL) {
-				List<Player> listCopy = deepCopyList(map.get(mode));
-				mapCopy.put(mode,listCopy);
-				playersList.addAll(listCopy);
+	// adds all mappings into modes map which are not already accounted for,
+	// and then accumulates the players lists from these mappings in order to
+	// add a mapping for mode Modes.ALL
+	// When this method returns, both instance maps will have a mapping for every
+	// mode in Modes
+	private void populateModesToPlayersMap() {
+		List<Player> allPlayersList = new ArrayList<Player>();
+		List<Player> allPlayersListCopy = new ArrayList<Player>();
+		for(Modes mode : Modes.values()) {
+			// add a mapping into the modes map for every mode which does not
+			// already have a mapping
+			// Modes.ALL is skipped as it is built up using the lists of all of
+			// the other mappings
+			if((mode != Modes.ALL) && (!modesToPlayersMap.containsKey(mode))) {
+				addMapping(mode);
 			}
 		}
-		mapCopy.put(Modes.ALL,playersList);
-		return mapCopy;
+		for(Modes mode : modesToPlayersMap.keySet()) {
+			// at this point, modes map contains a mapping for every mapping 
+			// except Modes.ALL. Therefore, we build up the mapping for Modes.ALL
+			// using the players list from all of the other mappings
+			allPlayersList.addAll(modesToPlayersMap.get(mode));
+			allPlayersListCopy.addAll(modesToPlayersMap2.get(mode));
+		}
+		modesToPlayersMap.put(Modes.ALL, allPlayersList);
+		modesToPlayersMap2.put(Modes.ALL, allPlayersListCopy);
 	}
 
 	// Make deep copy of list of players. 
