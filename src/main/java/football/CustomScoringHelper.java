@@ -19,9 +19,9 @@ import football.util.metrics.SortOrderMetric;
 public final class CustomScoringHelper
 {
 	// map of player modes to corresponding lists of players
-	private static Map<Modes,List<Player>> modesToPlayersMap;
+	private Map<Modes,List<Player>> modesToPlayersMap;
 	// copy of the above map containing copy player lists
-	private static Map<Modes,List<Player>> modesToPlayersMap2;
+	private Map<Modes,List<Player>> modesToPlayersMap2;
 
 	public CustomScoringHelper() {
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
@@ -38,24 +38,24 @@ public final class CustomScoringHelper
 		if(!modesToPlayersMap.containsKey(mode)) {
 			addMapping(mode);
 		}
-		List<Player> defaultPlayers = modesToPlayersMap.get(mode);
+		List<Player> players1 = modesToPlayersMap.get(mode);
 		// make copy of players to preserve original order
-		List<Player> customPlayers = modesToPlayersMap2.get(mode);
+		List<Player> players2 = modesToPlayersMap2.get(mode);
 		//evaluate all players with custom rules
-		scorePlayers(customPlayers, rules);
+		scorePlayers(players2,rules);
 		// sort players according to default rules
-		Collections.sort(defaultPlayers);
+		Collections.sort(players1);
 		// sort players according to custom rules
-		Collections.sort(customPlayers);
-		// calculate (dis)similarity btw customPlayers and defaultPlayers
+		Collections.sort(players2);
+		// calculate (dis)similarity btw players2 and players1
 		Metric metric = new SortOrderMetric();
-		double distance = metric.distance(defaultPlayers,customPlayers);
+		double distance = metric.distance(players1,players2);
 		// write results to file filename in directory resultsDirectory
 		String resultsDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "results";
 		String filename = (mode.toString() + "results.txt");
 		try {
 			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
-			logger.logResults(args,defaultPlayers,customPlayers,distance);
+			logger.logResults(args,players1,players2,distance);
 			logger.close();
 		} catch(IOException e) {
 			e.printStackTrace();
