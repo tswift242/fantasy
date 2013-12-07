@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
 import football.players.*;
@@ -14,18 +16,23 @@ import football.util.logging.ResultsLogger;
 import football.util.metrics.Metric;
 import football.util.metrics.SortOrderMetric;
 
-public class CustomScoringHelper
+public final class CustomScoringHelper
 {
-	public CustomScoringHelper() { }
+	private static Map<Modes,List<Player>> modesToPlayersMap;
+
+	public CustomScoringHelper() {
+		modesToPlayersMap = initModesToPlayersMap();
+	}
 
 	// TODO: make mode and rules inputs when/if we make a GUI (or have setters)
 	public void run(String[] args) {
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		Modes mode = Modes.fromString(args[0]);
 
-		RuleMap rules = parseScoringRules(mode, args);
-		List<Player> defaultPlayers = getPlayers(mode);
+		RuleMap rules = mode.parseScoringRules(args);
+		List<Player> defaultPlayers = modesToPlayersMap.get(mode);
 		// make copy of players to preserve original order
+		// TODO: make deepCopy of modeMap using deepCopyList() to avoid repeating this step
 		List<Player> customPlayers = deepCopyList(defaultPlayers);
 		//evaluate all players with custom rules
 		scorePlayers(customPlayers, rules);
@@ -48,64 +55,41 @@ public class CustomScoringHelper
 		}
 	}
 
-	// get list of players to score based on input mode
-	private List<Player> getPlayers(Modes mode) {
-		//quickly initialize group of players based on mode
-		Player[] players = null;
-		switch(mode) {
-			case QB:
-				players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
+	// creates and initializes a map a player modes to corresponding lists of players
+	// to evaluate for that mode
+	private static Map<Modes,List<Player>> initModesToPlayersMap() {
+		Map<Modes,List<Player>> map = new EnumMap<Modes,List<Player>>(Modes.class);
+		// form list of players for each player position
+		QB[] qbs = new QB[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
 					Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
-				break;
-			case RB:
-				players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
-					Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
-				break;
-			case WR:
-				players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
-					Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
-				break;
-			case DEF:
-				players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
-					Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
-				break;
-			case K:
-				players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
-					Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
-				break;
-			default:
-				throw new IllegalArgumentException("Error: Invalid mode\n" + getUsage());
-		}
-
-		// put players into list
-		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
-		return playersList;
-	}
-
-	// parse scoring rules from args based on input mode
-	private RuleMap parseScoringRules(Modes mode, String[] args) {
-		RuleMap rules = null;
-		switch(mode) {
-			case QB:
-				rules = QB.parseScoringRules(args);
-				break;
-			case RB:
-				rules = RB.parseScoringRules(args);
-				break;
-			case WR:
-				rules = WR.parseScoringRules(args);
-				break;
-			case DEF:
-				rules = DEF.parseScoringRules(args);
-				break;
-			case K:
-				rules = K.parseScoringRules(args);
-				break;
-			default:
-				throw new IllegalArgumentException("Error: Invalid mode\n" + getUsage());
-		}
-
-		return rules;
+		List<Player> qbList = new ArrayList<Player>(Arrays.asList(qbs));
+		RB[] rbs = new RB[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
+			Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
+		List<Player> rbList = new ArrayList<Player>(Arrays.asList(rbs));
+		WR[] wrs = new WR[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
+			Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
+		List<Player> wrList = new ArrayList<Player>(Arrays.asList(wrs));
+		K[] ks = new K[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
+			Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
+		List<Player> kList = new ArrayList<Player>(Arrays.asList(ks));
+		DEF[] defs = new DEF[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
+			Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
+		List<Player> defList = new ArrayList<Player>(Arrays.asList(defs));
+		// create list of all players for Modes.ALL mode
+		List<Player> playersList = new ArrayList<Player>();
+		playersList.addAll(qbList);
+		playersList.addAll(rbList);
+		playersList.addAll(wrList);
+		playersList.addAll(kList);
+		playersList.addAll(defList);
+		// map mode to corresponding list of players
+		map.put(Modes.QB,qbList);
+		map.put(Modes.RB,rbList);
+		map.put(Modes.WR,wrList);
+		map.put(Modes.K,kList);
+		map.put(Modes.DEF,defList);
+		map.put(Modes.ALL,playersList);
+		return map;
 	}
 
 	// Make deep copy of list of players. 

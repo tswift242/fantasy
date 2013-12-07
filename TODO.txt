@@ -1,15 +1,13 @@
 Revisions/Refactoring:
--- enummap Modes to corresponding list of players
----- class/function to initialize these lists and map, as well as default RuleMap
+-- deepCopy modes map to avoid repetitive deepCopyList() calls
+-- create and use default RuleMap
 -- mirror process for customPlayers with defaultPlayers (2 sets of RuleMap's)
 -- look into computing entire RuleMap in one call of parseScoringRules()
--- try to make parseScoringRules() more OO and less static
 
 **** call static method of generic type
 **** reuse abstract method code
 -- avoid code repetition in argument validation in Player subclasses
 -- avoid code repetition in field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
--- look into Java logger
 -- make categoriesToString() static
 -- get rid of getYardsUnit() in categories classes?
 -- work on cmd line interface?
