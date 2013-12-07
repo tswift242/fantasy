@@ -18,10 +18,17 @@ import football.util.metrics.SortOrderMetric;
 
 public final class CustomScoringHelper
 {
+	// map of player modes to corresponding lists of players
 	private static Map<Modes,List<Player>> modesToPlayersMap;
+	// copy of the above map containing copy player lists
+	private static Map<Modes,List<Player>> modesToPlayersMap2;
 
 	public CustomScoringHelper() {
+		//TODO: add mappings for these dynamically as the modes are used in 
+		//run(), instead of statically adding all possible mappings at 
+		//construction time
 		modesToPlayersMap = initModesToPlayersMap();
+		modesToPlayersMap2 = deepCopyModesMap(modesToPlayersMap);
 	}
 
 	// TODO: make mode and rules inputs when/if we make a GUI (or have setters)
@@ -30,10 +37,13 @@ public final class CustomScoringHelper
 		Modes mode = Modes.fromString(args[0]);
 
 		RuleMap rules = mode.parseScoringRules(args);
+		/*if(!modesToPlayersMap.containsKey(mode)) {
+			addMapping(mode); // adds mapping for mode
+		}
+		List<Player> defaultPlayers = modesToPlayersMap.get(mode);*/
 		List<Player> defaultPlayers = modesToPlayersMap.get(mode);
 		// make copy of players to preserve original order
-		// TODO: make deepCopy of modeMap using deepCopyList() to avoid repeating this step
-		List<Player> customPlayers = deepCopyList(defaultPlayers);
+		List<Player> customPlayers = modesToPlayersMap2.get(mode);
 		//evaluate all players with custom rules
 		scorePlayers(customPlayers, rules);
 		// sort players according to default rules
@@ -57,7 +67,7 @@ public final class CustomScoringHelper
 
 	// creates and initializes a map a player modes to corresponding lists of players
 	// to evaluate for that mode
-	private static Map<Modes,List<Player>> initModesToPlayersMap() {
+	private Map<Modes,List<Player>> initModesToPlayersMap() {
 		Map<Modes,List<Player>> map = new EnumMap<Modes,List<Player>>(Modes.class);
 		// form list of players for each player position
 		QB[] qbs = new QB[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
@@ -90,6 +100,27 @@ public final class CustomScoringHelper
 		map.put(Modes.DEF,defList);
 		map.put(Modes.ALL,playersList);
 		return map;
+	}
+
+	// creates a deep copy of the input modes map by deep copying each players list 
+	// in map.values() and reassociating the list copy with the same mode enum in a
+	// new map
+	private Map<Modes,List<Player>> deepCopyModesMap(Map<Modes,List<Player>> map) {
+		Map<Modes,List<Player>> mapCopy = new EnumMap<Modes,List<Player>>(Modes.class);
+		// rebuild list of all players into list below by adding in every list we copy
+		List<Player> playersList = new ArrayList<Player>();
+		for(Modes mode : map.keySet()) {
+			// skip over list for Modes.ALL so that we avoid deep copying every player
+			// a second time, and instead incrementally build the listCopy for this case
+			// from all the other cases
+			if(mode != Modes.ALL) {
+				List<Player> listCopy = deepCopyList(map.get(mode));
+				mapCopy.put(mode,listCopy);
+				playersList.addAll(listCopy);
+			}
+		}
+		mapCopy.put(Modes.ALL,playersList);
+		return mapCopy;
 	}
 
 	// Make deep copy of list of players. 
