@@ -1,4 +1,4 @@
-package football;
+package football.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
-import football.players.*;
+import football.players.*; // for creating defaultRules
 import football.players.modes.Modes;
-import football.stats.Rule; //for creating defaultRules
+import football.stats.Rule; // for creating defaultRules
 import football.stats.RuleMap;
 import football.stats.categories.*;
 import football.util.logging.ResultsLogger;
@@ -43,17 +43,14 @@ public final class CustomScoringHelper
 		if(!modesToPlayersMap.containsKey(mode)) {
 			addMapping(mode);
 		}
-		// get first list of players for this mode
+		// get corresponding lists of players for this mode
 		List<Player> players1 = modesToPlayersMap.get(mode);
-		// get second list of players for this mode
 		List<Player> players2 = modesToPlayersMap2.get(mode);
-		// evaluate all players with first set of rules
-		//scorePlayers(players1,defaultRules);
-		// evaluate all players with second set of rules
+		// evaluate all players in each list with the corresponding set of rules
+		scorePlayers(players1,defaultRules);
 		scorePlayers(players2,rules);
-		// sort players according to first set of rules
+		// sort players according to their scores
 		Collections.sort(players1);
-		// sort players according to second set of rules
 		Collections.sort(players2);
 		// calculate (dis)similarity between players1 and players2
 		Metric metric = new SortOrderMetric();
@@ -131,7 +128,7 @@ public final class CustomScoringHelper
 		for(Modes mode : modesToPlayersMap.keySet()) {
 			// at this point, modes map contains a mapping for every mapping 
 			// except Modes.ALL. Therefore, we build up the mapping for Modes.ALL
-			// using the players list from all of the other mappings
+			// using the players lists from all of the other mappings
 			allPlayersList.addAll(modesToPlayersMap.get(mode));
 			allPlayersListCopy.addAll(modesToPlayersMap2.get(mode));
 		}
@@ -152,18 +149,19 @@ public final class CustomScoringHelper
 	// assign each player in players a score using the scoring rules in rules
 	private void scorePlayers(List<Player> players, RuleMap rules) {
 		for(Player player : players) {
-			player.evaluate(rules);
-
 			// if we're using default rules, "look up" correct score by using
-			// the saved defaultScore of each player instead of computing the score
-			/*if(rules.equals(defaultRules)) {
-				//TODO
+			// the saved defaultScore of each player instead of computing the
+			// score from scratch
+			if(rules.equals(defaultRules)) {
+				player.useDefaultScore();
 			} else {
 				player.evaluate(rules);
-			}*/
+			}
 		}
 	}
 
+	// create and initialize a RuleMap containing the default scoring rules
+	// for NFL.com leagues
 	private static RuleMap initDefaultRuleMap() {
 		RuleMap rules = new RuleMap();
 		rules.put(Pass.YDS, new Rule<Pass>(Pass.YDS, 1.0, 25));
