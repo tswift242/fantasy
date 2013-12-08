@@ -20,10 +20,11 @@ public final class PlayerUtil
 		for(Stat<T> stat : stats) {
 			T category = stat.getCategory();
 			Rule<T> rule = rules.get(category);
+			// rule == null means that there's no rule for the provided category, i.e.
+			// the rule isn't contributing to the players' scores
+			// (equivalent to a rule with value 0)
 			if(rule != null) {
 				sum += rule.evaluate(stat);
-			} else {
-				System.err.println("Warning: rule for category " + category.toString() + " is null");
 			}
 		}
 		return sum;
