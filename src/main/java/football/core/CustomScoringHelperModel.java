@@ -18,7 +18,7 @@ import football.util.logging.ResultsLogger;
 import football.util.metrics.Metric;
 import football.util.metrics.SortOrderMetric;
 
-public final class CustomScoringHelper
+public final class CustomScoringHelperModel
 {
 	// map of player modes to corresponding lists of players
 	private Map<Modes,List<Player>> modesToPlayersMap;
@@ -27,7 +27,7 @@ public final class CustomScoringHelper
 	// rule map containing default rules, according to NFL.com
 	public static final RuleMap defaultRules = initDefaultRuleMap();
 
-	public CustomScoringHelper() {
+	public CustomScoringHelperModel() {
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
 		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
 	}
