@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 
 import football.core.graphics.ScorerPanel;
 import football.core.graphics.RulesPanel;
+import football.core.graphics.PlayersPanel;
+import football.players.modes.Modes;
 
 public final class CustomScoringHelperView extends JFrame
 {
@@ -23,9 +25,10 @@ public final class CustomScoringHelperView extends JFrame
 		Dimension contentDimensions = new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		JPanel content = new JPanel();
 		//content.setLayout();
-		Dimension rulesDimensions = new Dimension((int)((contentDimensions.getWidth()/2) * 0.9),
+		/*Dimension rulesDimensions = new Dimension((int)((contentDimensions.getWidth()/2) * 0.9),
 												  (int)(contentDimensions.getHeight() * 0.25));
-		content.add(new RulesPanel(rulesDimensions));
+		content.add(new RulesPanel(rulesDimensions));*/
+		content.add(new PlayersPanel(model.getPlayerList(Modes.WR)));
 		content.setPreferredSize(contentDimensions);
 
 		this.setContentPane(content);

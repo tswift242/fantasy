@@ -1,7 +1,7 @@
 package football.players;
 
 import java.util.Set;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -20,7 +20,7 @@ public final class K extends Player
 	public K(String name, double defaultScore, Set<Stat<Kick>> kickStats)
 	{
 		super(name, defaultScore);
-		this.kickStats = new HashSet<Stat<Kick>>(kickStats);
+		this.kickStats = new LinkedHashSet<Stat<Kick>>(kickStats);
 		checkStatsSetNotNullWithCorrectSize(this.kickStats,Kick.class);
 	}
 
@@ -30,7 +30,7 @@ public final class K extends Player
 	}
 
 	public Set<Stat<Kick>> getKickStats() {
-		return new HashSet<Stat<Kick>>(kickStats);
+		return new LinkedHashSet<Stat<Kick>>(kickStats);
 	}
 
 	@Override
@@ -62,5 +62,10 @@ public final class K extends Player
 	@Override
 	public String categoriesToString() {
 		return Kick.valuesToString();
+	}
+
+	@Override
+	public String statsToString() {
+		return PlayerUtil.statsToString(kickStats);
 	}
 }

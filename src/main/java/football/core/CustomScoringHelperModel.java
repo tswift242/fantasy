@@ -20,6 +20,7 @@ import football.util.metrics.SortOrderMetric;
 
 public final class CustomScoringHelperModel
 {
+	//TODO: make these maps map to List<E extends Player> if we drop Modes.ALL
 	// map of player modes to corresponding lists of players
 	private Map<Modes,List<Player>> modesToPlayersMap;
 	// copy of the above map containing copy player lists
@@ -65,6 +66,15 @@ public final class CustomScoringHelperModel
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	//TODO: figure out how to differentiate two maps -- each ScorerPanel has own map?
+	public List<Player> getPlayerList(Modes mode) {
+		// add mapping for this mode if there isn't one already
+		if(!modesToPlayersMap.containsKey(mode)) {
+			addMapping(mode);
+		}
+		return modesToPlayersMap.get(mode);
 	}
 
 	// add mapping for mode to modes, and corresponding copy mapping to copy of modes map

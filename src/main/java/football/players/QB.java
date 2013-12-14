@@ -1,7 +1,7 @@
 package football.players;
 
 import java.util.Set;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -30,9 +30,9 @@ public final class QB extends Player
 	public QB(String name, double defaultScore, Set<Stat<Pass>> passStats, Set<Stat<Rush>> rushStats, Set<Stat<Misc>> miscStats)
 	{
 		super(name, defaultScore);
-		this.passStats = new HashSet<Stat<Pass>>(passStats);
-		this.rushStats = new HashSet<Stat<Rush>>(rushStats);
-		this.miscStats = new HashSet<Stat<Misc>>(miscStats);
+		this.passStats = new LinkedHashSet<Stat<Pass>>(passStats);
+		this.rushStats = new LinkedHashSet<Stat<Rush>>(rushStats);
+		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
 		checkStatsSetNotNullWithCorrectSize(this.passStats,Pass.class);
 		checkStatsSetNotNullWithCorrectSize(this.rushStats,Rush.class);
 		checkStatsSetNotNullWithCorrectSize(this.miscStats,Misc.class);
@@ -44,15 +44,15 @@ public final class QB extends Player
 	}
 
 	public Set<Stat<Pass>> getPassStats() {
-		return new HashSet<Stat<Pass>>(passStats);
+		return new LinkedHashSet<Stat<Pass>>(passStats);
 	}
 
 	public Set<Stat<Rush>> getRushStats() {
-		return new HashSet<Stat<Rush>>(rushStats);
+		return new LinkedHashSet<Stat<Rush>>(rushStats);
 	}
 
 	public Set<Stat<Misc>> getMiscStats() {
-		return new HashSet<Stat<Misc>>(miscStats);
+		return new LinkedHashSet<Stat<Misc>>(miscStats);
 	}
 
 	@Override
@@ -91,5 +91,12 @@ public final class QB extends Player
 	public String categoriesToString() {
 		String delimiter = "\t\t";
 		return (Pass.valuesToString() + delimiter + Rush.valuesToString() + delimiter + Misc.valuesToString());
+	}
+
+	@Override
+	public String statsToString() {
+		String delimiter = "\t";
+		return (PlayerUtil.statsToString(passStats) + delimiter + PlayerUtil.statsToString(rushStats) + 
+				delimiter + PlayerUtil.statsToString(miscStats));
 	}
 }

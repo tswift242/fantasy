@@ -1,7 +1,7 @@
 package football.players;
 
 import java.util.Set;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -28,8 +28,8 @@ public final class WR extends Player
 	public WR(String name, double defaultScore, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
 	{
 		super(name, defaultScore);
-		this.recStats = new HashSet<Stat<Rec>>(recStats);
-		this.miscStats = new HashSet<Stat<Misc>>(miscStats);
+		this.recStats = new LinkedHashSet<Stat<Rec>>(recStats);
+		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
 		checkStatsSetNotNullWithCorrectSize(this.recStats,Rec.class);
 		checkStatsSetNotNullWithCorrectSize(this.miscStats,Misc.class);
 	}
@@ -40,11 +40,11 @@ public final class WR extends Player
 	}
 
 	public Set<Stat<Rec>> getRecStats() {
-		return new HashSet<Stat<Rec>>(recStats);
+		return new LinkedHashSet<Stat<Rec>>(recStats);
 	}
 
 	public Set<Stat<Misc>> getMiscStats() {
-		return new HashSet<Stat<Misc>>(miscStats);
+		return new LinkedHashSet<Stat<Misc>>(miscStats);
 	}
 
 	@Override
@@ -80,5 +80,10 @@ public final class WR extends Player
 	@Override
 	public String categoriesToString() {
 		return (Rec.valuesToString() + "\t\t" + Misc.valuesToString());
+	}
+
+	@Override
+	public String statsToString() {
+		return (PlayerUtil.statsToString(recStats) + "\t" + PlayerUtil.statsToString(miscStats));
 	}
 }

@@ -57,6 +57,16 @@ public final class PlayerUtil
 		return rules;
 	}
 
+	//TODO: combine this with ResultsLogger.listToString() and make generic toString() for
+	//collections?
+	public static <T extends Enum<T> & StatType> String statsToString(Set<Stat<T>> set) {
+		String result = "";
+		for(Stat<T> stat : set) {
+			result += String.format("%-6s ",Integer.toString(stat.getIntValue()));
+		}
+		return result.trim();
+	}
+
 	//utility helper function for parseScoringRulesAndEvaluate()
 	//calculates cumulative sum of array a; each element in output array is the sum of elements 
 	//in input array up to that index

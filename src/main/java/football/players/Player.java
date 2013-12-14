@@ -88,4 +88,7 @@ public abstract class Player implements Comparable<Player>
 	}
 
 	public abstract String categoriesToString();
+
+	// returns all player's stat values
+	public abstract String statsToString();
 }

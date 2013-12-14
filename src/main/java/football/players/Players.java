@@ -1,7 +1,8 @@
 package football.players;
 
 import java.util.Set;
-import java.util.HashSet;
+//import java.util.HashSet;
+import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.Stat;
@@ -145,7 +146,8 @@ public final class Players {
 	//utility for easy set construction
 	@SafeVarargs //ignore "unchecked generic array creation for varargs" -- Java 7 ONLY
 	private static <T extends Enum<T> & StatType> Set<Stat<T>> newSet(Stat<T> ... stats) {
-		Set<Stat<T>> set = new HashSet<Stat<T>>();
+		//Set<Stat<T>> set = new HashSet<Stat<T>>();
+		Set<Stat<T>> set = new LinkedHashSet<Stat<T>>();
 		for(Stat<T> stat : stats) {
 			checkNotNull(stat, "stat %s is null", stat.toString());
 			if(!set.add(stat)) {

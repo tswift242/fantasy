@@ -1,7 +1,7 @@
 package football.players;
 
 import java.util.Set;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.stats.RuleMap;
@@ -19,7 +19,7 @@ public final class DEF extends Player
 	public DEF(String name, double defaultScore, Set<Stat<Def>> defStats)
 	{
 		super(name, defaultScore);
-		this.defStats = new HashSet<Stat<Def>>(defStats);
+		this.defStats = new LinkedHashSet<Stat<Def>>(defStats);
 		checkStatsSetNotNullWithCorrectSize(this.defStats,Def.class);
 		//TODO: check all elements of set are non-null?
 	}
@@ -31,7 +31,7 @@ public final class DEF extends Player
 
 	public Set<Stat<Def>> getDefStats() {
 		//TODO: return Collections.unmodifiableSet() if type changed from LinkedHashSet to Set
-		return new HashSet<Stat<Def>>(defStats);
+		return new LinkedHashSet<Stat<Def>>(defStats);
 	}
 
 	@Override
@@ -63,5 +63,10 @@ public final class DEF extends Player
 	@Override
 	public String categoriesToString() {
 		return Def.valuesToString();
+	}
+
+	@Override
+	public String statsToString() {
+		return PlayerUtil.statsToString(defStats);
 	}
 }
