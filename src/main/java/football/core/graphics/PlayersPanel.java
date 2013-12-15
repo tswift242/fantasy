@@ -17,13 +17,12 @@ public final class PlayersPanel extends JPanel
 	private static final long serialVersionUID = 7401650925506787631L;
 	private static final String WHITESPACE_REGEX = "\\s+";
 
-	//TODO: create enummap of Modes to these, or make gui a tabbed pane with modes for tabs
 	public PlayersPanel(List<Player> players) {
 		int numPlayers = players.size();
 		// stat categories for this group of players
 		String[] categories = players.get(0).categoriesToString().split(WHITESPACE_REGEX);
 		int numStats = categories.length; // numStats == numCategories
-		//TODO: change layout from grid to gridbag to enable player name to be larger than stats
+		//TODO: change layout from grid to gridbag to enable player name to be larger than stats?
 		this.setLayout(new GridLayout(numPlayers+1, numStats+2));
 		// add top row for stat categories
 		this.add(new JLabel("Players", JLabel.CENTER));
@@ -40,6 +39,5 @@ public final class PlayersPanel extends JPanel
 			}
 			this.add(new JLabel(Double.toString(player.getScore()), JLabel.CENTER));
 		}
-		//TODO: need "recalculate scores" button
 	}
 }

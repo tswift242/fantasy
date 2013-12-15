@@ -18,8 +18,9 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPan
 	private static final long serialVersionUID = -6296168608062180190L;
 	// allows up to pattern of -dd.d/dd
 	private static final int RULE_FIELD_NUM_COLS = 8;
+	//TODO: create map of text fields to categories
 
-	public StatTypeRulesPanel(Class<T> statType, Dimension dimensions) {
+	public StatTypeRulesPanel(Class<T> statType) {
 		// get categories for given stat type
 		T[] categories = statType.getEnumConstants();
 		int numCategories = categories.length;
@@ -27,16 +28,14 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPan
 		this.setLayout(new GridLayout(1, 2*numCategories));
 		// create label and text field for every category and add
 		// them to the panel
-		for(int i = 0; i < numCategories; i++) {
-			T category = categories[i];
+		for(T category : categories) {
 			this.add(new JLabel(category.toString() + ": "));
-			//TODO: keep reference to these in a list or map
 			//TODO: set text to be default rule value
 			JTextField ruleField = new JTextField("0.0", RULE_FIELD_NUM_COLS);
 			//TODO: play with this, as well as preferred size of panel
 			ruleField.setHorizontalAlignment(JTextField.RIGHT);
 			this.add(ruleField);
 		}
-		this.setPreferredSize(dimensions);
+		//this.setPreferredSize(dimensions);
 	}
 }

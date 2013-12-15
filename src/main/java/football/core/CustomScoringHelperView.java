@@ -26,9 +26,10 @@ public final class CustomScoringHelperView extends JFrame
 		JPanel content = new JPanel();
 		//content.setLayout();
 		/*Dimension rulesDimensions = new Dimension((int)((contentDimensions.getWidth()/2) * 0.9),
-												  (int)(contentDimensions.getHeight() * 0.25));
-		content.add(new RulesPanel(rulesDimensions));*/
-		content.add(new PlayersPanel(model.getPlayerList(Modes.WR)));
+												  (int)(contentDimensions.getHeight() * 0.25));*/
+		//content.add(new RulesPanel());
+		//content.add(new PlayersPanel(model.getPlayersList(Modes.QB)));
+		content.add(new ScorerPanel(model));
 		content.setPreferredSize(contentDimensions);
 
 		this.setContentPane(content);

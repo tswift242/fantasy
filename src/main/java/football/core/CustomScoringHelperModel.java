@@ -69,12 +69,18 @@ public final class CustomScoringHelperModel
 	}
 
 	//TODO: figure out how to differentiate two maps -- each ScorerPanel has own map?
-	public List<Player> getPlayerList(Modes mode) {
+	//***TODO: remove this due to method below
+	public List<Player> getPlayersList(Modes mode) {
 		// add mapping for this mode if there isn't one already
 		if(!modesToPlayersMap.containsKey(mode)) {
 			addMapping(mode);
 		}
 		return modesToPlayersMap.get(mode);
+	}
+
+	//TODO: keep this or not?
+	public Map<Modes,List<Player>> getModesToPlayersMap() {
+		return modesToPlayersMap;
 	}
 
 	// add mapping for mode to modes, and corresponding copy mapping to copy of modes map
