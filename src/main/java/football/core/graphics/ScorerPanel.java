@@ -1,6 +1,8 @@
 package football.core.graphics;
 
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import football.core.CustomScoringHelperModel;
@@ -20,19 +22,28 @@ public final class ScorerPanel extends JPanel
 	//TODO: should have enummap of Modes to PlayerPanel's
 	private RulesPanel rules;
 	private PlayersPanel players;
+	private JButton scoreButton;
 
-	//TODO: pass in model, or this map??
+	//TODO: pass in model, or map??
 	public ScorerPanel(CustomScoringHelperModel model) {
 		//this.modesToPlayersMap = modesToPlayersMap;
 		this.model = model;
 		rules = new RulesPanel();
 		setPlayersPanel(DEFAULT_MODE);
-		//TODO: change layout from grid to gridbag to enable players panel to be larger 
-		//than rules panel
-		this.setLayout(new GridLayout(2, 1));
-		this.add(rules);
-		this.add(players);
-		//TODO: need "recalculate scores" button
+		scoreButton = new JButton("Recalculate scores");
+
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.gridx = 0;
+		c.gridy = 0;
+		c.anchor = GridBagConstraints.CENTER;
+
+		this.add(rules, c);
+		c.gridy++;
+		this.add(scoreButton, c); //TODO: play with placement
+		c.gridy++;
+		this.add(players, c);
+		c.gridy++;
 	}
 
 	public void setPlayersPanel(Modes mode) {
