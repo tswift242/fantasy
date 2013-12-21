@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ItemListener;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +25,8 @@ public final class CustomScoringHelperView extends JFrame
 
 	private CustomScoringHelperModel model;
 
+	private JComboBox<Modes> modesBox;
+
 	public CustomScoringHelperView(CustomScoringHelperModel model, String title) {
 		super(title);
 		this.model = model;
@@ -43,7 +46,7 @@ public final class CustomScoringHelperView extends JFrame
 		c.insets = new Insets(padding, padding, padding, padding);
 
 		modePanel.add(new JLabel("Select a player mode: "), c);
-		JComboBox<Modes> modesBox = new JComboBox<Modes>(Modes.values());
+		modesBox = new JComboBox<Modes>(Modes.values());
 		c.gridx++;
 		modePanel.add(modesBox, c);
 
@@ -75,9 +78,22 @@ public final class CustomScoringHelperView extends JFrame
 
 		//TODO: pass window closing event to controller
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//System.out.println("%%%%%%% mode: " + getMode().toString());
 	}
 
 	public CustomScoringHelperView(CustomScoringHelperModel model) {
 		this(model, "Fantasy Football Custom Scoring Helper");
+	}
+
+	public Modes getMode() {
+		return (Modes)modesBox.getSelectedItem();
+	}
+
+	/*
+	 * listener methods
+	 */
+	public void addModeListener(ItemListener al) {
+		modesBox.addItemListener(al);
 	}
 }
