@@ -2,6 +2,7 @@ package football.core.graphics;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -37,13 +38,15 @@ public final class ScorerPanel extends JPanel
 		c.gridx = 0;
 		c.gridy = 0;
 		c.anchor = GridBagConstraints.CENTER;
+		int padding = 5;
+		c.insets = new Insets(padding, padding, padding, padding);
 
 		this.add(rules, c);
 		c.gridy++;
 		this.add(scoreButton, c); //TODO: play with placement
 		c.gridy++;
+		c.gridheight = 2; //TODO: this isn't working
 		this.add(players, c);
-		c.gridy++;
 	}
 
 	public void setPlayersPanel(Modes mode) {
