@@ -21,13 +21,13 @@ public final class CustomScoringHelperController
 
 	class ModeListener implements ItemListener
 	{
-		//TODO: this doesn't ever fire!!!!!!!!!!!!
 		@Override
 		public void  itemStateChanged(ItemEvent e) {
-			//TODO
 			if(e.getStateChange() == ItemEvent.SELECTED) {
 				Modes mode = view.getMode();
-				System.out.println("%%%%%%% mode: " + mode.toString());
+				//System.out.println("%%%%%%% mode: " + mode.toString());
+				model.setMode(mode);
+				//TODO: set players panel in view
 			}
 		}
 	}

@@ -16,7 +16,6 @@ import football.players.modes.Modes;
 public final class ScorerPanel extends JPanel
 {
 	private static final long serialVersionUID = -4593451078660624536L;
-	private static final Modes DEFAULT_MODE = Modes.QB;
 
 	//private Map<Modes,List<Player>> modesToPlayersMap;
 	private CustomScoringHelperModel model; //TODO: think about this
@@ -26,11 +25,11 @@ public final class ScorerPanel extends JPanel
 	private JButton scoreButton;
 
 	//TODO: pass in model, or map??
-	public ScorerPanel(CustomScoringHelperModel model) {
+	public ScorerPanel(CustomScoringHelperModel model, Modes initMode) {
 		//this.modesToPlayersMap = modesToPlayersMap;
 		this.model = model;
 		rules = new RulesPanel();
-		setPlayersPanel(DEFAULT_MODE);
+		setPlayersPanel(initMode);
 		scoreButton = new JButton("Recalculate scores");
 
 		this.setLayout(new GridBagLayout());

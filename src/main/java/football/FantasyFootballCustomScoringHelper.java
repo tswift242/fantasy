@@ -2,6 +2,7 @@ package football;
 
 import javax.swing.JFrame;
 
+import football.core.CustomScoringHelperController;
 import football.core.CustomScoringHelperModel;
 import football.core.CustomScoringHelperView;
 
@@ -12,6 +13,7 @@ public class FantasyFootballCustomScoringHelper
 		CustomScoringHelperModel model = new CustomScoringHelperModel();
 		model.run(args);
 		CustomScoringHelperView view = new CustomScoringHelperView(model);
+		CustomScoringHelperController controller = new CustomScoringHelperController(model, view);
 		view.setVisible(true);
 	}
 }

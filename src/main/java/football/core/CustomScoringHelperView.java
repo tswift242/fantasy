@@ -30,6 +30,7 @@ public final class CustomScoringHelperView extends JFrame
 	public CustomScoringHelperView(CustomScoringHelperModel model, String title) {
 		super(title);
 		this.model = model;
+		Modes initMode = model.getDefaultMode();
 
 		// set up content panel
 		JPanel content = new JPanel();
@@ -47,6 +48,7 @@ public final class CustomScoringHelperView extends JFrame
 
 		modePanel.add(new JLabel("Select a player mode: "), c);
 		modesBox = new JComboBox<Modes>(Modes.values());
+		modesBox.setSelectedItem(initMode);
 		c.gridx++;
 		modePanel.add(modesBox, c);
 
@@ -63,10 +65,10 @@ public final class CustomScoringHelperView extends JFrame
 		// scorer panels
 		content.add(modePanel, c);
 		//TODO: differentiate scorer panels
-		ScorerPanel panel1 = new ScorerPanel(model);
+		ScorerPanel panel1 = new ScorerPanel(model, initMode);
 		c.gridy++;
 		content.add(panel1, c);
-		/*ScorerPanel panel2 = new ScorerPanel(model);
+		/*ScorerPanel panel2 = new ScorerPanel(model, initMode);
 		c.gridx++;
 		content.add(panel2, c);*/
 		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -78,8 +80,6 @@ public final class CustomScoringHelperView extends JFrame
 
 		//TODO: pass window closing event to controller
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		//System.out.println("%%%%%%% mode: " + getMode().toString());
 	}
 
 	public CustomScoringHelperView(CustomScoringHelperModel model) {

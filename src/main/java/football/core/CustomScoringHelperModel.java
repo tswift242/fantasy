@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
-import football.players.*; // for creating defaultRules
+import football.players.*; // for creating DEFAULT_RULES
 import football.players.modes.Modes;
-import football.stats.Rule; // for creating defaultRules
+import football.stats.Rule; // for creating DEFAULT_RULES
 import football.stats.RuleMap;
 import football.stats.categories.*;
 import football.util.logging.ResultsLogger;
@@ -20,20 +20,25 @@ import football.util.metrics.SortOrderMetric;
 
 public final class CustomScoringHelperModel
 {
+	// rule map containing default rules, according to NFL.com
+	private final RuleMap DEFAULT_RULES = initDefaultRuleMap();
+	private final Modes DEFAULT_MODE = Modes.QB;
+
 	//TODO: make these maps map to List<E extends Player> if we drop Modes.ALL
 	// map of player modes to corresponding lists of players
 	private Map<Modes,List<Player>> modesToPlayersMap;
 	// copy of the above map containing copy player lists
 	private Map<Modes,List<Player>> modesToPlayersMap2;
-	// rule map containing default rules, according to NFL.com
-	public static final RuleMap defaultRules = initDefaultRuleMap();
+	private Modes currentMode;
 
 	public CustomScoringHelperModel() {
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
 		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
+		currentMode = DEFAULT_MODE;
 	}
 
 	// TODO: make mode and rules inputs when/if we make a GUI (or have setters)
+	// command line version
 	public void run(String[] args) {
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		Modes mode = Modes.fromString(args[0]);
@@ -48,7 +53,7 @@ public final class CustomScoringHelperModel
 		List<Player> players1 = modesToPlayersMap.get(mode);
 		List<Player> players2 = modesToPlayersMap2.get(mode);
 		// evaluate all players in each list with the corresponding set of rules
-		scorePlayers(players1,defaultRules);
+		scorePlayers(players1,DEFAULT_RULES);
 		scorePlayers(players2,rules);
 		// sort players according to their scores
 		Collections.sort(players1);
@@ -68,6 +73,14 @@ public final class CustomScoringHelperModel
 		}
 	}
 
+	public RuleMap getDefaultRules() {
+		return DEFAULT_RULES;
+	}
+
+	public Modes getDefaultMode() {
+		return DEFAULT_MODE;
+	}
+
 	//TODO: figure out how to differentiate two maps -- each ScorerPanel has own map?
 	//***TODO: remove this due to method below
 	public List<Player> getPlayersList(Modes mode) {
@@ -83,46 +96,25 @@ public final class CustomScoringHelperModel
 		return modesToPlayersMap;
 	}
 
-	// add mapping for mode to modes, and corresponding copy mapping to copy of modes map
+	public void setMode(Modes mode) {
+		currentMode = mode;
+	}
+
+	// add mapping for mode to modes map, and corresponding copy mapping to copy of modes map
 	// Allows for dynamically populating the modes map so that we don't spend unnecessary
 	// computation creating lists of players for modes that aren't used
 	private void addMapping(Modes mode) {
-		// quickly initialize group of players based on mode
-		Player[] players = null;
-		switch(mode) {
-				case QB:
-						players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
-								Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
-						break;
-				case RB:
-						players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
-								Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
-						break;
-				case WR:
-						players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
-								Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
-						break;
-				case K:
-						players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
-								Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
-						break;
-				case DEF:
-						players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
-								Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
-						break;
-				case ALL:
-						populateModesToPlayersMap();
-						return;
-				default:
-						throw new IllegalArgumentException("Error: Invalid mode\n" + getUsage());
-		}
-
-		// put players into list
-		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
-		// map mode to players list
-		modesToPlayersMap.put(mode, playersList);
-		modesToPlayersMap2.put(mode, deepCopyList(playersList));
+		List<Player> players = createPlayersList(mode);
+		modesToPlayersMap.put(mode, players);
+		modesToPlayersMap2.put(mode, deepCopyList(players));
 	}
+
+	// add players list mapping for the given mode to the specified map
+	// useful for when we only want to update one map
+	/*private void addMapping(Modes mode, Map<Modes,List<Player>> map) {
+		List<Player> players = createPlayersList(mode);
+		map.put(mode, players);
+	}*/
 
 	// adds all mappings into modes map which are not already accounted for,
 	// and then accumulates the players lists from these mappings in order to
@@ -168,12 +160,51 @@ public final class CustomScoringHelperModel
 			// if we're using default rules, "look up" correct score by using
 			// the saved defaultScore of each player instead of computing the
 			// score from scratch
-			if(rules.equals(defaultRules)) {
+			if(rules.equals(DEFAULT_RULES)) {
 				player.useDefaultScore();
 			} else {
 				player.evaluate(rules);
 			}
 		}
+	}
+
+	// creates list of players for the given mode
+	// Note, this should only be used in conjunction with addMapping() when the input mode
+	// is selected for the first time. Otherwise, getPlayersList() should be called.
+	private static List<Player> createPlayersList(Modes mode) {
+		// quickly initialize group of players based on mode
+		Player[] players = null;
+		switch(mode) {
+				case QB:
+						players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
+								Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
+						break;
+				case RB:
+						players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
+								Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
+						break;
+				case WR:
+						players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
+								Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
+						break;
+				case K:
+						players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
+								Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
+						break;
+				case DEF:
+						players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
+								Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
+						break;
+				case ALL:
+						// this list is built up from all other lists in addMapping()
+						return null;
+				default:
+						throw new IllegalArgumentException("Error: Invalid mode\n" + getUsage());
+		}
+
+		// put players into list
+		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
+		return playersList;
 	}
 
 	// create and initialize a RuleMap containing the default scoring rules
@@ -207,7 +238,7 @@ public final class CustomScoringHelperModel
 	}
 
 	// get string detailing command line usage
-	private String getUsage() {
+	private static String getUsage() {
 		String result = "";
 		String indent = "\t\t";
 		result += "Usage: java FantasyFootballCustomScoringHelper <mode> <sc1> ... <scN>,\twhere\n";
