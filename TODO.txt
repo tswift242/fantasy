@@ -1,4 +1,5 @@
 Revisions/Refactoring:
+***********-- renamve football/ to customerscorer/??
 -- look into computing entire RuleMap in one call of parseScoringRules()
 
 **** call static method of generic type

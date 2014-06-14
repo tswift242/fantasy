@@ -33,7 +33,7 @@ public final class ValidateUtil
 		//ugly, but no better alternative to using reflection (I think)
 		int typeSize;
 		try {
-			typeSize = (int)type.getDeclaredMethod("size").invoke(null);
+			typeSize = (Integer)type.getDeclaredMethod("size").invoke(null);
 		} catch(NoSuchMethodException e) {
 			throw new IllegalArgumentException(String.format("Class %s does not have a 'size' method",type.toString()), e);
 		} catch(IllegalAccessException e) {
