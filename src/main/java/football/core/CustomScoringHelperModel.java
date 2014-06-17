@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import football.players.*; // for creating DEFAULT_RULES
 import football.players.modes.Modes;
 import football.stats.Rule; // for creating DEFAULT_RULES
@@ -20,6 +23,8 @@ import football.util.metrics.SortOrderMetric;
 
 public final class CustomScoringHelperModel
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
 	// rule map containing default rules, according to NFL.com
 	private final RuleMap DEFAULT_RULES = initDefaultRuleMap();
 	private final Modes DEFAULT_MODE = Modes.QB;
@@ -35,11 +40,13 @@ public final class CustomScoringHelperModel
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
 		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
 		currentMode = DEFAULT_MODE;
+		logger.info("Constructing model with default mode " + DEFAULT_MODE.toString());
+		logger.debug("Using default rule map of:\n{}", DEFAULT_RULES.toString());
 	}
 
-	// TODO: make mode and rules inputs when/if we make a GUI (or have setters)
 	// command line version
 	public void run(String[] args) {
+		logger.info("Running model with args: {}", args.toString());
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		Modes mode = Modes.fromString(args[0]);
 
@@ -49,6 +56,13 @@ public final class CustomScoringHelperModel
 		if(!modesToPlayersMap.containsKey(mode)) {
 			addMapping(mode);
 		}
+		run(mode, rules, args);
+	}
+
+	//TODO: phase out version above and use this instead, and get read of args arg
+	// GUI version
+	private void run(Modes mode, RuleMap rules, String[] args) {
+		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
 		// get corresponding lists of players for this mode
 		List<Player> players1 = modesToPlayersMap.get(mode);
 		List<Player> players2 = modesToPlayersMap2.get(mode);
@@ -57,19 +71,23 @@ public final class CustomScoringHelperModel
 		scorePlayers(players2,rules);
 		// sort players according to their scores
 		Collections.sort(players1);
+		logger.info("Players sorted by default rules:\n{}", players1.toString());
+		logger.info("Players sorted by custom rules:\n{}", players2.toString());
 		Collections.sort(players2);
 		// calculate (dis)similarity between players1 and players2
 		Metric metric = new SortOrderMetric();
 		double distance = metric.distance(players1,players2);
+		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
 		// write results to file filename in directory resultsDirectory
 		String resultsDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "results";
 		String filename = (mode.toString() + "results.txt");
+		logger.info("Writing results to {}/{}", resultsDirectory, filename);
 		try {
 			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
 			logger.logResults(args,players1,players2,distance);
 			logger.close();
 		} catch(IOException e) {
-			e.printStackTrace();
+			logger.error("Unable to write results: {}", e.toString());
 		}
 	}
 

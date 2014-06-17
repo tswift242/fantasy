@@ -1,6 +1,8 @@
 Revisions/Refactoring:
-***********-- renamve football/ to customerscorer/??
+***-- create separate listeners package
+--Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent (look into using only one list of players?)
 -- look into computing entire RuleMap in one call of parseScoringRules()
+***********-- rename football/ to customerscorer/??
 
 **** call static method of generic type
 **** reuse abstract method code

@@ -3,10 +3,15 @@ package football.core;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import football.players.modes.Modes;
 
 public final class CustomScoringHelperController
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
 	private CustomScoringHelperModel model;
 	private CustomScoringHelperView view;
 
@@ -19,14 +24,14 @@ public final class CustomScoringHelperController
 		view.addModeListener(new ModeListener());
 	}
 
-	class ModeListener implements ItemListener
+	private class ModeListener implements ItemListener
 	{
 		@Override
-		public void  itemStateChanged(ItemEvent e) {
+		public void itemStateChanged(ItemEvent e) {
 			if(e.getStateChange() == ItemEvent.SELECTED) {
-				Modes mode = view.getMode();
-				//System.out.println("%%%%%%% mode: " + mode.toString());
-				model.setMode(mode);
+				logger.info("New mode selected: " + e.getItem().toString());
+				Modes newMode = (Modes)e.getItem();
+				model.setMode(newMode);
 				//TODO: set players panel in view
 			}
 		}

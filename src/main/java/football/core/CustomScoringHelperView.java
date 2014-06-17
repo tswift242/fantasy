@@ -10,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import football.core.graphics.ScorerPanel;
 import football.core.graphics.RulesPanel;
 import football.core.graphics.PlayersPanel;
@@ -19,6 +22,8 @@ import football.core.graphics.StatTypeRulesPanel;
 
 public final class CustomScoringHelperView extends JFrame
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
 	private static final long serialVersionUID = -3565226027504869570L;
 	private final int DEFAULT_WIDTH = 1400;
 	private final int DEFAULT_HEIGHT = 800;
@@ -27,8 +32,10 @@ public final class CustomScoringHelperView extends JFrame
 
 	private JComboBox<Modes> modesBox;
 
+	//TODO: break this up into helper methods
 	public CustomScoringHelperView(CustomScoringHelperModel model, String title) {
 		super(title);
+		logger.info("Creating view with name: {}", title);
 		this.model = model;
 		Modes initMode = model.getDefaultMode();
 
@@ -64,7 +71,7 @@ public final class CustomScoringHelperView extends JFrame
 
 		// scorer panels
 		content.add(modePanel, c);
-		//TODO: differentiate scorer panels
+		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
 		ScorerPanel panel1 = new ScorerPanel(model, initMode);
 		c.gridy++;
 		content.add(panel1, c);
@@ -84,10 +91,6 @@ public final class CustomScoringHelperView extends JFrame
 
 	public CustomScoringHelperView(CustomScoringHelperModel model) {
 		this(model, "Fantasy Football Custom Scoring Helper");
-	}
-
-	public Modes getMode() {
-		return (Modes)modesBox.getSelectedItem();
 	}
 
 	/*

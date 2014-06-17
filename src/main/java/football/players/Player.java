@@ -52,7 +52,7 @@ public abstract class Player implements Comparable<Player>
 		return score;
 	}
 
-	//players consider equal if their names match
+	//players considered equal if their names match
 	@Override
 	public boolean equals(Object o) {
 		if((o == null) || (this.getClass() != o.getClass())) {
