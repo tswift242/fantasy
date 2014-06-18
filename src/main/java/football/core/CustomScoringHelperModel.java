@@ -46,7 +46,7 @@ public final class CustomScoringHelperModel
 
 	// command line version
 	public void run(String[] args) {
-		logger.info("Running model with args: {}", args.toString());
+		logger.info("Running model with args: {}", Arrays.toString(args));
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		Modes mode = Modes.fromString(args[0]);
 
@@ -72,16 +72,17 @@ public final class CustomScoringHelperModel
 		// sort players according to their scores
 		Collections.sort(players1);
 		logger.info("Players sorted by default rules:\n{}", players1.toString());
-		logger.info("Players sorted by custom rules:\n{}", players2.toString());
 		Collections.sort(players2);
+		logger.info("Players sorted by custom rules:\n{}", players2.toString());
 		// calculate (dis)similarity between players1 and players2
 		Metric metric = new SortOrderMetric();
 		double distance = metric.distance(players1,players2);
 		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
 		// write results to file filename in directory resultsDirectory
-		String resultsDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "results";
+		String fileSeparator = System.getProperty("file.separator");
+		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
 		String filename = (mode.toString() + "results.txt");
-		logger.info("Writing results to {}/{}", resultsDirectory, filename);
+		logger.info("Writing results to {}{}{}", resultsDirectory, fileSeparator, filename);
 		try {
 			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
 			logger.logResults(args,players1,players2,distance);

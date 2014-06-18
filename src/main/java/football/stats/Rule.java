@@ -50,4 +50,14 @@ public final class Rule<T extends Enum<T> & StatType> extends TypedValue<T,Doubl
 				ruleCategory.toString(),statCategory.toString());
 		return (this.normalizedValue * stat.getIntValue());
 	}
+
+	@Override
+	public String toString() {
+		String categoryValuePair = super.toString();
+		if(unit == 1) {
+			return categoryValuePair;
+		} else {
+			return String.format("(%s, %s / %d)", category.toString(), value.toString(), unit);
+		}
+	}
 }

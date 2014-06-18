@@ -34,7 +34,7 @@ public abstract class TypedValue<T extends Enum<T> & StatType, V extends Number>
 
 	@Override
 	public String toString() {
-		return String.format("(%s,%s)", category.toString(), value.toString());
+		return String.format("(%s, %s)", category.toString(), value.toString());
 	}
 
 	//typedvalues considered equal if they're of the same category

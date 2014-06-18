@@ -47,7 +47,8 @@ public final class RuleMap
 	public String toString() {
 		String result = "";
 		for(Object o : map.keySet()) {
-			result += (o.toString() + ": " + map.get(o).toString() + "\n");
+			//result += (o.toString() + ": " + map.get(o).toString() + "\n");
+			result += (map.get(o).toString() + "\n");
 		}
 		return result.trim();
 	}
