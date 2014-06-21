@@ -92,6 +92,9 @@ public final class CustomScoringHelperModel
 		}
 	}
 
+	/*
+	 * Getters
+	 */
 	public RuleMap getDefaultRules() {
 		return DEFAULT_RULES;
 	}
@@ -115,6 +118,9 @@ public final class CustomScoringHelperModel
 		return modesToPlayersMap;
 	}
 
+	/*
+	 * Setters
+	 */
 	public void setMode(Modes mode) {
 		currentMode = mode;
 	}

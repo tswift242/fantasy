@@ -51,5 +51,7 @@ public final class ScorerPanel extends JPanel
 	public void setPlayersPanel(Modes mode) {
 		//TODO -- figure out info passing
 		players = new PlayersPanel(model.getPlayersList(mode));
+		System.out.println("set players panel to mode " + mode.toString());
+		//players.repaint();
 	}
 }

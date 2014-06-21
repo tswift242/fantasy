@@ -30,6 +30,7 @@ public final class CustomScoringHelperView extends JFrame
 
 	private CustomScoringHelperModel model;
 
+	private ScorerPanel panel1, panel2;
 	private JComboBox<Modes> modesBox;
 
 	//TODO: break this up into helper methods
@@ -69,13 +70,13 @@ public final class CustomScoringHelperView extends JFrame
 		//content.add(new RulesPanel());
 		//content.add(new PlayersPanel(model.getPlayersList(Modes.QB)));
 
-		// scorer panels
+		// scorer panels / add panels to content
 		content.add(modePanel, c);
 		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
 		ScorerPanel panel1 = new ScorerPanel(model, initMode);
 		c.gridy++;
 		content.add(panel1, c);
-		/*ScorerPanel panel2 = new ScorerPanel(model, initMode);
+		/*panel2 = new ScorerPanel(model, initMode);
 		c.gridx++;
 		content.add(panel2, c);*/
 		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -91,6 +92,14 @@ public final class CustomScoringHelperView extends JFrame
 
 	public CustomScoringHelperView(CustomScoringHelperModel model) {
 		this(model, "Fantasy Football Custom Scoring Helper");
+	}
+
+	/*
+	 * Setters
+	 */
+	public void setMode(Modes mode) {
+		panel1.setPlayersPanel(mode);
+		//panel2.setPlayersPanel(mode);
 	}
 
 	/*
