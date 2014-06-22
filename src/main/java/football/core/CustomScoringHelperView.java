@@ -73,7 +73,7 @@ public final class CustomScoringHelperView extends JFrame
 		// scorer panels / add panels to content
 		content.add(modePanel, c);
 		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
-		ScorerPanel panel1 = new ScorerPanel(model, initMode);
+		panel1 = new ScorerPanel(model, initMode);
 		c.gridy++;
 		content.add(panel1, c);
 		/*panel2 = new ScorerPanel(model, initMode);

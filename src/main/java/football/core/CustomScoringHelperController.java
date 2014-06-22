@@ -33,7 +33,7 @@ public final class CustomScoringHelperController
 				Modes newMode = (Modes)e.getItem();
 				model.setMode(newMode);
 				//TODO: set players panel in view
-				view.setMode(mode);
+				view.setMode(newMode);
 			}
 		}
 	}

@@ -59,7 +59,7 @@ public final class CustomScoringHelperModel
 		run(mode, rules, args);
 	}
 
-	//TODO: phase out version above and use this instead, and get read of args arg
+	//TODO: phase out version above and use this instead, and get rid of args arg
 	// GUI version
 	private void run(Modes mode, RuleMap rules, String[] args) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
@@ -133,13 +133,6 @@ public final class CustomScoringHelperModel
 		modesToPlayersMap.put(mode, players);
 		modesToPlayersMap2.put(mode, deepCopyList(players));
 	}
-
-	// add players list mapping for the given mode to the specified map
-	// useful for when we only want to update one map
-	/*private void addMapping(Modes mode, Map<Modes,List<Player>> map) {
-		List<Player> players = createPlayersList(mode);
-		map.put(mode, players);
-	}*/
 
 	// adds all mappings into modes map which are not already accounted for,
 	// and then accumulates the players lists from these mappings in order to

@@ -1,7 +1,11 @@
 Revisions/Refactoring:
+--eliminate dynamic creation of players lists and panels and precompute everything, OR use proxy's
 ***-- create separate listeners package
---Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent (look into using only one list of players?)
--- add logging statements
+-- comment out Modes.ALL??
+--seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
+
+--Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent. ***Look into using only one list of players by modifying Player.java
+
 -- look into computing entire RuleMap in one call of parseScoringRules()
 ***********-- rename football/ to customerscorer/??
 

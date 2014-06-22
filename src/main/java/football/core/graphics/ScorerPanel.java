@@ -1,10 +1,16 @@
 package football.core.graphics;
 
+import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import football.core.CustomScoringHelperModel;
 import football.players.modes.Modes;
@@ -15,21 +21,19 @@ import football.players.modes.Modes;
 
 public final class ScorerPanel extends JPanel
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	private static final long serialVersionUID = -4593451078660624536L;
 
 	//private Map<Modes,List<Player>> modesToPlayersMap;
-	private CustomScoringHelperModel model; //TODO: think about this
-	//TODO: should have enummap of Modes to PlayerPanel's
+	private JPanel playerPanels;
 	private RulesPanel rules;
-	private PlayersPanel players;
 	private JButton scoreButton;
 
 	//TODO: pass in model, or map??
 	public ScorerPanel(CustomScoringHelperModel model, Modes initMode) {
 		//this.modesToPlayersMap = modesToPlayersMap;
-		this.model = model;
 		rules = new RulesPanel();
-		setPlayersPanel(initMode);
+		createPlayerPanels(model);
 		scoreButton = new JButton("Recalculate scores");
 
 		this.setLayout(new GridBagLayout());
@@ -45,13 +49,24 @@ public final class ScorerPanel extends JPanel
 		this.add(scoreButton, c); //TODO: play with placement
 		c.gridy++;
 		c.gridheight = 2; //TODO: this isn't working
-		this.add(players, c);
+		this.add(playerPanels, c);
 	}
 
 	public void setPlayersPanel(Modes mode) {
-		//TODO -- figure out info passing
-		players = new PlayersPanel(model.getPlayersList(mode));
-		System.out.println("set players panel to mode " + mode.toString());
-		//players.repaint();
+		CardLayout cardLayout = (CardLayout)(playerPanels.getLayout());
+		cardLayout.show(playerPanels, mode.toString());
+		logger.info("Set players panel to mode {}", mode.toString());
+	}
+
+	// create a PlayersPanel for each Mode, and add it to a aggregate panel which displays
+	// one panel at a time using the CardLayout
+	private void createPlayerPanels(CustomScoringHelperModel model) {
+		playerPanels = new JPanel(new CardLayout());
+		for(Modes mode : Modes.values()) {
+			if(mode != Modes.ALL) {
+				PlayersPanel players = new PlayersPanel(model.getPlayersList(mode));
+				playerPanels.add(players, mode.toString());
+			}
+		}
 	}
 }
