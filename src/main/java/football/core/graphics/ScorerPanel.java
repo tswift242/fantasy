@@ -1,18 +1,18 @@
 package football.core.graphics;
 
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
+import java.util.Map;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import football.core.CustomScoringHelperModel;
+import football.players.Player;
 import football.players.modes.Modes;
 
 /*
@@ -29,11 +29,10 @@ public final class ScorerPanel extends JPanel
 	private RulesPanel rules;
 	private JButton scoreButton;
 
-	//TODO: pass in model, or map??
-	public ScorerPanel(CustomScoringHelperModel model, Modes initMode) {
+	public ScorerPanel(Map<Modes,List<Player>> playersMap, Modes initMode) {
 		//this.modesToPlayersMap = modesToPlayersMap;
 		rules = new RulesPanel();
-		createPlayerPanels(model);
+		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
 
 		this.setLayout(new GridBagLayout());
@@ -60,11 +59,12 @@ public final class ScorerPanel extends JPanel
 
 	// create a PlayersPanel for each Mode, and add it to a aggregate panel which displays
 	// one panel at a time using the CardLayout
-	private void createPlayerPanels(CustomScoringHelperModel model) {
+	private void createPlayerPanels(Map<Modes,List<Player>> playersMap) {
 		playerPanels = new JPanel(new CardLayout());
 		for(Modes mode : Modes.values()) {
+			//TODO: avoiding Modes.ALL for now because of issues
 			if(mode != Modes.ALL) {
-				PlayersPanel players = new PlayersPanel(model.getPlayersList(mode));
+				PlayersPanel players = new PlayersPanel(playersMap.get(mode));
 				playerPanels.add(players, mode.toString());
 			}
 		}

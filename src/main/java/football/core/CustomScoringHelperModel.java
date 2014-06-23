@@ -26,8 +26,8 @@ public final class CustomScoringHelperModel
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	// rule map containing default rules, according to NFL.com
-	private final RuleMap DEFAULT_RULES = initDefaultRuleMap();
-	private final Modes DEFAULT_MODE = Modes.QB;
+	private static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
+	private static final Modes DEFAULT_MODE = Modes.QB;
 
 	//TODO: make these maps map to List<E extends Player> if we drop Modes.ALL
 	// map of player modes to corresponding lists of players
@@ -37,10 +37,11 @@ public final class CustomScoringHelperModel
 	private Modes currentMode;
 
 	public CustomScoringHelperModel() {
+		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
+		currentMode = DEFAULT_MODE;
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
 		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
-		currentMode = DEFAULT_MODE;
-		logger.info("Constructing model with default mode " + DEFAULT_MODE.toString());
+		populateModesToPlayersMap();
 		logger.debug("Using default rule map of:\n{}", DEFAULT_RULES.toString());
 	}
 
@@ -103,17 +104,6 @@ public final class CustomScoringHelperModel
 		return DEFAULT_MODE;
 	}
 
-	//TODO: figure out how to differentiate two maps -- each ScorerPanel has own map?
-	//***TODO: remove this due to method below
-	public List<Player> getPlayersList(Modes mode) {
-		// add mapping for this mode if there isn't one already
-		if(!modesToPlayersMap.containsKey(mode)) {
-			addMapping(mode);
-		}
-		return modesToPlayersMap.get(mode);
-	}
-
-	//TODO: keep this or not?
 	public Map<Modes,List<Player>> getModesToPlayersMap() {
 		return modesToPlayersMap;
 	}
@@ -125,52 +115,6 @@ public final class CustomScoringHelperModel
 		currentMode = mode;
 	}
 
-	// add mapping for mode to modes map, and corresponding copy mapping to copy of modes map
-	// Allows for dynamically populating the modes map so that we don't spend unnecessary
-	// computation creating lists of players for modes that aren't used
-	private void addMapping(Modes mode) {
-		List<Player> players = createPlayersList(mode);
-		modesToPlayersMap.put(mode, players);
-		modesToPlayersMap2.put(mode, deepCopyList(players));
-	}
-
-	// adds all mappings into modes map which are not already accounted for,
-	// and then accumulates the players lists from these mappings in order to
-	// add a mapping for mode Modes.ALL
-	// When this method returns, both instance maps will have a mapping for every
-	// mode in Modes
-	private void populateModesToPlayersMap() {
-		List<Player> allPlayersList = new ArrayList<Player>();
-		List<Player> allPlayersListCopy = new ArrayList<Player>();
-		for(Modes mode : Modes.values()) {
-			// add a mapping into the modes map for every mode which does not
-			// already have a mapping
-			// Modes.ALL is skipped as it is built up using the lists of all of
-			// the other mappings
-			if((mode != Modes.ALL) && (!modesToPlayersMap.containsKey(mode))) {
-				addMapping(mode);
-			}
-		}
-		for(Modes mode : modesToPlayersMap.keySet()) {
-			// at this point, modes map contains a mapping for every mapping 
-			// except Modes.ALL. Therefore, we build up the mapping for Modes.ALL
-			// using the players lists from all of the other mappings
-			allPlayersList.addAll(modesToPlayersMap.get(mode));
-			allPlayersListCopy.addAll(modesToPlayersMap2.get(mode));
-		}
-		modesToPlayersMap.put(Modes.ALL, allPlayersList);
-		modesToPlayersMap2.put(Modes.ALL, allPlayersListCopy);
-	}
-
-	// Make deep copy of list of players. 
-	// Would work for any List<E> where E defines a deepCopy() method
-	private List<Player> deepCopyList(List<Player> list) {
-		List<Player> listCopy = new ArrayList<Player>(list.size());
-		for(Player element : list) {
-			listCopy.add(element.deepCopy());
-		}
-		return listCopy;
-	}
 
 	// assign each player in players a score using the scoring rules in rules
 	private void scorePlayers(List<Player> players, RuleMap rules) {
@@ -186,12 +130,50 @@ public final class CustomScoringHelperModel
 		}
 	}
 
+	// adds mappings into modes map, and then accumulates the players lists 
+	// from these mappings in order to add a mapping for mode Modes.ALL
+	// When this method returns, both instance maps will have a mapping for every
+	// mode in Modes
+	private void populateModesToPlayersMap() {
+		logger.debug("Populating map of modes to players");
+		// add a mapping into the modes map for every mode.
+		// Modes.ALL is skipped as it is built up using the lists of all of
+		// the other mappings
+		for(Modes mode : Modes.values()) {
+			if(mode != Modes.ALL) {
+				addMapping(mode);
+			}
+		}
+
+		// at this point, modes map contains a mapping for every mode 
+		// except Modes.ALL. Therefore, we build up the mapping for Modes.ALL
+		// using the players lists from all of the other mappings
+		List<Player> allPlayersList = new ArrayList<Player>();
+		List<Player> allPlayersListCopy = new ArrayList<Player>();
+		for(Modes mode : modesToPlayersMap.keySet()) {
+			allPlayersList.addAll(modesToPlayersMap.get(mode));
+			allPlayersListCopy.addAll(modesToPlayersMap2.get(mode));
+		}
+		modesToPlayersMap.put(Modes.ALL, allPlayersList);
+		modesToPlayersMap2.put(Modes.ALL, allPlayersListCopy);
+	}
+
+	// add mapping for mode to modes map, and corresponding copy mapping to copy of modes map
+	// Allows for dynamically populating the modes map so that we don't spend unnecessary
+	// computation creating lists of players for modes that aren't used
+	private void addMapping(Modes mode) {
+		List<Player> players = createPlayersList(mode);
+		modesToPlayersMap.put(mode, players);
+		modesToPlayersMap2.put(mode, deepCopyList(players));
+	}
+
 	// creates list of players for the given mode
-	// Note, this should only be used in conjunction with addMapping() when the input mode
-	// is selected for the first time. Otherwise, getPlayersList() should be called.
+	// Note, this should only be used in conjunction with addMapping() to create a
+	// modes to players map in the class' constructor
 	private static List<Player> createPlayersList(Modes mode) {
 		// quickly initialize group of players based on mode
 		Player[] players = null;
+		//TODO: could add a getPlayersList() method to each Modes to avoid this switch stmt
 		switch(mode) {
 				case QB:
 						players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
@@ -223,6 +205,17 @@ public final class CustomScoringHelperModel
 		// put players into list
 		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
 		return playersList;
+	}
+
+
+	// Make deep copy of list of players. 
+	// Would work for any List<E> where E defines a deepCopy() method
+	private static List<Player> deepCopyList(List<Player> list) {
+		List<Player> listCopy = new ArrayList<Player>(list.size());
+		for(Player element : list) {
+			listCopy.add(element.deepCopy());
+		}
+		return listCopy;
 	}
 
 	// create and initialize a RuleMap containing the default scoring rules
