@@ -34,6 +34,12 @@ public final class RuleMap
 		map.put(category,rule);
 	}
 
+	//TODO: figure out whether to keep this or not
+	public <T extends StatType> void put(T category, Double value, int unit) {
+		//TODO: compilation error
+		//Rule<T> rule = new Rule<T>(category, value, unit);
+	}
+
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T> & StatType> Rule<T> get(T category) {
 		return (Rule<T>)map.get(category);

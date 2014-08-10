@@ -1,12 +1,16 @@
 Revisions/Refactoring:
-***-- create separate listeners package
+In Progress: -- create listeners for all UI components
+TEST: -- make "RuleTextField" class for tagging JTextField with category
+-- make getValueText() method for Rule & getDefaultRule() method for model, which are used in setting default value of rule text field
 *****-- sort players in PlayersPanel by score on an evaluation
--- comment out Modes.ALL??
---seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
+-- create JPanel subclass or Util for repeated grid bag layout code
 
+--seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
+***-- have current RulesMap object in model
 --Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent. ***Look into using only one list of players by modifying Player.java
 	************-- make Player have map of RulesMap -> score; need way to specify which one is active --> active RulesMap field?
 
+-- comment out Modes.ALL??
 -- look into computing entire RuleMap in one call of parseScoringRules()
 *******-- rename football/ to customerscorer/??
 
@@ -30,3 +34,32 @@ New features:
 ***** capability to remember smallest/largest metric value (display min/max/mean?)
 ***** solve for best coeffs based on some reference player rankings
 ***** option to update player data/choose stats year?
+
+
+
+
+***************************************************************************************
+Option 1: update Rules using RuleListener each time user types in rule text field
+
+Pros:
+--work distributed throughout execution, instead of being done all at once (--> avoid potential lag)
+
+Cons:
+--need to be able to pass TextFields up through JPanels to View for adding listeners
+
+Notes:
+***--COMPILATION ISSUES!!!!!!! -- RulesListener doesn't have static typing info for Rule<T>
+
+
+Option 2: update Rules using RecalcScoreListener, only when user his "recalculate score" button
+
+Pros:
+--more efficient, especially if user plays around with same rule
+
+Cons:
+
+Notes:
+need to have View to be able to access TextFields for grabbing Rules; unless can grab ScorerPanel from JButton in ActionEvent (***YES -- use SwingUtilities.getAncestorOfClass())
+
+
+********Both options: probably need to drop Enum<T> static typing from RuleMap, Rule, TypedValue (maybe more)

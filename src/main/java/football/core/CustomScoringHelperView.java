@@ -4,21 +4,26 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import football.core.graphics.ScorerPanel;
-import football.core.graphics.RulesPanel;
 import football.core.graphics.PlayersPanel;
+import football.core.graphics.RuleTextField;
+import football.core.graphics.RulesPanel;
+import football.core.graphics.ScorerPanel;
 import football.players.modes.Modes;
-import football.core.graphics.StatTypeRulesPanel;
-//import football.stats.categories.*;
+import football.stats.StatType;
 
 public final class CustomScoringHelperView extends JFrame
 {
@@ -66,10 +71,6 @@ public final class CustomScoringHelperView extends JFrame
 		padding = 5;
 		c.insets = new Insets(padding, padding, padding, padding);
 
-		//content.add(new StatTypeRulesPanel<Pass>(Pass.class));
-		//content.add(new RulesPanel());
-		//content.add(new PlayersPanel(model.getPlayersList(Modes.QB)));
-
 		// scorer panels / add panels to content
 		content.add(modePanel, c);
 		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
@@ -105,7 +106,22 @@ public final class CustomScoringHelperView extends JFrame
 	/*
 	 * listener methods
 	 */
-	public void addModeListener(ItemListener al) {
-		modesBox.addItemListener(al);
+	public void addModeListener(ItemListener listener) {
+		modesBox.addItemListener(listener);
+		logger.info("registered mode listener");
+	}
+
+	public void addRulesListener(DocumentListener listener) {
+		List<RuleTextField<? extends StatType>> ruleTextFields = panel1.getRuleTextFields();
+		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
+			ruleTextField.getDocument().addDocumentListener(listener);
+		}
+		logger.info("registered rules listener");
+	}
+
+	public void addRecalculateScoreListener(ActionListener listener) {
+		JButton scoreButton = panel1.getScoreButton();
+		scoreButton.addActionListener(listener);
+		logger.info("registered recalculate score listener");
 	}
 }

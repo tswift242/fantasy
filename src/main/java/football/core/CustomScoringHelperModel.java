@@ -16,6 +16,7 @@ import football.players.*; // for creating DEFAULT_RULES
 import football.players.modes.Modes;
 import football.stats.Rule; // for creating DEFAULT_RULES
 import football.stats.RuleMap;
+import football.stats.StatType;
 import football.stats.categories.*;
 import football.util.logging.ResultsLogger;
 import football.util.metrics.Metric;
@@ -30,15 +31,18 @@ public final class CustomScoringHelperModel
 	private static final Modes DEFAULT_MODE = Modes.QB;
 
 	//TODO: make these maps map to List<E extends Player> if we drop Modes.ALL
+	//TODO: make these lists static?
 	// map of player modes to corresponding lists of players
 	private Map<Modes,List<Player>> modesToPlayersMap;
 	// copy of the above map containing copy player lists
 	private Map<Modes,List<Player>> modesToPlayersMap2;
+	private RuleMap currentRules;
 	private Modes currentMode;
 
 	public CustomScoringHelperModel() {
 		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
 		currentMode = DEFAULT_MODE;
+		currentRules = initDefaultRuleMap(); // init to default rules
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
 		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
 		populateModesToPlayersMap();
@@ -53,14 +57,11 @@ public final class CustomScoringHelperModel
 
 		// parse scoring rules relevant to this mode
 		RuleMap rules = mode.parseScoringRules(args);
-		// add mapping for this mode if there isn't one already
-		if(!modesToPlayersMap.containsKey(mode)) {
-			addMapping(mode);
-		}
 		run(mode, rules, args);
 	}
 
-	//TODO: phase out version above and use this instead, and get rid of args arg
+	//TODO: phase out version above and use this instead
+	//TODO: get rid of "args" args
 	// GUI version
 	private void run(Modes mode, RuleMap rules, String[] args) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
@@ -68,6 +69,7 @@ public final class CustomScoringHelperModel
 		List<Player> players1 = modesToPlayersMap.get(mode);
 		List<Player> players2 = modesToPlayersMap2.get(mode);
 		// evaluate all players in each list with the corresponding set of rules
+		//TODO: pass in list for players1 instead of always using DEFAULT_RULES
 		scorePlayers(players1,DEFAULT_RULES);
 		scorePlayers(players2,rules);
 		// sort players according to their scores
@@ -93,6 +95,12 @@ public final class CustomScoringHelperModel
 		}
 	}
 
+	// run using currentMode and currentRules
+	private void run() {
+		//TODO: remove/modify 3rd arg pending changes to run() above
+		run(currentMode, currentRules, new String[]{});
+	}
+
 	/*
 	 * Getters
 	 */
@@ -113,6 +121,15 @@ public final class CustomScoringHelperModel
 	 */
 	public void setMode(Modes mode) {
 		currentMode = mode;
+	}
+
+	//TODO: think about whether we want to pass in Rule, or Rule args
+	public <T extends Enum<T> & StatType> void setRule(T category, Rule<T> rule) {
+		//TODO: modify currentRules
+	}
+
+	public void setRuleMap(RuleMap rules) {
+		currentRules = rules;
 	}
 
 

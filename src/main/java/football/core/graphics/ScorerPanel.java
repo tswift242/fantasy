@@ -14,9 +14,11 @@ import org.slf4j.LoggerFactory;
 
 import football.players.Player;
 import football.players.modes.Modes;
+import football.stats.StatType;
 
 /*
- * Panel displaying a set of scoring rule combo boxes and a PlayersPanel
+ * Panel displaying a RulesPanel, a PlayersPanel, and a button to rescore the players
+ * based on the current rules.
  */
 
 public final class ScorerPanel extends JPanel
@@ -24,13 +26,11 @@ public final class ScorerPanel extends JPanel
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	private static final long serialVersionUID = -4593451078660624536L;
 
-	//private Map<Modes,List<Player>> modesToPlayersMap;
 	private JPanel playerPanels;
 	private RulesPanel rules;
 	private JButton scoreButton;
 
 	public ScorerPanel(Map<Modes,List<Player>> playersMap, Modes initMode) {
-		//this.modesToPlayersMap = modesToPlayersMap;
 		rules = new RulesPanel();
 		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
@@ -49,6 +49,14 @@ public final class ScorerPanel extends JPanel
 		c.gridy++;
 		c.gridheight = 2; //TODO: this isn't working
 		this.add(playerPanels, c);
+	}
+
+	public List<RuleTextField<? extends StatType>> getRuleTextFields() {
+		return rules.getRuleTextFields();
+	}
+
+	public JButton getScoreButton() {
+		return scoreButton;
 	}
 
 	public void setPlayersPanel(Modes mode) {
