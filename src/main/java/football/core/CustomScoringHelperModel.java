@@ -54,9 +54,9 @@ public final class CustomScoringHelperModel
 		logger.info("Running model with args: {}", Arrays.toString(args));
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		Modes mode = Modes.fromString(args[0]);
-
 		// parse scoring rules relevant to this mode
 		RuleMap rules = mode.parseScoringRules(args);
+
 		run(mode, rules, args);
 	}
 
@@ -98,10 +98,8 @@ public final class CustomScoringHelperModel
 
 	// run using currentMode and currentRules
 	public void run() {
-		//TODO: remove/modify 3rd arg pending changes to run() above
-		//***TODO: get String[] from RuleMap, either before or within method call
 		//**********TODO: NULL POINTER in ResultsLogger cause of 3rd args
-		run(currentMode, currentRules, new String[]{});
+		run(currentMode, currentRules, currentRules.toArgs(currentMode));
 	}
 
 	/*
