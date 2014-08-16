@@ -37,18 +37,19 @@ public class RulesListener implements DocumentListener
 		logger.info("change");
 	}
 
-	private void updateRule(DocumentEvent e) {
+	@SuppressWarnings("unchecked")
+	private <T extends Enum<T> & StatType> void updateRule(DocumentEvent e) {
 		//TODO: use some timing strategy to determine when to flush events to model??
-		RuleTextField ruleTextField = (RuleTextField)e.getDocument().getProperty(RuleTextField.TEXT_FIELD_PROPERTY);
-		Object category = ruleTextField.getCategory();
+		RuleTextField<T> ruleTextField = (RuleTextField<T>)e.getDocument().getProperty(RuleTextField.TEXT_FIELD_PROPERTY);
+		T category = ruleTextField.getCategory();
 		String text = ruleTextField.getText();
-		logger.info("category {} now has value {}", category.toString(), text);
-		//Rule rule = parseRuleText(text, category);
-		//model.setRule(category, rule);
+		Rule<T> rule = parseRuleText(text, category);
+		logger.debug("new rule: {}", rule.toString());
+		model.setRule(category, rule);
 	}
 
-	//TODO: put in Util file (used in PlayerUtil)
-	/*private Rule parseRuleText(String text, Object category) {
+	//TODO: put in Util file (used in RecalculateScoreListener, PlayerUtil)
+	private <T extends Enum<T> & StatType> Rule<T> parseRuleText(String text, T category) {
 		// split into value and unit
 		String[] ruleComponents = text.split("/");
 		Double value = Double.valueOf(ruleComponents[0]);
@@ -57,7 +58,6 @@ public class RulesListener implements DocumentListener
 		if(ruleComponents.length > 1) {
 			unit = Integer.parseInt(ruleComponents[1]);
 		}
-		//TODO: compiler error because Rule constructor needs Enum/StatType, not Object
-		return new Rule(category, value, unit);
-	}*/
+		return new Rule<T>(category, value, unit);
+	}
 }

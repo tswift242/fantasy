@@ -34,12 +34,6 @@ public final class RuleMap
 		map.put(category,rule);
 	}
 
-	//TODO: figure out whether to keep this or not
-	public <T extends StatType> void put(T category, Double value, int unit) {
-		//TODO: compilation error
-		//Rule<T> rule = new Rule<T>(category, value, unit);
-	}
-
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T> & StatType> Rule<T> get(T category) {
 		return (Rule<T>)map.get(category);
@@ -52,9 +46,9 @@ public final class RuleMap
 	@Override
 	public String toString() {
 		String result = "";
-		for(Object o : map.keySet()) {
-			//result += (o.toString() + ": " + map.get(o).toString() + "\n");
-			result += (map.get(o).toString() + "\n");
+		for(Object key : map.keySet()) {
+			//result += (key.toString() + ": " + map.get(key).toString() + "\n");
+			result += (map.get(key).toString() + "\n");
 		}
 		return result.trim();
 	}

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import football.core.CustomScoringHelperModel;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
+import football.stats.Rule;
 import football.stats.RuleMap;
 import football.stats.StatType;
 
@@ -38,19 +39,15 @@ public class RecalculateScoreListener implements ActionListener
 		// create and set RuleMap from ruleTextFields
 		RuleMap rules = new RuleMap();
 		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
-			StatType category = ruleTextField.getCategory();
-			String text = ruleTextField.getText();
-			//TODO
-			//parseRuleText(text, category, rules);
+			addRule(ruleTextField, rules);
 		}
 		model.setRuleMap(rules);
-		//TODO: evaluate all players using current RuleMap
-		//model.run();
+		//evaluate all players using current RuleMap
+		model.run();
 	}
 
-	//TODO: put in Util file (used in PlayerUtil)
-	//TODO: take in RuleMap and use overloaded put() with int/Double to avoid compiler error
-	private void parseRuleText(String text, StatType category, RuleMap rules) {
+	//TODO: put in Util file (used in RulesListener, PlayerUtil)
+	private <T extends Enum<T> & StatType> Rule<T> parseRuleText(String text, T category) {
 		// split into value and unit
 		String[] ruleComponents = text.split("/");
 		Double value = Double.valueOf(ruleComponents[0]);
@@ -59,10 +56,15 @@ public class RecalculateScoreListener implements ActionListener
 		if(ruleComponents.length > 1) {
 			unit = Integer.parseInt(ruleComponents[1]);
 		}
-		//TODO: workflow from here not complete
-		//rules.put(category, value, unit);
+		return new Rule<T>(category, value, unit);
+	}
 
-		//TODO: compiler error because Rule constructor needs Enum/StatType, not Object
-		//return new Rule(category, value, unit);
+	// parse text from ruleTextField to create a Rule, and add this Rule to RuleMap, rules
+	private <T extends Enum<T> & StatType> void addRule(RuleTextField<T> ruleTextField, RuleMap rules) {
+		T category = ruleTextField.getCategory();
+		String text = ruleTextField.getText();
+		Rule<T> rule = parseRuleText(text, category);
+		logger.debug("new rule: {}", rule.toString());
+		rules.put(category, rule);
 	}
 }

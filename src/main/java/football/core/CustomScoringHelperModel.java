@@ -60,7 +60,6 @@ public final class CustomScoringHelperModel
 		run(mode, rules, args);
 	}
 
-	//TODO: phase out version above and use this instead
 	//TODO: get rid of "args" args
 	// GUI version
 	private void run(Modes mode, RuleMap rules, String[] args) {
@@ -81,6 +80,8 @@ public final class CustomScoringHelperModel
 		Metric metric = new SortOrderMetric();
 		double distance = metric.distance(players1,players2);
 		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
+		// TODO: output score results to View (PlayersPanel)
+		
 		// write results to file filename in directory resultsDirectory
 		String fileSeparator = System.getProperty("file.separator");
 		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
@@ -96,8 +97,10 @@ public final class CustomScoringHelperModel
 	}
 
 	// run using currentMode and currentRules
-	private void run() {
+	public void run() {
 		//TODO: remove/modify 3rd arg pending changes to run() above
+		//***TODO: get String[] from RuleMap, either before or within method call
+		//**********TODO: NULL POINTER in ResultsLogger cause of 3rd args
 		run(currentMode, currentRules, new String[]{});
 	}
 
@@ -123,9 +126,8 @@ public final class CustomScoringHelperModel
 		currentMode = mode;
 	}
 
-	//TODO: think about whether we want to pass in Rule, or Rule args
 	public <T extends Enum<T> & StatType> void setRule(T category, Rule<T> rule) {
-		//TODO: modify currentRules
+		currentRules.put(category, rule);
 	}
 
 	public void setRuleMap(RuleMap rules) {
