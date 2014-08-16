@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.core.CustomScoringHelperModel;
+import football.core.CustomScoringHelperView;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
 import football.stats.Rule;
@@ -22,9 +23,11 @@ public class RecalculateScoreListener implements ActionListener
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	private CustomScoringHelperModel model;
+	private CustomScoringHelperView view;
 
-	public RecalculateScoreListener(CustomScoringHelperModel model) {
+	public RecalculateScoreListener(CustomScoringHelperModel model, CustomScoringHelperView view) {
 		this.model = model;
+		this.view = view;
 	}
 
 	@Override
@@ -36,14 +39,19 @@ public class RecalculateScoreListener implements ActionListener
 		checkNotNull(scorerPanel, "JButton does not have ScorerPanel ancestor");
 		// get TextFields containing rule info on ScorerPanel
 		List<RuleTextField<? extends StatType>> ruleTextFields = scorerPanel.getRuleTextFields();
-		// create and set RuleMap from ruleTextFields
+		// create RuleMap from ruleTextFields
 		RuleMap rules = new RuleMap();
 		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
 			addRule(ruleTextField, rules);
 		}
+		// update model with new RuleMap
 		model.setRuleMap(rules);
-		//evaluate all players using current RuleMap
+
+		//TODO: feature everything above off depending if RulesListener enabled
+		// evaluate all players using current RuleMap
 		model.run();
+		// modify view based on updated model
+		view.updatePlayerScores();
 	}
 
 	//TODO: put in Util file (used in RulesListener, PlayerUtil)

@@ -36,8 +36,12 @@ public final class CustomScoringHelperModel
 	private Map<Modes,List<Player>> modesToPlayersMap;
 	// copy of the above map containing copy player lists
 	private Map<Modes,List<Player>> modesToPlayersMap2;
+
 	private RuleMap currentRules;
 	private Modes currentMode;
+	// most recently scored players by run() method
+	//TODO: replace this with object incorporating both lists and distance?
+	private List<Player> currentPlayers;
 
 	public CustomScoringHelperModel() {
 		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
@@ -60,7 +64,6 @@ public final class CustomScoringHelperModel
 		run(mode, rules, args);
 	}
 
-	//TODO: get rid of "args" args
 	// GUI version
 	private void run(Modes mode, RuleMap rules, String[] args) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
@@ -68,10 +71,11 @@ public final class CustomScoringHelperModel
 		List<Player> players1 = modesToPlayersMap.get(mode);
 		List<Player> players2 = modesToPlayersMap2.get(mode);
 		// evaluate all players in each list with the corresponding set of rules
-		//TODO: pass in list for players1 instead of always using DEFAULT_RULES
+		//TODO: pass in rules for players1 instead of always using DEFAULT_RULES
 		scorePlayers(players1,DEFAULT_RULES);
 		scorePlayers(players2,rules);
 		// sort players according to their scores
+		//TODO: delay sorting until logging done below, as sorting done by View anyway
 		Collections.sort(players1);
 		logger.info("Players sorted by default rules:\n{}", players1.toString());
 		Collections.sort(players2);
@@ -80,8 +84,11 @@ public final class CustomScoringHelperModel
 		Metric metric = new SortOrderMetric();
 		double distance = metric.distance(players1,players2);
 		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
-		// TODO: output score results to View (PlayersPanel)
-		
+		// store this to allow access by View
+		//TODO: store all results in one object -- CONSIDER RETURNING INSTEAD OF STORING
+		currentPlayers = players2;
+
+		// TODO: break out into separte method (should be called after view updated)
 		// write results to file filename in directory resultsDirectory
 		String fileSeparator = System.getProperty("file.separator");
 		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
@@ -98,7 +105,6 @@ public final class CustomScoringHelperModel
 
 	// run using currentMode and currentRules
 	public void run() {
-		//**********TODO: NULL POINTER in ResultsLogger cause of 3rd args
 		run(currentMode, currentRules, currentRules.toArgs(currentMode));
 	}
 
@@ -115,6 +121,10 @@ public final class CustomScoringHelperModel
 
 	public Map<Modes,List<Player>> getModesToPlayersMap() {
 		return modesToPlayersMap;
+	}
+
+	public List<Player> getCurrentPlayers() {
+		return currentPlayers;
 	}
 
 	/*

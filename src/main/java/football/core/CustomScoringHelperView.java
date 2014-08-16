@@ -22,6 +22,7 @@ import football.core.graphics.PlayersPanel;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.RulesPanel;
 import football.core.graphics.ScorerPanel;
+import football.players.Player;
 import football.players.modes.Modes;
 import football.stats.StatType;
 
@@ -123,5 +124,12 @@ public final class CustomScoringHelperView extends JFrame
 		JButton scoreButton = panel1.getScoreButton();
 		scoreButton.addActionListener(listener);
 		logger.info("registered recalculate score listener");
+	}
+
+	public void updatePlayerScores() {
+		//TODO: take in as parameter instead
+		// get updated List<Player> with updated scores from model
+		List<Player> currentPlayers = model.getCurrentPlayers();
+		panel1.updatePlayerScores(currentPlayers);
 	}
 }

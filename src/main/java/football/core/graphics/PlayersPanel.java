@@ -1,11 +1,19 @@
 package football.core.graphics;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
 //import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SortOrder;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import static javax.swing.RowSorter.SortKey;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import football.players.Player;
 
@@ -17,17 +25,55 @@ import football.players.Player;
 public final class PlayersPanel extends JPanel
 {
 	private static final long serialVersionUID = 7401650925506787631L;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
+	private JTable table;
 
 	public PlayersPanel(List<Player> players) {
-		// construct table and add to panel
-		JTable table = new JTable(new PlayersTableModel(players));
+		// construct table
+		table = new JTable(new PlayersTableModel(players));
+		setSortingBehavior(table);
+
+		// add to panel
 		this.setLayout(new BorderLayout());
 		this.add(table.getTableHeader(), BorderLayout.PAGE_START);
 		this.add(table, BorderLayout.CENTER);
 
-		//JScrollPane scrollPane = new JScrollPane(table);
 		//table.setFillsViewportHeight(true);
+		//JScrollPane scrollPane = new JScrollPane(table);
 		//this.add(scrollPane);
+	}
+
+	public void updatePlayerScores(List<Player> players) {
+		PlayersTableModel model = (PlayersTableModel)table.getModel();
+		int col = model.getColumnCount() - 1;
+
+		// update score for each player
+		for(Player player : players) {
+			String name = player.getName();
+			Double score = player.getScore();
+
+			// look up row for this player based on the player name
+			//TODO: replace this
+			int row = model.getIndexForName(name);
+			model.setValueAt(score, row, col);
+		}
+	}
+
+	// set default sorting options for table
+	private void setSortingBehavior(JTable table) {
+		// enable sorting
+		TableModel model = table.getModel();
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+		table.setRowSorter(sorter);
+
+		// sort by score in ascending order
+		List<SortKey> keys = new ArrayList<SortKey>();
+		keys.add(new SortKey(model.getColumnCount()-1, SortOrder.ASCENDING));
+		sorter.setSortKeys(keys);
+
+		// sort when scores are modified
+		sorter.setSortsOnUpdates(true);
 	}
 
 
@@ -87,6 +133,29 @@ public final class PlayersPanel extends JPanel
 		@Override
 		public Class<?> getColumnClass(int col) {
 			return getValueAt(0, col).getClass();
+		}
+
+		@Override
+		public void setValueAt(Object value, int row, int col) {
+			logger.debug("setting ({},{}) to {}", row, col, value);
+			playerData[row][col] = value;
+			fireTableCellUpdated(row, col);
+		}
+
+		// searches "Player" column for name matching given name, and returns corresponding index
+		//TODO: replace this with name -> index map for better efficiency (look at RowSorterListener)
+		public int getIndexForName(String name) {
+			int index = -1;
+			int numRows = getRowCount();
+			for(int i = 0; i < numRows; i++) {
+				String currName = playerData[i][0].toString();
+				if(currName.equalsIgnoreCase(name)) {
+					index = i;
+					break;
+				}
+			}
+
+			return index;
 		}
 
 

@@ -1,19 +1,21 @@
 Revisions/Refactoring:
 
-In Progress: -- create listeners for all UI components: ***********fix NPE in ResultsLogger: *****create RuleMap -> String[] converter
-********** modify run() to update PlayersPanel
-*****-- sort players in PlayersPanel by score on an evaluation
+********** modify run() to update PlayersPanel: make Object to hold all results, both to return and pass to View, and to give to ResultsLogger
+*****-- sort players in PlayersPanel by score on an evaluation: ***look into this more
+-- make getValueText() method for Rule & getDefaultRule() method for model, which are used in setting default value of rule text field
 
 *******remove warnings
 ****************************swap order of Kick.PAT_MS to be with other "miss" constants
 **********************search out all System.out/err.println and replace with logger.warn/error()
-**********remove EnumUtil.fromString() and replace with Enum.valueOf()
+***********separate method in Model for logging results
 ******use diamond operator with generics
 -- flag for cmd line vs GUI in main class
--- make getValueText() method for Rule & getDefaultRule() method for model, which are used in setting default value of rule text field
--- create JPanel subclass or Util for repeated grid bag layout code
+-- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
 
+-- create JPanel subclass or Util for repeated grid bag layout code
 --seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
+
+***-- make Player subclasses have List<Set<? extends StatType>>
 --Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent. ***Look into using only one list of players by modifying Player.java
 	************-- make Player have map of RulesMap -> score; need way to specify which one is active --> active RulesMap field?
 
@@ -67,12 +69,3 @@ Cons:
 
 Notes:
 grab ScorerPanel from JButton in ActionEvent using SwingUtilities.getAncestorOfClass()
-
-
-
-
-
-********Both options: probably need to drop Enum<T> static typing from RuleMap, Rule, TypedValue (maybe more)
---Option 1: change generic typing to drop Enum<T> where possible
-%%% getEnumConstants() in: StatTypeRulesPanel, EnumUtil, PlayersUtil (***runtime method, so it's fine it not statically declared Enum)
---Option 2: make type-safe class for heterogenious List of RuleTextFields a la RuleMap
