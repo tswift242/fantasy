@@ -1,8 +1,10 @@
 Revisions/Refactoring:
 
-********** modify run() to update PlayersPanel: make Object to hold all results, both to return and pass to View, and to give to ResultsLogger
-*****-- sort players in PlayersPanel by score on an evaluation: ***look into this more
+
 -- make getValueText() method for Rule & getDefaultRule() method for model, which are used in setting default value of rule text field
+
+********** modify model.run(): make Object to hold all results, both to return and pass to View, and to give to ResultsLogger
+*****-- sort players in PlayersPanel by score on an evaluation: ***make more efficient (hard code name -> idx map since TableModel doesn't change)
 
 *******remove warnings
 ****************************swap order of Kick.PAT_MS to be with other "miss" constants
@@ -22,6 +24,9 @@ Revisions/Refactoring:
 -- comment out Modes.ALL??
 -- look into computing entire RuleMap in one call of parseScoringRules()
 *******-- rename football/ to customerscorer/??
+
+
+
 
 **** call static method of generic type
 **** reuse abstract method code
@@ -51,19 +56,19 @@ New features:
 Option 1: update Rules using RuleListener each time user types in rule text field
 
 Pros:
+--more efficient if user changes only a small number of rules
 --work distributed throughout execution, instead of being done all at once (--> avoid potential lag)
 
 Cons:
 --need to be able to pass TextFields up through JPanels to View for adding listeners
 
 Notes:
-***--COMPILATION ISSUES!!!!!!! -- RulesListener doesn't have static typing info for Rule<T>
 
 
 Option 2: update Rules using RecalcScoreListener, only when user his "recalculate score" button
 
 Pros:
---more efficient, especially if user plays around with same rule
+--more efficient if user plays around with same rule, or sets many rules
 
 Cons:
 

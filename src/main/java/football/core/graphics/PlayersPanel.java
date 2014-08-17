@@ -56,8 +56,12 @@ public final class PlayersPanel extends JPanel
 			// look up row for this player based on the player name
 			//TODO: replace this
 			int row = model.getIndexForName(name);
+			logger.debug("updating score for {}", name);
 			model.setValueAt(score, row, col);
 		}
+
+		// sort players once all scores set
+		((TableRowSorter<TableModel>)table.getRowSorter()).sort();
 	}
 
 	// set default sorting options for table
@@ -71,9 +75,6 @@ public final class PlayersPanel extends JPanel
 		List<SortKey> keys = new ArrayList<SortKey>();
 		keys.add(new SortKey(model.getColumnCount()-1, SortOrder.ASCENDING));
 		sorter.setSortKeys(keys);
-
-		// sort when scores are modified
-		sorter.setSortsOnUpdates(true);
 	}
 
 
@@ -137,7 +138,7 @@ public final class PlayersPanel extends JPanel
 
 		@Override
 		public void setValueAt(Object value, int row, int col) {
-			logger.debug("setting ({},{}) to {}", row, col, value);
+			logger.debug("setting value at ({},{}) to {}", row, col, value);
 			playerData[row][col] = value;
 			fireTableCellUpdated(row, col);
 		}
