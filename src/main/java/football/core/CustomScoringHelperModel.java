@@ -46,7 +46,9 @@ public final class CustomScoringHelperModel
 	public CustomScoringHelperModel() {
 		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
 		currentMode = DEFAULT_MODE;
-		currentRules = initDefaultRuleMap(); // init to default rules
+		// init to default rules (don't simply assign to prevent DEFAULT_RULES from being 
+		// modified whenever currentRules is modified)
+		currentRules = initDefaultRuleMap();
 		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
 		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
 		populateModesToPlayersMap();

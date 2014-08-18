@@ -2,9 +2,12 @@ package football.util.metrics;
 
 import java.util.List;
 import java.util.HashMap;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import football.players.Player;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /*
  * Compares order of two sorted player lists
@@ -12,6 +15,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class SortOrderMetric implements Metric
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
 	public SortOrderMetric() { }
 
 	//O(n) runtime; O(n) space
@@ -34,7 +39,7 @@ public class SortOrderMetric implements Metric
 				int j = index.intValue(); //index of this player in players1 
 				sum += Math.abs(j - i); //difference btw indices of this player in two lists
 			} else {
-				System.err.println("Warning: player " + player.getName() + " in list players2 not contained in list players1");
+				logger.warn("player {} in list players2 not contained in list players1", player.getName());
 			}
 			i++;
 		}

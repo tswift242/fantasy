@@ -1,15 +1,19 @@
 package football.players;
 
 import java.util.Set;
-//import java.util.HashSet;
 import java.util.LinkedHashSet;
 import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import football.stats.Stat;
 import football.stats.StatType;
 import football.stats.categories.*;
 
 public final class Players {
+
+	private static final Logger logger = LoggerFactory.getLogger(Players.class.getName());
 
 	//QB
 	public static final QB BRADY = new QB("brady",340.28,
@@ -143,15 +147,15 @@ public final class Players {
 
 	private Players() {}
 
+	//TODO: put in Util class
 	//utility for easy set construction
 	@SafeVarargs //ignore "unchecked generic array creation for varargs" -- Java 7 ONLY
 	private static <T extends Enum<T> & StatType> Set<Stat<T>> newSet(Stat<T> ... stats) {
-		//Set<Stat<T>> set = new HashSet<Stat<T>>();
 		Set<Stat<T>> set = new LinkedHashSet<Stat<T>>();
 		for(Stat<T> stat : stats) {
 			checkNotNull(stat, "stat %s is null", stat.toString());
 			if(!set.add(stat)) {
-				System.err.println("Warning: set already contained stat " + stat.toString());
+				logger.warn("set already contained stat " + stat.toString());
 			}
 		}
 		return set;

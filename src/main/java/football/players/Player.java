@@ -5,6 +5,9 @@ import java.text.DecimalFormat;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import football.stats.RuleMap;
 
 /*
@@ -15,6 +18,7 @@ import football.stats.RuleMap;
 
 public abstract class Player implements Comparable<Player>
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	private final DecimalFormat scoreFmt = new DecimalFormat(".##"); //static
 
 	protected final String name; //uniquely identifies player
@@ -74,7 +78,7 @@ public abstract class Player implements Comparable<Player>
 	public int compareTo(Player other) {
 		checkNotNull(other, "other is null");
 		if((this.score == 0) || (other.score == 0)) {
-			System.out.println("Warning: either " + name + " or " + other.name + " may not have been evaluated");
+			logger.warn("either {} or {} may not have been evaluated", name, other.name);
 		}
 		//compare scores
 		int scoreCmpResult = Double.compare(this.score,other.score);

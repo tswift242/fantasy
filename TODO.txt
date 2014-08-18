@@ -2,15 +2,14 @@ Revisions/Refactoring:
 
 
 ********** modify model.run(): make Object to hold all results, both to return and pass to View, and to give to ResultsLogger
-*****-- sort players in PlayersPanel by score on an evaluation: ***make more efficient (hard code name -> idx map since TableModel doesn't change)
+***make sorting more efficient (hard code name -> idx map since TableModel doesn't change)
 
 *******remove warnings
-****************************swap order of Kick.PAT_MS to be with other "miss" constants
-**********************search out all System.out/err.println and replace with logger.warn/error()
-***********separate method in Model for logging results
-******use diamond operator with generics
+-- extract certain methods to Utils classes
+***********create separate method in Model for logging results
 -- flag for cmd line vs GUI in main class
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
+-- use diamond operator with generics
 
 Naming:
 --Modes -> Mode

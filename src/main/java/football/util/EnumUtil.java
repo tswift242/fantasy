@@ -13,6 +13,8 @@ public final class EnumUtil
 		return values.trim();
 	}
 
+	// almost the same as Enum.valueOf(enumType, text), except compares against Enum's
+	// toString() value, instead of name()
 	public static <T extends Enum<T>> T fromString(Class<T> enumType, String text) {
 		if(text != null) {
 			for(T value : enumType.getEnumConstants()) {
