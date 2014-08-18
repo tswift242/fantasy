@@ -24,6 +24,7 @@ import football.core.graphics.RulesPanel;
 import football.core.graphics.ScorerPanel;
 import football.players.Player;
 import football.players.modes.Modes;
+import football.stats.RuleMap;
 import football.stats.StatType;
 
 public final class CustomScoringHelperView extends JFrame
@@ -44,7 +45,9 @@ public final class CustomScoringHelperView extends JFrame
 		super(title);
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
-		Modes initMode = model.getDefaultMode();
+		// get defaults from model
+		Modes defaultMode = model.getDefaultMode();
+		RuleMap defaultRules = model.getDefaultRules();
 
 		// set up content panel
 		JPanel content = new JPanel();
@@ -62,7 +65,7 @@ public final class CustomScoringHelperView extends JFrame
 
 		modePanel.add(new JLabel("Select a player mode: "), c);
 		modesBox = new JComboBox<Modes>(Modes.values());
-		modesBox.setSelectedItem(initMode);
+		modesBox.setSelectedItem(defaultMode);
 		c.gridx++;
 		modePanel.add(modesBox, c);
 
@@ -75,10 +78,10 @@ public final class CustomScoringHelperView extends JFrame
 		// scorer panels / add panels to content
 		content.add(modePanel, c);
 		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
-		panel1 = new ScorerPanel(model.getModesToPlayersMap(), initMode);
+		panel1 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
 		c.gridy++;
 		content.add(panel1, c);
-		/*panel2 = new ScorerPanel(model, initMode);
+		/*panel2 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
 		c.gridx++;
 		content.add(panel2, c);*/
 		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));

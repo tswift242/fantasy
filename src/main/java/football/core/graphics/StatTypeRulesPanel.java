@@ -8,6 +8,8 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import football.stats.Rule;
+import football.stats.RuleMap;
 import football.stats.StatType;
 
 /*
@@ -24,7 +26,7 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPan
 	//private Map<JTextField,T> textFieldMap;
 	private List<RuleTextField<T>> ruleTextFields;
 
-	public StatTypeRulesPanel(Class<T> statType) {
+	public StatTypeRulesPanel(Class<T> statType, RuleMap defaultRules) {
 		// get categories for given stat type
 		T[] categories = statType.getEnumConstants();
 
@@ -61,8 +63,15 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPan
 			}
 			this.add(new JLabel(category.toString() + ": "), c);
 			c.gridx++;
-			//TODO: set text to be default rule value
-			RuleTextField<T> ruleField = new RuleTextField<T>(category, "0.0");
+			// set text to be default rule value
+			Rule<T> rule = defaultRules.get(category);
+			String value;
+			if(rule != null) {
+				value = rule.getValueText();
+			} else {
+				value = "0.0";
+			}
+			RuleTextField<T> ruleField = new RuleTextField<T>(category, value);
 			this.add(ruleField, c);
 			ruleTextFields.add(ruleField);
 			c.gridx++;

@@ -1,8 +1,6 @@
 Revisions/Refactoring:
 
 
--- make getValueText() method for Rule & getDefaultRule() method for model, which are used in setting default value of rule text field
-
 ********** modify model.run(): make Object to hold all results, both to return and pass to View, and to give to ResultsLogger
 *****-- sort players in PlayersPanel by score on an evaluation: ***make more efficient (hard code name -> idx map since TableModel doesn't change)
 
@@ -13,6 +11,11 @@ Revisions/Refactoring:
 ******use diamond operator with generics
 -- flag for cmd line vs GUI in main class
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
+
+Naming:
+--Modes -> Mode
+--model.setRuleMap() -> model.setRules()
+--*Util -> *Utils
 
 -- create JPanel subclass or Util for repeated grid bag layout code
 --seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)

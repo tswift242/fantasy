@@ -60,4 +60,14 @@ public final class Rule<T extends Enum<T> & StatType> extends TypedValue<T,Doubl
 			return String.format("(%s, %s / %d)", category.toString(), value.toString(), unit);
 		}
 	}
+
+	// get value and unit as a String as they would appear in a text field
+	// e.g. "value/unit"
+	public String getValueText() {
+		String result = value.toString();
+		if(unit != 1) {
+			result += ("/" + Integer.toString(unit));
+		}
+		return result;
+	}
 }

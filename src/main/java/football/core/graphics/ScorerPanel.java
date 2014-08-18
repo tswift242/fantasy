@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import football.players.Player;
 import football.players.modes.Modes;
+import football.stats.RuleMap;
 import football.stats.StatType;
 
 /*
@@ -31,8 +32,8 @@ public final class ScorerPanel extends JPanel
 	private RulesPanel rules;
 	private JButton scoreButton;
 
-	public ScorerPanel(Map<Modes,List<Player>> playersMap, Modes initMode) {
-		rules = new RulesPanel();
+	public ScorerPanel(Map<Modes,List<Player>> playersMap, Modes defaultMode, RuleMap defaultRules) {
+		rules = new RulesPanel(defaultRules);
 		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
 
@@ -50,6 +51,9 @@ public final class ScorerPanel extends JPanel
 		c.gridy++;
 		c.gridheight = 2; //TODO: this isn't working
 		this.add(playerPanels, c);
+
+		// show players corresponding to default mode
+		setPlayersPanel(defaultMode);
 	}
 
 	public List<RuleTextField<? extends StatType>> getRuleTextFields() {
@@ -69,7 +73,7 @@ public final class ScorerPanel extends JPanel
 	// update player scores within current player panel
 	public void updatePlayerScores(List<Player> players) {
 		PlayersPanel panel = getCurrentPanel();
-		logger.info("updating scores for player panel {}", panel.getName());
+		logger.info("updating scores for player panel: {}", panel.getName());
 		panel.updatePlayerScores(players);
 	}
 

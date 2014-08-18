@@ -73,14 +73,7 @@ public final class RuleMap
 			StatType[] categories = statType.getEnumConstants();
 			for(StatType category : categories) {
 				Rule<?> rule = map.get(category);
-				Double value = rule.getValue();
-				int unit = rule.getUnit();
-				// string representation of Rule as it would appear on the command line
-				String ruleString = value.toString();
-				if(unit != 1) {
-					ruleString += ("/" + Integer.toString(unit));
-				}
-				args[index++] = ruleString;
+				args[index++] = rule.getValueText();
 			}
 		}
 		return args;
