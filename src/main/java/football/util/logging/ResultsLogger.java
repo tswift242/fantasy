@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import football.core.ScoringResults;
 import football.players.Player;
+import football.players.modes.Modes;
 
 /*
  * A class for logging player scoring and ranking results to a file.
@@ -34,16 +36,16 @@ public class ResultsLogger
 		this(resultsDirectory, filename, true);
 	}
 
-	public void logResults(String[] args, List<Player> defaultPlayers, List<Player> customPlayers, double distance) throws IOException {
-		/*logger logger = Logger.getLogger(CustomScoringHelper.class.getName());
-		logger.setLevel(Level.INFO);
-		FileHandler fh = new FileHandler(resultsDirectory + "/" + filename, true);
-		fh.setFormatter(new SimpleFormatter());
-		logger.addHandler(fh);*/
+	public void logResults(ScoringResults results) throws IOException {
+		Modes mode = results.getMode();
+		String[] args = results.getRules().toArgs(mode);
+		List<Player> defaultPlayers = results.getDefaultPlayers();
+		List<Player> customPlayers = results.getCustomPlayers();
+		double distance = results.getDistance();
 
 		out.println(delimiter + "\n");
 		out.println(toSectionHeader("Mode",sectionDenoter));
-		out.println(args[0].toUpperCase() + "\n");
+		out.println(mode.toString() + "\n");
 		out.println(toSectionHeader("Custom scoring rules",sectionDenoter));
 		out.println(customPlayers.get(0).categoriesToString()); //TODO: make this call static
 		out.println(argsToString(args));

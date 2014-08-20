@@ -39,9 +39,6 @@ public final class CustomScoringHelperModel
 
 	private RuleMap currentRules;
 	private Modes currentMode;
-	// most recently scored players by run() method
-	//TODO: replace this with object incorporating both lists and distance?
-	private List<Player> currentPlayers;
 
 	public CustomScoringHelperModel() {
 		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
@@ -63,11 +60,13 @@ public final class CustomScoringHelperModel
 		// parse scoring rules relevant to this mode
 		RuleMap rules = mode.parseScoringRules(args);
 
-		run(mode, rules, args);
+		ScoringResults results = run(mode, rules);
+		// log results
+		logResults(results);
 	}
 
 	// GUI version
-	private void run(Modes mode, RuleMap rules, String[] args) {
+	private ScoringResults run(Modes mode, RuleMap rules) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
 		// get corresponding lists of players for this mode
 		List<Player> players1 = modesToPlayersMap.get(mode);
@@ -77,7 +76,7 @@ public final class CustomScoringHelperModel
 		scorePlayers(players1,DEFAULT_RULES);
 		scorePlayers(players2,rules);
 		// sort players according to their scores
-		//TODO: delay sorting until logging done below, as sorting done by View anyway
+		//TODO: delay sorting until logging in ResultsLogger, as sorting done by View anyway
 		Collections.sort(players1);
 		logger.info("Players sorted by default rules:\n{}", players1.toString());
 		Collections.sort(players2);
@@ -86,28 +85,37 @@ public final class CustomScoringHelperModel
 		Metric metric = new SortOrderMetric();
 		double distance = metric.distance(players1,players2);
 		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
-		// store this to allow access by View
-		//TODO: store all results in one object -- CONSIDER RETURNING INSTEAD OF STORING
-		currentPlayers = players2;
 
-		// TODO: break out into separte method (should be called after view updated)
-		// write results to file filename in directory resultsDirectory
+		// return results so that view can be updated
+		return new ScoringResults(mode, rules, players1, players2, distance);
+	}
+
+	// run using currentMode and currentRules
+	public ScoringResults run() {
+		return run(currentMode, currentRules);
+	}
+
+	// write results to file filename in directory resultsDirectory
+	public void logResults(ScoringResults results, String resultsDirectory, String filename) {
 		String fileSeparator = System.getProperty("file.separator");
-		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
-		String filename = (mode.toString() + "results.txt");
 		logger.info("Writing results to {}{}{}", resultsDirectory, fileSeparator, filename);
+
 		try {
 			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
-			logger.logResults(args,players1,players2,distance);
+			logger.logResults(results);
 			logger.close();
 		} catch(IOException e) {
 			logger.error("Unable to write results: {}", e.toString());
 		}
 	}
 
-	// run using currentMode and currentRules
-	public void run() {
-		run(currentMode, currentRules, currentRules.toArgs(currentMode));
+	// write results to default file in default directory
+	public void logResults(ScoringResults results) {
+		String fileSeparator = System.getProperty("file.separator");
+		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
+		String filename = (results.getMode().toString() + "results.txt");
+
+		logResults(results, resultsDirectory, filename);
 	}
 
 	/*
@@ -123,10 +131,6 @@ public final class CustomScoringHelperModel
 
 	public Map<Modes,List<Player>> getModesToPlayersMap() {
 		return modesToPlayersMap;
-	}
-
-	public List<Player> getCurrentPlayers() {
-		return currentPlayers;
 	}
 
 	/*

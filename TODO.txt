@@ -1,14 +1,12 @@
 Revisions/Refactoring:
 
 
-********** modify model.run(): make Object to hold all results, both to return and pass to View, and to give to ResultsLogger
 ***make sorting more efficient (hard code name -> idx map since TableModel doesn't change)
 
 *******remove warnings
--- extract certain methods to Utils classes
-***********create separate method in Model for logging results
 -- flag for cmd line vs GUI in main class
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
+-- extract certain methods to Utils classes
 -- use diamond operator with generics
 
 Naming:

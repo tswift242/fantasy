@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import football.core.CustomScoringHelperModel;
 import football.core.CustomScoringHelperView;
+import football.core.ScoringResults;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
 import football.stats.Rule;
@@ -49,9 +50,11 @@ public class RecalculateScoreListener implements ActionListener
 
 		//TODO: feature everything above off depending if RulesListener enabled
 		// evaluate all players using current RuleMap
-		model.run();
+		ScoringResults results = model.run();
 		// modify view based on updated model
-		view.updatePlayerScores();
+		view.updatePlayerScores(results.getCustomPlayers());
+		// log results with ResultsLogger
+		model.logResults(results);
 	}
 
 	//TODO: put in Util file (used in RulesListener, PlayerUtil)

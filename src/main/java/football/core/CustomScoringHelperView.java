@@ -129,10 +129,7 @@ public final class CustomScoringHelperView extends JFrame
 		logger.info("registered recalculate score listener");
 	}
 
-	public void updatePlayerScores() {
-		//TODO: take in as parameter instead
-		// get updated List<Player> with updated scores from model
-		List<Player> currentPlayers = model.getCurrentPlayers();
-		panel1.updatePlayerScores(currentPlayers);
+	public void updatePlayerScores(List<Player> players) {
+		panel1.updatePlayerScores(players);
 	}
 }
