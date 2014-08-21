@@ -1,8 +1,6 @@
 Revisions/Refactoring:
 
 
-***make sorting more efficient (hard code name -> idx map since TableModel doesn't change)
-
 pre-pend class.getSimpleName() to category.toString() instances for display purposes
 *******remove warnings
 -- flag for cmd line vs GUI in main class

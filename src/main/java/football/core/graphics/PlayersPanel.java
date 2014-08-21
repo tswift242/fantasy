@@ -2,7 +2,9 @@ package football.core.graphics;
 
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JPanel;
 //import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -54,8 +56,7 @@ public final class PlayersPanel extends JPanel
 			Double score = player.getScore();
 
 			// look up row for this player based on the player name
-			//TODO: replace this
-			int row = model.getIndexForName(name);
+			int row = model.getIndexFromName(name);
 			logger.debug("updating score for {}", name);
 			model.setValueAt(score, row, col);
 		}
@@ -82,8 +83,17 @@ public final class PlayersPanel extends JPanel
 	private class PlayersTableModel extends AbstractTableModel {
 		private static final String WHITESPACE_REGEX = "\\s+";
 
+		/*
+		* Table data is in the following format, as specified by the columnNames:
+		*
+		* player_name	stat1	...	statN	player_score
+		*/
 		private String[] columnNames;
 		private Object[][] playerData;
+		// maps the name of each Player to the row index of the Player in playerData
+		// used to quickly lookup player row given name
+		// Note: don't need to update values in here because model data doesn't change location
+		private Map<String,Integer> namesToIndices;
 
 		public PlayersTableModel(List<Player> players) {
 			// stat categories for this group of players
@@ -97,16 +107,24 @@ public final class PlayersPanel extends JPanel
 			columnNames[numCols-1] = "Score";
 
 			// create row data
-			int numPlayers = players.size();
-			playerData = new Object[numPlayers][numCols];
+			playerData = new Object[players.size()][numCols];
+			namesToIndices = new HashMap<String,Integer>();
 			int rowIdx = 0; // don't assume List has random access
 			for(Player player : players) {
-				playerData[rowIdx][0] = player.getName();
+				String name = player.getName();
+				// set name
+				playerData[rowIdx][0] = name;
+				// map name to row index for quick lookup later
+				namesToIndices.put(name,rowIdx);
+
+				// set stats
 				String[] statStrings = player.statsToString().split(WHITESPACE_REGEX);
 				// convert stats back from strings to ints
 				//TODO: see if we can avoid double converson by changing Player subclasses
 				Integer[] stats = toIntegerArray(statStrings);
 				System.arraycopy(stats, 0, playerData[rowIdx], 1, stats.length);
+
+				// set score
 				playerData[rowIdx++][numCols-1] = player.getScore();
 			}
 		}
@@ -143,17 +161,18 @@ public final class PlayersPanel extends JPanel
 			fireTableCellUpdated(row, col);
 		}
 
-		// searches "Player" column for name matching given name, and returns corresponding index
-		//TODO: replace this with name -> index map for better efficiency (look at RowSorterListener)
-		public int getIndexForName(String name) {
-			int index = -1;
-			int numRows = getRowCount();
-			for(int i = 0; i < numRows; i++) {
-				String currName = playerData[i][0].toString();
-				if(currName.equalsIgnoreCase(name)) {
-					index = i;
-					break;
-				}
+		// look up row index of Player with given name
+		public int getIndexFromName(String name) {
+			if(!namesToIndices.containsKey(name)) {
+				logger.error("{} is not a valid name based on the players used to construct this model", name);
+				throw new IllegalArgumentException("invalid player name");
+			}
+			Integer index = namesToIndices.get(name);
+			String actualName = (String)playerData[index][0];
+			// Note: should NEVER happen (this is a sanity check)
+			if(!actualName.equalsIgnoreCase(name)) {
+				logger.error("namesToIndices map is not up to date and needs to be modified\nfound: {}\nexpected: {}", actualName, name);
+				return -1;
 			}
 
 			return index;
