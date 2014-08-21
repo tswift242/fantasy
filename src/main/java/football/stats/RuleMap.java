@@ -45,6 +45,12 @@ public final class RuleMap
 		map.putAll(ruleMap.map);
 	}
 
+	// clear the rule for the given category by removing it from the map
+	public <T extends Enum<T> & StatType> void remove(T category) {
+		map.remove(category);
+		//put(category, new Rule<T>(category, 0)); // equivlanet to removing the rule
+	}
+
 	@Override
 	public String toString() {
 		String result = "";

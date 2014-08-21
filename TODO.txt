@@ -3,11 +3,11 @@ Revisions/Refactoring:
 
 ***make sorting more efficient (hard code name -> idx map since TableModel doesn't change)
 
+pre-pend class.getSimpleName() to category.toString() instances for display purposes
 *******remove warnings
 -- flag for cmd line vs GUI in main class
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
 -- extract certain methods to Utils classes
--- use diamond operator with generics
 
 Naming:
 --Modes -> Mode
@@ -74,3 +74,8 @@ Cons:
 
 Notes:
 grab ScorerPanel from JButton in ActionEvent using SwingUtilities.getAncestorOfClass()
+
+
+Option 3: hybrid of above 2 options -- RulesListener sets flag to show that field was modified; RecalculateScoreListener then updates only modified fields
+
+Notes: ***implement this (seems to be better than other options)
