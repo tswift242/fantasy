@@ -7,9 +7,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import football.stats.RuleMap;
 import football.stats.Stat;
 import football.stats.categories.Def;
-import football.util.PlayerUtil;
-import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
-import static football.util.ValidateUtil.checkArrayLength;
+import football.util.PlayerUtils;
+
+import static football.util.ValidateUtils.checkStatsSetNotNullWithCorrectSize;
+import static football.util.ValidateUtils.checkArrayLength;
 
 public final class DEF extends Player
 {
@@ -42,7 +43,7 @@ public final class DEF extends Player
 	@Override
 	public double evaluate(RuleMap rules) {
 		//checkNotNull(rules, "rules is null");
-		score = PlayerUtil.dot(defStats,rules);
+		score = PlayerUtils.dot(defStats, rules);
 		return score;
 	}
 
@@ -52,7 +53,7 @@ public final class DEF extends Player
 		int numArgs = numDefStats+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		RuleMap rules = PlayerUtil.parseScoringRules(args,1,numDefStats,Def.class);
+		RuleMap rules = PlayerUtils.parseScoringRules(args, 1, numDefStats, Def.class);
 		return rules;
 	}
 
@@ -67,6 +68,6 @@ public final class DEF extends Player
 
 	@Override
 	public String statsToString() {
-		return PlayerUtil.statsToString(defStats);
+		return PlayerUtils.statsToString(defStats);
 	}
 }

@@ -37,7 +37,7 @@
 		<javac debug="true" srcdir="${mainjavadir}" destdir="${classdir}" 
 			classpathref="build-classpath" includeantruntime="false">
 			<compilerarg value="-Xlint"/>
-			<!--<exclude name="**/ValidateUtil.java"/>-->
+			<!--<exclude name="**/ValidateUtils.java"/>-->
 		</javac>
 	</target>
 

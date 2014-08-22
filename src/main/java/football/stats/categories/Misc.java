@@ -1,7 +1,7 @@
 package football.stats.categories;
 
 import football.stats.StatType;
-import football.util.EnumUtil;
+import football.util.EnumUtils;
 
 public enum Misc implements StatType
 {
@@ -12,7 +12,7 @@ public enum Misc implements StatType
 
 	private final String text;
 	private static final int size = values().length;
-	private static final String valuesString = EnumUtil.valuesToString(Misc.class);
+	private static final String valuesString = EnumUtils.valuesToString(Misc.class);
 
 	private Misc(String text) {
 		this.text = text;

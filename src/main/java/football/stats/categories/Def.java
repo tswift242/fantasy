@@ -1,7 +1,7 @@
 package football.stats.categories;
 
 import football.stats.StatType;
-import football.util.EnumUtil;
+import football.util.EnumUtils;
 
 public enum Def implements StatType
 {
@@ -18,7 +18,7 @@ public enum Def implements StatType
 	private static final int size = values().length;
 	private static final int yardsUnit = 200;
 	private static final int pointsUnit = 7;
-	private static final String valuesString = EnumUtil.valuesToString(Def.class);
+	private static final String valuesString = EnumUtils.valuesToString(Def.class);
 
 	private Def(String text) {
 		this.text = text;

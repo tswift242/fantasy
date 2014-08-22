@@ -64,13 +64,7 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPan
 			this.add(new JLabel(category.toString() + ": "), c);
 			c.gridx++;
 			// set text to be default rule value
-			Rule<T> rule = defaultRules.get(category);
-			String value;
-			if(rule != null) {
-				value = rule.getValueText();
-			} else {
-				value = "0.0";
-			}
+			String value = defaultRules.getValueText(category);
 			RuleTextField<T> ruleField = new RuleTextField<T>(category, value);
 			this.add(ruleField, c);
 			ruleTextFields.add(ruleField);

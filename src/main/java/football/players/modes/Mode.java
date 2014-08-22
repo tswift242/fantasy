@@ -4,17 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import football.players.DEF;
-import football.players.K;
-import football.players.QB;
-import football.players.RB;
-import football.players.WR;
 import football.stats.RuleMap;
 import football.stats.StatType;
 import football.stats.categories.*;
-import football.util.EnumUtil;
+import football.util.EnumUtils;
 
-public enum Modes
+public enum Mode
 {
 	QB("QB", newList(Pass.class, Rush.class, Misc.class)) {
 		@Override
@@ -58,7 +53,7 @@ public enum Modes
 	// list of associated StatType's with each Mode
 	private final List<Class<? extends StatType>> statTypes;
 
-	private Modes(String text, List<Class<? extends StatType>> statTypes) {
+	private Mode(String text, List<Class<? extends StatType>> statTypes) {
 		this.text = text;
 		this.statTypes = statTypes;
 	}
@@ -68,8 +63,8 @@ public enum Modes
 		return text;
 	}
 
-	public static Modes fromString(String text) {
-		return EnumUtil.fromString(Modes.class,text);
+	public static Mode fromString(String text) {
+		return EnumUtils.fromString(Mode.class, text);
 	}
 
 	public abstract RuleMap parseScoringRules(String[] args);

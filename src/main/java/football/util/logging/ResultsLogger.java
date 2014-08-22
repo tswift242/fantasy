@@ -9,7 +9,7 @@ import java.util.List;
 
 import football.core.ScoringResults;
 import football.players.Player;
-import football.players.modes.Modes;
+import football.players.modes.Mode;
 
 /*
  * A class for logging player scoring and ranking results to a file.
@@ -37,7 +37,7 @@ public class ResultsLogger
 	}
 
 	public void logResults(ScoringResults results) throws IOException {
-		Modes mode = results.getMode();
+		Mode mode = results.getMode();
 		String[] args = results.getRules().toArgs(mode);
 		List<Player> defaultPlayers = results.getDefaultPlayers();
 		List<Player> customPlayers = results.getCustomPlayers();

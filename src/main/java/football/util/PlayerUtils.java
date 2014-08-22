@@ -4,14 +4,20 @@ import java.util.Set;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import football.stats.Rule;
 import football.stats.RuleMap;
 import football.stats.Stat;
 import football.stats.StatType;
 
-public final class PlayerUtil
+public final class PlayerUtils
 {
-	private PlayerUtil() {} //NEVER USE THIS
+	private static final Logger logger = LoggerFactory.getLogger(PlayerUtils.class.getName());
+
+	private PlayerUtils() {} //NEVER USE THIS
 
 	//utility helper function for evalute()
 	//takes dot product of stats set and corresponding set of rules in RuleMap
@@ -43,18 +49,43 @@ public final class PlayerUtil
 		for(int i = startIdx; i <= endIdx; i++) {
 			String arg = args[i];
 			T category = categories[i-startIdx];
-			if(arg.contains("/")) {
-				//split arg into value and unit
-				String[] ruleArray = arg.split("/");
-				Double value = Double.valueOf(ruleArray[0]);
-				int unit = Integer.parseInt(ruleArray[1]);
-				rules.put(category, new Rule<T>(category,value,unit));
-			} else {
-				Double value = Double.valueOf(arg);
-				rules.put(category, new Rule<T>(category,value));
-			}
+			rules.put(category, parseRuleText(arg, category));
 		}
 		return rules;
+	}
+
+	//TODO: put in Util file (used in RulesListener, PlayerUtils) and remove apache imports from this file
+	// parses rule text for value and unit and creates a rule. Returns null if rule is invalid.
+	public static <T extends Enum<T> & StatType> Rule<T> parseRuleText(String text, T category) {
+		// handle invalid rule values first
+		if(StringUtils.isBlank(text)) {
+			logger.warn("The rule for {} is blank. Using the value of 0.0 instead.", category.toString());
+			return null;
+		}
+
+		// split into value and unit
+		String[] ruleComponents = text.split("/");
+
+		// extract value from first component
+		Double value;
+		try {
+			value = Double.valueOf(ruleComponents[0]);
+		} catch(NumberFormatException e) {
+			logger.error("The rule for {} is not a valid number. Using the value of 0.0 instead.", category.toString());
+			return null;
+		}
+
+		// extract unit from second component if provided
+		int unit = 1;
+		if(ruleComponents.length > 1) {
+			try {
+				unit = Integer.parseInt(ruleComponents[1]);
+			} catch(NumberFormatException e) {
+				logger.error("The rule for {} is not a valid number. Using the value of 0.0 instead.", category.toString());
+				return null;
+			}
+		}
+		return new Rule<T>(category, value, unit);
 	}
 
 	//TODO: combine this with ResultsLogger.listToString() and make generic toString() for
@@ -78,14 +109,5 @@ public final class PlayerUtil
 			cumsum[i] = cumsum[i-1]+a[i];
 		}
 		return cumsum;
-	}
-
-	public static int sum(int[] a) {
-		int length = a.length;
-		int sum = 0;
-		for(int i = 0; i < length; i++) {
-			sum += a[i];
-		}
-		return sum;
 	}
 }

@@ -9,18 +9,19 @@ import football.stats.Stat;
 import football.stats.categories.Pass;
 import football.stats.categories.Rush;
 import football.stats.categories.Misc;
-import football.util.PlayerUtil;
-import static football.util.ValidateUtil.checkStatsSetNotNullWithCorrectSize;
-import static football.util.ValidateUtil.checkArrayLength;
+import football.util.PlayerUtils;
+
+import static football.util.ValidateUtils.checkStatsSetNotNullWithCorrectSize;
+import static football.util.ValidateUtils.checkArrayLength;
 
 public final class QB extends Player
 {
 	private static final int[] statTypeSizes = {Pass.size(),Rush.size(),Misc.size()};
 	private static final int numStatTypes = statTypeSizes.length; //number of stat types used by player
 	//delimiting indices separating 2 different stat types in cmd line args
-	private static final int[] statTypeIdxLimits = PlayerUtil.cumsum(statTypeSizes);
+	private static final int[] statTypeIdxLimits = PlayerUtils.cumsum(statTypeSizes);
 	//total number of stat categories affecting this player's score
-	//right hand expression below equivalent to PlayerUtil.sum(statTypeSizes)
+	//right hand expression below equivalent to PlayerUtils.sum(statTypeSizes)
 	private static final int numStats = statTypeIdxLimits[numStatTypes-1];
 	private final Set<Stat<Pass>> passStats;
 	private final Set<Stat<Rush>> rushStats;
@@ -63,7 +64,7 @@ public final class QB extends Player
 	@Override
 	public double evaluate(RuleMap rules) {
 		//checkNotNull(rules, "rules is null");
-		score = (PlayerUtil.dot(passStats,rules) + PlayerUtil.dot(rushStats,rules) + PlayerUtil.dot(miscStats,rules));
+		score = (PlayerUtils.dot(passStats, rules) + PlayerUtils.dot(rushStats, rules) + PlayerUtils.dot(miscStats, rules));
 		return score;
 	}
 
@@ -72,9 +73,9 @@ public final class QB extends Player
 		int numArgs = getNumStats()+1;
 		checkArrayLength(args,numArgs,String.format("Expected %s command line arguments; found %s arguments",numArgs,args.length));
 		//parse coefficients from command line arguments
-		RuleMap passRules = PlayerUtil.parseScoringRules(args,1,statTypeIdxLimits[0],Pass.class);
-		RuleMap rushRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[0]+1,statTypeIdxLimits[1],Rush.class);
-		RuleMap miscRules = PlayerUtil.parseScoringRules(args,statTypeIdxLimits[1]+1,statTypeIdxLimits[2],Misc.class);
+		RuleMap passRules = PlayerUtils.parseScoringRules(args, 1, statTypeIdxLimits[0], Pass.class);
+		RuleMap rushRules = PlayerUtils.parseScoringRules(args, statTypeIdxLimits[0] + 1, statTypeIdxLimits[1], Rush.class);
+		RuleMap miscRules = PlayerUtils.parseScoringRules(args, statTypeIdxLimits[1] + 1, statTypeIdxLimits[2], Misc.class);
 		//combine rule maps
 		RuleMap rules = new RuleMap();
 		rules.putAll(passRules);
@@ -96,7 +97,7 @@ public final class QB extends Player
 	@Override
 	public String statsToString() {
 		String delimiter = "\t";
-		return (PlayerUtil.statsToString(passStats) + delimiter + PlayerUtil.statsToString(rushStats) + 
-				delimiter + PlayerUtil.statsToString(miscStats));
+		return (PlayerUtils.statsToString(passStats) + delimiter + PlayerUtils.statsToString(rushStats) +
+				delimiter + PlayerUtils.statsToString(miscStats));
 	}
 }

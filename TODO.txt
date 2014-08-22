@@ -1,16 +1,13 @@
 Revisions/Refactoring:
 
 
-pre-pend class.getSimpleName() to category.toString() instances for display purposes
+-- look into JScrollPane for PlayersPanel
+-- read in data from csv file
+-- pre-pend class.getSimpleName() to category.toString() instances for display purposes
+
 *******remove warnings
 -- flag for cmd line vs GUI in main class
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
--- extract certain methods to Utils classes
-
-Naming:
---Modes -> Mode
---model.setRuleMap() -> model.setRules()
---*Util -> *Utils
 
 -- create JPanel subclass or Util for repeated grid bag layout code
 --seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)

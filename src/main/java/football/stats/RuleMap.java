@@ -7,9 +7,7 @@ import java.util.HashMap;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
 
-import football.players.modes.Modes;
-import football.stats.Rule;
-import football.stats.StatType;
+import football.players.modes.Mode;
 
 /*
  * Implementation of a typesafe heterogeneous map which maps
@@ -51,6 +49,18 @@ public final class RuleMap
 		//put(category, new Rule<T>(category, 0)); // equivlanet to removing the rule
 	}
 
+	public String getValueText(StatType category) {
+		Rule<?> rule = map.get(category);
+		String valueText;
+		if(rule != null) {
+			valueText = rule.getValueText();
+		} else {
+			valueText = "0.0";
+		}
+
+		return valueText;
+	}
+
 	@Override
 	public String toString() {
 		String result = "";
@@ -62,7 +72,7 @@ public final class RuleMap
 
 	// convert RuleMap into args String[] for Rules corresponding to given mode, 
 	// for compatability with command line verison of program and ResultsLogger class
-	public String[] toArgs(Modes mode) {
+	public String[] toArgs(Mode mode) {
 		// get stat types associated with this mode
 		List<Class<? extends StatType>> statTypes = mode.getStatTypes();
 		// compute number of total categories
@@ -78,8 +88,7 @@ public final class RuleMap
 		for(Class<? extends StatType> statType : statTypes) {
 			StatType[] categories = statType.getEnumConstants();
 			for(StatType category : categories) {
-				Rule<?> rule = map.get(category);
-				args[index++] = rule.getValueText();
+				args[index++] = getValueText(category);
 			}
 		}
 		return args;

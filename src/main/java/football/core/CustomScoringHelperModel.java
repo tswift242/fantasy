@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
+import football.players.modes.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.players.*; // for creating DEFAULT_RULES
-import football.players.modes.Modes;
 import football.stats.Rule; // for creating DEFAULT_RULES
 import football.stats.RuleMap;
 import football.stats.StatType;
@@ -28,17 +28,17 @@ public final class CustomScoringHelperModel
 
 	// rule map containing default rules, according to NFL.com
 	private static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
-	private static final Modes DEFAULT_MODE = Modes.QB;
+	private static final Mode DEFAULT_MODE = Mode.QB;
 
-	//TODO: make these maps map to List<E extends Player> if we drop Modes.ALL
+	//TODO: make these maps map to List<E extends Player> if we drop Mode.ALL
 	//TODO: make these lists static?
 	// map of player modes to corresponding lists of players
-	private Map<Modes,List<Player>> modesToPlayersMap;
+	private Map<Mode,List<Player>> modesToPlayersMap;
 	// copy of the above map containing copy player lists
-	private Map<Modes,List<Player>> modesToPlayersMap2;
+	private Map<Mode,List<Player>> modesToPlayersMap2;
 
 	private RuleMap currentRules;
-	private Modes currentMode;
+	private Mode currentMode;
 
 	public CustomScoringHelperModel() {
 		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
@@ -46,8 +46,8 @@ public final class CustomScoringHelperModel
 		// init to default rules (don't simply assign to prevent DEFAULT_RULES from being 
 		// modified whenever currentRules is modified)
 		currentRules = initDefaultRuleMap();
-		modesToPlayersMap = new EnumMap<Modes,List<Player>>(Modes.class);
-		modesToPlayersMap2 = new EnumMap<Modes,List<Player>>(Modes.class);
+		modesToPlayersMap = new EnumMap<Mode,List<Player>>(Mode.class);
+		modesToPlayersMap2 = new EnumMap<Mode,List<Player>>(Mode.class);
 		populateModesToPlayersMap();
 		logger.debug("Using default rule map of:\n{}", DEFAULT_RULES.toString());
 	}
@@ -56,7 +56,7 @@ public final class CustomScoringHelperModel
 	public void run(String[] args) {
 		logger.info("Running model with args: {}", Arrays.toString(args));
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
-		Modes mode = Modes.fromString(args[0]);
+		Mode mode = Mode.fromString(args[0]);
 		// parse scoring rules relevant to this mode
 		RuleMap rules = mode.parseScoringRules(args);
 
@@ -66,7 +66,7 @@ public final class CustomScoringHelperModel
 	}
 
 	// GUI version
-	private ScoringResults run(Modes mode, RuleMap rules) {
+	private ScoringResults run(Mode mode, RuleMap rules) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
 		// get corresponding lists of players for this mode
 		List<Player> players1 = modesToPlayersMap.get(mode);
@@ -125,18 +125,18 @@ public final class CustomScoringHelperModel
 		return DEFAULT_RULES;
 	}
 
-	public Modes getDefaultMode() {
+	public Mode getDefaultMode() {
 		return DEFAULT_MODE;
 	}
 
-	public Map<Modes,List<Player>> getModesToPlayersMap() {
+	public Map<Mode,List<Player>> getModesToPlayersMap() {
 		return modesToPlayersMap;
 	}
 
 	/*
 	 * Setters
 	 */
-	public void setMode(Modes mode) {
+	public void setMode(Mode mode) {
 		currentMode = mode;
 	}
 
@@ -144,7 +144,7 @@ public final class CustomScoringHelperModel
 		currentRules.put(category, rule);
 	}
 
-	public void setRuleMap(RuleMap rules) {
+	public void setRules(RuleMap rules) {
 		currentRules = rules;
 	}
 
@@ -155,6 +155,8 @@ public final class CustomScoringHelperModel
 			// if we're using default rules, "look up" correct score by using
 			// the saved defaultScore of each player instead of computing the
 			// score from scratch
+			//TODO: NOT CORRECT -- need to implement equals() for RuleMap
+			//TODO: consider not checking for / tracking default score
 			if(rules.equals(DEFAULT_RULES)) {
 				player.useDefaultScore();
 			} else {
@@ -164,37 +166,37 @@ public final class CustomScoringHelperModel
 	}
 
 	// adds mappings into modes map, and then accumulates the players lists 
-	// from these mappings in order to add a mapping for mode Modes.ALL
+	// from these mappings in order to add a mapping for mode Mode.ALL
 	// When this method returns, both instance maps will have a mapping for every
-	// mode in Modes
+	// mode in Mode
 	private void populateModesToPlayersMap() {
 		logger.debug("Populating map of modes to players");
 		// add a mapping into the modes map for every mode.
-		// Modes.ALL is skipped as it is built up using the lists of all of
+		// Mode.ALL is skipped as it is built up using the lists of all of
 		// the other mappings
-		for(Modes mode : Modes.values()) {
-			if(mode != Modes.ALL) {
+		for(Mode mode : Mode.values()) {
+			if(mode != Mode.ALL) {
 				addMapping(mode);
 			}
 		}
 
 		// at this point, modes map contains a mapping for every mode 
-		// except Modes.ALL. Therefore, we build up the mapping for Modes.ALL
+		// except Mode.ALL. Therefore, we build up the mapping for Mode.ALL
 		// using the players lists from all of the other mappings
 		List<Player> allPlayersList = new ArrayList<Player>();
 		List<Player> allPlayersListCopy = new ArrayList<Player>();
-		for(Modes mode : modesToPlayersMap.keySet()) {
+		for(Mode mode : modesToPlayersMap.keySet()) {
 			allPlayersList.addAll(modesToPlayersMap.get(mode));
 			allPlayersListCopy.addAll(modesToPlayersMap2.get(mode));
 		}
-		modesToPlayersMap.put(Modes.ALL, allPlayersList);
-		modesToPlayersMap2.put(Modes.ALL, allPlayersListCopy);
+		modesToPlayersMap.put(Mode.ALL, allPlayersList);
+		modesToPlayersMap2.put(Mode.ALL, allPlayersListCopy);
 	}
 
 	// add mapping for mode to modes map, and corresponding copy mapping to copy of modes map
 	// Allows for dynamically populating the modes map so that we don't spend unnecessary
 	// computation creating lists of players for modes that aren't used
-	private void addMapping(Modes mode) {
+	private void addMapping(Mode mode) {
 		List<Player> players = createPlayersList(mode);
 		modesToPlayersMap.put(mode, players);
 		modesToPlayersMap2.put(mode, deepCopyList(players));
@@ -203,10 +205,10 @@ public final class CustomScoringHelperModel
 	// creates list of players for the given mode
 	// Note, this should only be used in conjunction with addMapping() to create a
 	// modes to players map in the class' constructor
-	private static List<Player> createPlayersList(Modes mode) {
+	private static List<Player> createPlayersList(Mode mode) {
 		// quickly initialize group of players based on mode
 		Player[] players = null;
-		//TODO: could add a getPlayersList() method to each Modes to avoid this switch stmt
+		//TODO: could add a getPlayersList() method to each Mode to avoid this switch stmt
 		switch(mode) {
 				case QB:
 						players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import football.core.CustomScoringHelperModel;
 import football.core.CustomScoringHelperView;
-import football.players.modes.Modes;
+import football.players.modes.Mode;
 
 public class ModeListener implements ItemListener
 {
@@ -26,7 +26,7 @@ public class ModeListener implements ItemListener
 	public void itemStateChanged(ItemEvent e) {
 		if(e.getStateChange() == ItemEvent.SELECTED) {
 			logger.info("New mode selected: " + e.getItem().toString());
-			Modes newMode = (Modes)e.getItem();
+			Mode newMode = (Mode)e.getItem();
 			model.setMode(newMode);
 			view.setMode(newMode);
 		}

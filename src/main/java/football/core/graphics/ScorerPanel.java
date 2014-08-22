@@ -10,11 +10,11 @@ import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import football.players.modes.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.players.Player;
-import football.players.modes.Modes;
 import football.stats.RuleMap;
 import football.stats.StatType;
 
@@ -32,7 +32,7 @@ public final class ScorerPanel extends JPanel
 	private RulesPanel rules;
 	private JButton scoreButton;
 
-	public ScorerPanel(Map<Modes,List<Player>> playersMap, Modes defaultMode, RuleMap defaultRules) {
+	public ScorerPanel(Map<Mode,List<Player>> playersMap, Mode defaultMode, RuleMap defaultRules) {
 		rules = new RulesPanel(defaultRules);
 		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
@@ -64,7 +64,7 @@ public final class ScorerPanel extends JPanel
 		return scoreButton;
 	}
 
-	public void setPlayersPanel(Modes mode) {
+	public void setPlayersPanel(Mode mode) {
 		CardLayout cardLayout = (CardLayout)(playerPanels.getLayout());
 		cardLayout.show(playerPanels, mode.toString());
 		logger.info("Set players panel to mode {}", mode.toString());
@@ -79,11 +79,11 @@ public final class ScorerPanel extends JPanel
 
 	// create a PlayersPanel for each Mode, and add it to a aggregate panel which displays
 	// one panel at a time using the CardLayout
-	private void createPlayerPanels(Map<Modes,List<Player>> playersMap) {
+	private void createPlayerPanels(Map<Mode,List<Player>> playersMap) {
 		playerPanels = new JPanel(new CardLayout());
-		for(Modes mode : Modes.values()) {
-			//TODO: avoiding Modes.ALL for now because of issues
-			if(mode != Modes.ALL) {
+		for(Mode mode : Mode.values()) {
+			//TODO: avoiding Mode.ALL for now because of issues
+			if(mode != Mode.ALL) {
 				PlayersPanel players = new PlayersPanel(playersMap.get(mode));
 				players.setName(mode.toString());
 				playerPanels.add(players, mode.toString());

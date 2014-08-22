@@ -12,9 +12,9 @@ import football.stats.StatType;
  * Utility for validating method arguments, built on top of Google's Guava
  */
 
-public final class ValidateUtil
+public final class ValidateUtils
 {
-	private ValidateUtil() {} //NEVER USE THIS
+	private ValidateUtils() {} //NEVER USE THIS
 
 	public static <T> void checkArrayLength(T[] array, int length, String errorMessage) {
 		checkArgument(array.length == length, errorMessage);

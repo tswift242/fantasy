@@ -3,7 +3,7 @@ package football.core;
 import java.util.List;
 
 import football.players.Player;
-import football.players.modes.Modes;
+import football.players.modes.Mode;
 import football.stats.RuleMap;
 
 /*
@@ -14,7 +14,7 @@ import football.stats.RuleMap;
 public class ScoringResults
 {
 	// inputs
-	private Modes mode;
+	private Mode mode;
 	private RuleMap rules;
 
 	// outputs
@@ -23,7 +23,7 @@ public class ScoringResults
 	private List<Player> defaultPlayers, customPlayers;
 	private double distance;
 
-	public ScoringResults(Modes mode, RuleMap rules, List<Player> defaultPlayers, List<Player> customPlayers, double distance) {
+	public ScoringResults(Mode mode, RuleMap rules, List<Player> defaultPlayers, List<Player> customPlayers, double distance) {
 		this.mode = mode;
 		this.rules = rules;
 		this.defaultPlayers = defaultPlayers;
@@ -31,7 +31,7 @@ public class ScoringResults
 		this.distance = distance;
 	}
 
-	public Modes getMode() {
+	public Mode getMode() {
 		return mode;
 	}
 

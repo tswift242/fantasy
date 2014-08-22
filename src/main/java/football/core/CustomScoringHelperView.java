@@ -13,17 +13,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import football.core.graphics.PlayersPanel;
 import football.core.graphics.RuleTextField;
-import football.core.graphics.RulesPanel;
 import football.core.graphics.ScorerPanel;
 import football.players.Player;
-import football.players.modes.Modes;
+import football.players.modes.Mode;
 import football.stats.RuleMap;
 import football.stats.StatType;
 
@@ -38,7 +35,7 @@ public final class CustomScoringHelperView extends JFrame
 	private CustomScoringHelperModel model;
 
 	private ScorerPanel panel1, panel2;
-	private JComboBox<Modes> modesBox;
+	private JComboBox<Mode> modesBox;
 
 	//TODO: break this up into helper methods
 	public CustomScoringHelperView(CustomScoringHelperModel model, String title) {
@@ -46,7 +43,7 @@ public final class CustomScoringHelperView extends JFrame
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
 		// get defaults from model
-		Modes defaultMode = model.getDefaultMode();
+		Mode defaultMode = model.getDefaultMode();
 		RuleMap defaultRules = model.getDefaultRules();
 
 		// set up content panel
@@ -64,7 +61,7 @@ public final class CustomScoringHelperView extends JFrame
 		c.insets = new Insets(padding, padding, padding, padding);
 
 		modePanel.add(new JLabel("Select a player mode: "), c);
-		modesBox = new JComboBox<Modes>(Modes.values());
+		modesBox = new JComboBox<Mode>(Mode.values());
 		modesBox.setSelectedItem(defaultMode);
 		c.gridx++;
 		modePanel.add(modesBox, c);
@@ -102,7 +99,7 @@ public final class CustomScoringHelperView extends JFrame
 	/*
 	 * Setters
 	 */
-	public void setMode(Modes mode) {
+	public void setMode(Mode mode) {
 		panel1.setPlayersPanel(mode);
 		//panel2.setPlayersPanel(mode);
 	}

@@ -1,8 +1,8 @@
 package football.util;
 
-public final class EnumUtil
+public final class EnumUtils
 {
-	private EnumUtil() {} //NEVER USE THIS
+	private EnumUtils() {} //NEVER USE THIS
 
 	public static <T extends Enum<T>> String valuesToString(Class<T> enumType) {
 		String values = "";
