@@ -2,6 +2,7 @@ package football.stats.categories;
 
 import football.stats.StatType;
 import football.util.EnumUtils;
+import football.util.StatCategoryUtils;
 
 public enum Rush implements StatType
 {
@@ -20,6 +21,10 @@ public enum Rush implements StatType
 
 	@Override
 	public String toString() {
+		return StatCategoryUtils.toString(this);
+	}
+
+	public String getText() {
 		return text;
 	}
 

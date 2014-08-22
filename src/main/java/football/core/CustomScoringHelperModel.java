@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 import static com.google.common.base.Preconditions.checkPositionIndex;
 
-import football.players.modes.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.players.*; // for creating DEFAULT_RULES
+import football.players.modes.Mode;
 import football.stats.Rule; // for creating DEFAULT_RULES
 import football.stats.RuleMap;
 import football.stats.StatType;

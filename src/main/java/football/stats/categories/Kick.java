@@ -2,6 +2,7 @@ package football.stats.categories;
 
 import football.stats.StatType;
 import football.util.EnumUtils;
+import football.util.StatCategoryUtils;
 
 public enum Kick implements StatType
 {
@@ -28,6 +29,10 @@ public enum Kick implements StatType
 
 	@Override
 	public String toString() {
+		return StatCategoryUtils.toString(this);
+	}
+
+	public String getText() {
 		return text;
 	}
 

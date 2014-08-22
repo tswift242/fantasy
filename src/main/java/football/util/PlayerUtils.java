@@ -54,7 +54,6 @@ public final class PlayerUtils
 		return rules;
 	}
 
-	//TODO: put in Util file (used in RulesListener, PlayerUtils) and remove apache imports from this file
 	// parses rule text for value and unit and creates a rule. Returns null if rule is invalid.
 	public static <T extends Enum<T> & StatType> Rule<T> parseRuleText(String text, T category) {
 		// handle invalid rule values first

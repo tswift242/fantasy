@@ -2,17 +2,18 @@ package football.stats.categories;
 
 import football.stats.StatType;
 import football.util.EnumUtils;
+import football.util.StatCategoryUtils;
 
 public enum Def implements StatType
 {
 	SCK("SCK"),
 	INT("INT"),
-	FUMB("FUMB"),
+	FUMB("FUMB_REC"),
 	SAF("SAF"),
 	TD("TD"),
 	RET("RET"),
-	PTS("PTS"),
-	YDS("YDS");
+	PTS("PTS_ALLOWED"),
+	YDS("YDS_ALLOWED");
 
 	private final String text;
 	private static final int size = values().length;
@@ -26,6 +27,10 @@ public enum Def implements StatType
 
 	@Override
 	public String toString() {
+		return StatCategoryUtils.toString(this);
+	}
+
+	public String getText() {
 		return text;
 	}
 

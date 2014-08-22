@@ -3,10 +3,7 @@ Revisions/Refactoring:
 
 -- look into JScrollPane for PlayersPanel
 -- read in data from csv file
--- pre-pend class.getSimpleName() to category.toString() instances for display purposes
 
-*******remove warnings
--- flag for cmd line vs GUI in main class
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
 
 -- create JPanel subclass or Util for repeated grid bag layout code
@@ -18,6 +15,7 @@ Revisions/Refactoring:
 
 -- comment out Modes.ALL??
 -- look into computing entire RuleMap in one call of parseScoringRules()
+remove warnings
 *******-- rename football/ to customerscorer/??
 
 
