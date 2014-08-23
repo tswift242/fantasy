@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import football.stats.Rule;
 import football.stats.RuleMap;
@@ -17,7 +16,7 @@ import football.stats.StatType;
  * with a given stat type.
  */
 
-public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPanel
+public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends GridBagPanel
 {
 	private static final long serialVersionUID = -6296168608062180190L;
 	// allow no more than this many categories to appear in a single row
@@ -27,19 +26,10 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends JPan
 	private List<RuleTextField<T>> ruleTextFields;
 
 	public StatTypeRulesPanel(Class<T> statType, RuleMap defaultRules) {
+		super(2);
+
 		// get categories for given stat type
 		T[] categories = statType.getEnumConstants();
-
-		// switch to grid bag layout
-		this.setLayout(new GridBagLayout());
-		// set up constraints
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.CENTER;
-		//TODO: make parameter?
-		int padding = 2;
-		c.insets = new Insets(padding, padding, padding, padding);
 
 		// for StatType's with many categories, arrange the categories into
 		// multiple even-sized rows

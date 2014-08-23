@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
 
 import football.stats.RuleMap;
 import football.stats.StatType;
@@ -15,17 +14,13 @@ import football.stats.categories.*;
  * Panel displaying text boxes for modifying scoring rules of all stat types
  */
 
-public final class RulesPanel extends JPanel
+public final class RulesPanel extends GridBagPanel
 {
 	private static final long serialVersionUID = 4818675092111795395L;
 	private List<RuleTextField<? extends StatType>> ruleTextFields;
 
 	public RulesPanel(RuleMap defaultRules) {
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.CENTER;
+		super();
 
 		// add one of each stat type rules panel
 		List<StatTypeRulesPanel<? extends StatType>> rulePanels = new ArrayList<StatTypeRulesPanel<? extends StatType>>();

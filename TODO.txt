@@ -1,13 +1,13 @@
 Revisions/Refactoring:
 
 
--- look into JScrollPane for PlayersPanel
+******-- look into JScrollPane for PlayersPanel
 -- read in data from csv file
 
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
+-- get rid of getYardsUnit() in categories classes
 
--- create JPanel subclass or Util for repeated grid bag layout code
---seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
+-- seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
 
 ***-- make Player subclasses have List<Set<? extends StatType>>
 --Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent. ***Look into using only one list of players by modifying Player.java
@@ -20,13 +20,11 @@ remove warnings
 
 
 
-
 **** call static method of generic type
 **** reuse abstract method code
 -- avoid code repetition in argument validation in Player subclasses
 -- avoid code repetition in field code in Player subclasses (keep first field in subclasses and put methods for all other fields in Player?)
 -- make categoriesToString() static
--- get rid of getYardsUnit() in categories classes?
 -- work on cmd line interface?
 ***** cmd line flags
 

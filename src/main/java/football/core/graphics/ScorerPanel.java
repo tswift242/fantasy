@@ -23,7 +23,7 @@ import football.stats.StatType;
  * based on the current rules.
  */
 
-public final class ScorerPanel extends JPanel
+public final class ScorerPanel extends GridBagPanel
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 	private static final long serialVersionUID = -4593451078660624536L;
@@ -33,17 +33,11 @@ public final class ScorerPanel extends JPanel
 	private JButton scoreButton;
 
 	public ScorerPanel(Map<Mode,List<Player>> playersMap, Mode defaultMode, RuleMap defaultRules) {
+		super(5);
+
 		rules = new RulesPanel(defaultRules);
 		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
-
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.CENTER;
-		int padding = 5;
-		c.insets = new Insets(padding, padding, padding, padding);
 
 		this.add(rules, c);
 		c.gridy++;
