@@ -12,8 +12,8 @@ import football.stats.StatType;
 
 public class RuleTextField<T extends Enum<T> & StatType> extends JTextField
 {
-	// allows up to pattern of -dd.d/dd
-	private static final int RULE_FIELD_NUM_COLS = 8;
+	// visually allows up to pattern of -dd.dd/dd
+	private static final int RULE_FIELD_NUM_COLS = 5;
 	public static final String TEXT_FIELD_PROPERTY = "textField";
 
 	private final T category;
