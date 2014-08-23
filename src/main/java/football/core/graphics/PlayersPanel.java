@@ -96,37 +96,11 @@ public final class PlayersPanel extends JPanel
 		private Map<String,Integer> namesToIndices;
 
 		public PlayersTableModel(List<Player> players) {
-			// stat categories for this group of players
-			String[] categories = players.get(0).categoriesToString().split(WHITESPACE_REGEX);
 			// create column names
-			int numStats = categories.length; // numStats == numCategories
-			int numCols = numStats+2;
-			columnNames = new String[numCols];
-			columnNames[0] = "Players";
-			System.arraycopy(categories, 0, columnNames, 1, numStats);
-			columnNames[numCols-1] = "Score";
+			setColumnNames(players);
 
 			// create row data
-			playerData = new Object[players.size()][numCols];
-			namesToIndices = new HashMap<String,Integer>();
-			int rowIdx = 0; // don't assume List has random access
-			for(Player player : players) {
-				String name = player.getName();
-				// set name
-				playerData[rowIdx][0] = name;
-				// map name to row index for quick lookup later
-				namesToIndices.put(name,rowIdx);
-
-				// set stats
-				String[] statStrings = player.statsToString().split(WHITESPACE_REGEX);
-				// convert stats back from strings to ints
-				//TODO: see if we can avoid double converson by changing Player subclasses
-				Integer[] stats = toIntegerArray(statStrings);
-				System.arraycopy(stats, 0, playerData[rowIdx], 1, stats.length);
-
-				// set score
-				playerData[rowIdx++][numCols-1] = player.getScore();
-			}
+			setPlayerData(players);
 		}
 
 		@Override
@@ -178,6 +152,44 @@ public final class PlayersPanel extends JPanel
 			return index;
 		}
 
+
+		private void setColumnNames(List<Player> players) {
+			// stat categories for this group of players
+			String[] categories = players.get(0).categoriesToString().split(WHITESPACE_REGEX);
+			// numStats == numCategories
+			int numStats = categories.length;
+			// add 2 more columns for player names and scores
+			int numCols = numStats+2;
+			columnNames = new String[numCols];
+			columnNames[0] = "Players";
+			System.arraycopy(categories, 0, columnNames, 1, numStats);
+			columnNames[numCols-1] = "Score";
+		}
+
+		private void setPlayerData(List<Player> players) {
+			int numCols = getColumnCount();
+
+			playerData = new Object[players.size()][numCols];
+			namesToIndices = new HashMap<String,Integer>();
+			int rowIdx = 0; // don't assume List has random access
+			for(Player player : players) {
+				String name = player.getName();
+				// set name
+				playerData[rowIdx][0] = name;
+				// map name to row index for quick lookup later
+				namesToIndices.put(name,rowIdx);
+
+				// set stats
+				String[] statStrings = player.statsToString().split(WHITESPACE_REGEX);
+				// convert stats back from strings to ints
+				//TODO: see if we can avoid double converson by changing Player subclasses
+				Integer[] stats = toIntegerArray(statStrings);
+				System.arraycopy(stats, 0, playerData[rowIdx], 1, stats.length);
+
+				// set score
+				playerData[rowIdx++][numCols-1] = player.getScore();
+			}
+		}
 
 		// convert String[] to Integer[]
 		private Integer[] toIntegerArray(String[] array) {

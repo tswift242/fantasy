@@ -17,6 +17,7 @@ import javax.swing.event.DocumentListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import football.core.graphics.GridBagPanel;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
 import football.players.Player;
@@ -37,51 +38,12 @@ public final class CustomScoringHelperView extends JFrame
 	private ScorerPanel panel1, panel2;
 	private JComboBox<Mode> modesBox;
 
-	//TODO: break this up into helper methods
 	public CustomScoringHelperView(CustomScoringHelperModel model, String title) {
 		super(title);
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
-		// get defaults from model
-		Mode defaultMode = model.getDefaultMode();
-		RuleMap defaultRules = model.getDefaultRules();
 
-		// set up content panel
-		JPanel content = new JPanel();
-		content.setLayout(new GridBagLayout());
-
-		// mode panel
-		JPanel modePanel = new JPanel();
-		modePanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.anchor = GridBagConstraints.CENTER;
-		int padding = 2;
-		c.insets = new Insets(padding, padding, padding, padding);
-
-		modePanel.add(new JLabel("Select a player mode: "), c);
-		modesBox = new JComboBox<Mode>(Mode.values());
-		modesBox.setSelectedItem(defaultMode);
-		c.gridx++;
-		modePanel.add(modesBox, c);
-
-		// change/reset constraints for use on content panel
-		c.gridx = 0;
-		c.gridy = 0;
-		padding = 5;
-		c.insets = new Insets(padding, padding, padding, padding);
-
-		// scorer panels / add panels to content
-		content.add(modePanel, c);
-		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
-		panel1 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
-		c.gridy++;
-		content.add(panel1, c);
-		/*panel2 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
-		c.gridx++;
-		content.add(panel2, c);*/
-		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		JPanel content = createContentPanel();
 
 		// frame stuff
 		this.setContentPane(content);
@@ -128,5 +90,49 @@ public final class CustomScoringHelperView extends JFrame
 
 	public void updatePlayerScores(List<Player> players) {
 		panel1.updatePlayerScores(players);
+	}
+
+
+
+
+	private JPanel createContentPanel() {
+		// get defaults from model
+		Mode defaultMode = model.getDefaultMode();
+		RuleMap defaultRules = model.getDefaultRules();
+
+		// set up content panel
+		GridBagPanel content = new GridBagPanel(5);
+		GridBagConstraints c = content.getConstraints();
+
+		// mode panel
+		JPanel modePanel = createModePanel(defaultMode);
+
+		// scorer panels / add panels to content
+		content.add(modePanel, c);
+		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
+		panel1 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
+		c.gridy++;
+		content.add(panel1, c);
+		/*panel2 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
+		c.gridx++;
+		content.add(panel2, c);*/
+
+		// set size
+		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+
+		return content;
+	}
+
+	private JPanel createModePanel(Mode initMode) {
+		GridBagPanel modePanel = new GridBagPanel(2);
+		GridBagConstraints c = modePanel.getConstraints();
+
+		modePanel.add(new JLabel("Select a player mode: "), c);
+		modesBox = new JComboBox<Mode>(Mode.values());
+		modesBox.setSelectedItem(initMode);
+		c.gridx++;
+		modePanel.add(modesBox, c);
+
+		return modePanel;
 	}
 }

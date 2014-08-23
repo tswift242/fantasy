@@ -36,4 +36,9 @@ public class GridBagPanel extends JPanel
 		// cell padding
 		c.insets = new Insets(padding, padding, padding, padding);
 	}
+
+	// for components which have a GridBagPanel instance instead of extending the class
+	public GridBagConstraints getConstraints() {
+		return c;
+	}
 }

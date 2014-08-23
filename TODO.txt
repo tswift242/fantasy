@@ -7,8 +7,6 @@ Revisions/Refactoring:
 -- flag for updating rules in RecalculateScoreListener vs RulesListener (lazy vs eager)
 -- get rid of getYardsUnit() in categories classes
 
--- seperate Jpanel constructors into multiple helper methods (consult Java examples, e.g. TabDemo.java)
-
 ***-- make Player subclasses have List<Set<? extends StatType>>
 --Model: look into creating separate package which encapsulates things like players list so that duplication is less apparent. ***Look into using only one list of players by modifying Player.java
 	************-- make Player have map of RulesMap -> score; need way to specify which one is active --> active RulesMap field?
