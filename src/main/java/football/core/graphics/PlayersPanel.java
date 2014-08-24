@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
-//import javax.swing.JScrollPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SortOrder;
 import javax.swing.table.AbstractTableModel;
@@ -36,14 +36,17 @@ public final class PlayersPanel extends JPanel
 		table = new JTable(new PlayersTableModel(players));
 		setSortingBehavior(table);
 
-		// add to panel
+		// add to panel without JScrollPane
 		this.setLayout(new BorderLayout());
 		this.add(table.getTableHeader(), BorderLayout.PAGE_START);
 		this.add(table, BorderLayout.CENTER);
 
+		// add to panel with JScrollPane
+		/*table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		//table.setFillsViewportHeight(true);
-		//JScrollPane scrollPane = new JScrollPane(table);
-		//this.add(scrollPane);
+		JScrollPane scrollPane = new JScrollPane(table);
+		//scrollPane.setPreferredSize(new Dimension(1100, 200));
+		this.add(scrollPane);*/
 	}
 
 	public void updatePlayerScores(List<Player> players) {
