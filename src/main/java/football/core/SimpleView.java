@@ -2,8 +2,6 @@ package football.core;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.List;
@@ -14,18 +12,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentListener;
 
+import football.core.intface.CustomScoringHelperModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.core.graphics.GridBagPanel;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
+import football.core.intface.CustomScoringHelperView;
 import football.players.Player;
 import football.players.modes.Mode;
 import football.stats.RuleMap;
 import football.stats.StatType;
 
-public final class CustomScoringHelperView extends JFrame
+public final class SimpleView extends JFrame implements CustomScoringHelperView
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
@@ -38,7 +38,7 @@ public final class CustomScoringHelperView extends JFrame
 	private ScorerPanel panel1, panel2;
 	private JComboBox<Mode> modesBox;
 
-	public CustomScoringHelperView(CustomScoringHelperModel model, String title) {
+	public SimpleView(CustomScoringHelperModel model, String title) {
 		super(title);
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
@@ -54,7 +54,7 @@ public final class CustomScoringHelperView extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public CustomScoringHelperView(CustomScoringHelperModel model) {
+	public SimpleView(CustomScoringHelperModel model) {
 		this(model, "Fantasy Football Custom Scoring Helper");
 	}
 

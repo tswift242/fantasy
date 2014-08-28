@@ -2,12 +2,11 @@ package football.core.listeners;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 
+import football.core.intface.CustomScoringHelperModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import football.core.CustomScoringHelperModel;
 import football.core.graphics.RuleTextField;
 import football.stats.Rule;
 import football.stats.StatType;

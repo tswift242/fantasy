@@ -12,6 +12,7 @@ import static com.google.common.base.Preconditions.checkPositionIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import football.core.intface.CustomScoringHelperModel;
 import football.players.*; // for creating DEFAULT_RULES
 import football.players.modes.Mode;
 import football.stats.Rule; // for creating DEFAULT_RULES
@@ -22,7 +23,7 @@ import football.util.logging.ResultsLogger;
 import football.util.metrics.Metric;
 import football.util.metrics.SortOrderMetric;
 
-public final class CustomScoringHelperModel
+public final class SimpleModel implements CustomScoringHelperModel
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
@@ -40,7 +41,7 @@ public final class CustomScoringHelperModel
 	private RuleMap currentRules;
 	private Mode currentMode;
 
-	public CustomScoringHelperModel() {
+	public SimpleModel() {
 		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
 		currentMode = DEFAULT_MODE;
 		// init to default rules (don't simply assign to prevent DEFAULT_RULES from being 
@@ -66,7 +67,7 @@ public final class CustomScoringHelperModel
 	}
 
 	// GUI version
-	private ScoringResults run(Mode mode, RuleMap rules) {
+	public ScoringResults run(Mode mode, RuleMap rules) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
 		// get corresponding lists of players for this mode
 		List<Player> players1 = modesToPlayersMap.get(mode);

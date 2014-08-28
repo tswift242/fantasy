@@ -3,11 +3,11 @@ package football.core.listeners;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import football.core.intface.CustomScoringHelperModel;
+import football.core.intface.CustomScoringHelperView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import football.core.CustomScoringHelperModel;
-import football.core.CustomScoringHelperView;
 import football.players.modes.Mode;
 
 public class ModeListener implements ItemListener

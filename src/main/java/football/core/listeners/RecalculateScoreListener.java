@@ -7,11 +7,11 @@ import javax.swing.JButton;
 import javax.swing.SwingUtilities;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import football.core.intface.CustomScoringHelperModel;
+import football.core.intface.CustomScoringHelperView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import football.core.CustomScoringHelperModel;
-import football.core.CustomScoringHelperView;
 import football.core.ScoringResults;
 import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
