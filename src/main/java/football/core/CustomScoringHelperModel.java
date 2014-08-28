@@ -197,9 +197,8 @@ public final class CustomScoringHelperModel
 	// Allows for dynamically populating the modes map so that we don't spend unnecessary
 	// computation creating lists of players for modes that aren't used
 	private void addMapping(Mode mode) {
-		List<Player> players = createPlayersList(mode);
-		modesToPlayersMap.put(mode, players);
-		modesToPlayersMap2.put(mode, deepCopyList(players));
+		modesToPlayersMap.put(mode, createPlayersList(mode));
+		modesToPlayersMap2.put(mode, createPlayersList(mode));
 	}
 
 	// creates list of players for the given mode
@@ -211,24 +210,31 @@ public final class CustomScoringHelperModel
 		//TODO: could add a getPlayersList() method to each Mode to avoid this switch stmt
 		switch(mode) {
 				case QB:
-						players = new Player[]{Players.SANCHEZ,Players.WEEDEN,Players.LEINART,Players.QUINN,
-								Players.KOLB,Players.PALMER,Players.BRADY,Players.PEYTON,Players.RODGERS};
+						players = new Player[]{Players.SANCHEZ.deepCopy(),Players.WEEDEN.deepCopy(),
+								Players.LEINART.deepCopy(),Players.QUINN.deepCopy(),Players.KOLB.deepCopy(),
+								Players.PALMER.deepCopy(),Players.BRADY.deepCopy(),Players.PEYTON.deepCopy(),
+								Players.RODGERS.deepCopy()};
 						break;
 				case RB:
-						players = new Player[]{Players.REDMAN,Players.HILLMAN,Players.MATHEWS,Players.JONESDREW,
-								Players.RBUSH,Players.RICE,Players.LYNCH,Players.FOSTER};
+						players = new Player[]{Players.REDMAN.deepCopy(),Players.HILLMAN.deepCopy(),
+							Players.MATHEWS.deepCopy(),Players.JONESDREW.deepCopy(),Players.RBUSH.deepCopy(),
+							Players.RICE.deepCopy(),Players.LYNCH.deepCopy(),Players.FOSTER.deepCopy()};
 						break;
 				case WR:
-						players = new Player[]{Players.BEDWARDS,Players.SHOLMES,Players.HDOUGLAS,Players.MANNINGHAM,
-								Players.AMENDOLA,Players.JJONES,Players.DBRYANT,Players.CJOHNSON};
+						players = new Player[]{Players.BEDWARDS.deepCopy(),Players.SHOLMES.deepCopy(),
+							Players.HDOUGLAS.deepCopy(),Players.MANNINGHAM.deepCopy(),Players.AMENDOLA.deepCopy(),
+							Players.JJONES.deepCopy(),Players.DBRYANT.deepCopy(),Players.CJOHNSON.deepCopy()};
 						break;
 				case K:
-						players = new Player[]{Players.CUNDIFF,Players.FOLK,Players.CROSBY,Players.FORBATH,
-								Players.SCOBEE,Players.SUISHAM,Players.GOSTKOWSKI,Players.MBRYANT,Players.TUCKER};
+						players = new Player[]{Players.CUNDIFF.deepCopy(),Players.FOLK.deepCopy(),
+							Players.CROSBY.deepCopy(),Players.FORBATH.deepCopy(),Players.SCOBEE.deepCopy(),
+							Players.SUISHAM.deepCopy(),Players.GOSTKOWSKI.deepCopy(),Players.MBRYANT.deepCopy(),
+							Players.TUCKER.deepCopy()};
 						break;
 				case DEF:
-						players = new Player[]{Players.OAKLAND,Players.NEWORLEANS,Players.JACKSONVILLE,
-								Players.CLEVELAND,Players.SEATTLE,Players.SANFRAN,Players.CHICAGO};
+						players = new Player[]{Players.OAKLAND.deepCopy(),Players.NEWORLEANS.deepCopy(),
+							Players.JACKSONVILLE.deepCopy(),Players.CLEVELAND.deepCopy(),Players.SEATTLE.deepCopy(),
+							Players.SANFRAN.deepCopy(),Players.CHICAGO.deepCopy()};
 						break;
 				case ALL:
 						// this list is built up from all other lists in addMapping()
@@ -240,17 +246,6 @@ public final class CustomScoringHelperModel
 		// put players into list
 		List<Player> playersList = new ArrayList<Player>(Arrays.asList(players));
 		return playersList;
-	}
-
-
-	// Make deep copy of list of players. 
-	// Would work for any List<E> where E defines a deepCopy() method
-	private static List<Player> deepCopyList(List<Player> list) {
-		List<Player> listCopy = new ArrayList<Player>(list.size());
-		for(Player element : list) {
-			listCopy.add(element.deepCopy());
-		}
-		return listCopy;
 	}
 
 	// create and initialize a RuleMap containing the default scoring rules
