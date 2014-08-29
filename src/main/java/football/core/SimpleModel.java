@@ -135,8 +135,8 @@ public final class SimpleModel implements CustomScoringHelperModel
 		currentMode = mode;
 	}
 
-	public <T extends Enum<T> & StatType> void setRule(T category, Rule<T> rule) {
-		currentRules.put(category, rule);
+	public <T extends Enum<T> & StatType> void setRule(Rule<T> rule) {
+		currentRules.put(rule.getCategory(), rule);
 	}
 
 	public void setRules(RuleMap rules) {

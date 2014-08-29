@@ -26,7 +26,7 @@ public interface CustomScoringHelperModel
 
 	public void setMode(Mode mode);
 
-	public <T extends Enum<T> & StatType> void setRule(T category, Rule<T> rule);
+	public <T extends Enum<T> & StatType> void setRule(Rule<T> rule);
 
 	public void setRules(RuleMap rules);
 }

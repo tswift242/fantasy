@@ -46,6 +46,6 @@ public class RulesListener implements DocumentListener
 		String text = ruleTextField.getText();
 		Rule<T> rule = PlayerUtils.parseRuleText(text, category);
 		logger.debug("new rule: {}", rule.toString());
-		model.setRule(category, rule);
+		model.setRule(rule);
 	}
 }
