@@ -13,7 +13,7 @@ import football.stats.StatType;
 public interface CustomScoringHelperModel
 {
 	// run model using rules specified at the command line
-	public void run(String[] args);
+	public ScoringResults run(String[] args);
 
 	// run model using rules specified through the UI, 
 	// maintained as member variables by the model

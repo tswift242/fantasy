@@ -54,7 +54,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	}
 
 	// command line version
-	public void run(String[] args) {
+	public ScoringResults run(String[] args) {
 		logger.info("Running model with args: {}", Arrays.toString(args));
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
 		Mode mode = Mode.fromString(args[0]);
@@ -64,6 +64,8 @@ public final class SimpleModel implements CustomScoringHelperModel
 		ScoringResults results = run(mode, rules);
 		// log results
 		logResults(results);
+
+		return results;
 	}
 
 	// GUI version
