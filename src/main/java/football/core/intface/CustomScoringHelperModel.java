@@ -22,10 +22,6 @@ public interface CustomScoringHelperModel
 	// log the results of player evaluations to a file
 	public void logResults(ScoringResults results);
 
-	public RuleMap getDefaultRules();
-
-	public Mode getDefaultMode();
-
 	public Map<Mode,List<Player>> getModesToPlayersMap();
 
 	public void setMode(Mode mode);

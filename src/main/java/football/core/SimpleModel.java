@@ -28,8 +28,8 @@ public final class SimpleModel implements CustomScoringHelperModel
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	// rule map containing default rules, according to NFL.com
-	private static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
-	private static final Mode DEFAULT_MODE = Mode.QB;
+	public static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
+	public static final Mode DEFAULT_MODE = Mode.QB;
 
 	//TODO: make these maps map to List<E extends Player> if we drop Mode.ALL
 	//TODO: make these lists static?
@@ -122,14 +122,6 @@ public final class SimpleModel implements CustomScoringHelperModel
 	/*
 	 * Getters
 	 */
-	public RuleMap getDefaultRules() {
-		return DEFAULT_RULES;
-	}
-
-	public Mode getDefaultMode() {
-		return DEFAULT_MODE;
-	}
-
 	public Map<Mode,List<Player>> getModesToPlayersMap() {
 		return modesToPlayersMap;
 	}

@@ -2,6 +2,9 @@ package football.core;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.List;
@@ -10,6 +13,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.event.DocumentListener;
 
 import football.core.intface.CustomScoringHelperModel;
@@ -74,6 +78,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		logger.info("registered mode listener");
 	}
 
+	//TODO: push logic for this to ScorerPanel, and call for both ScorerPanel's
 	public void addRulesListener(DocumentListener listener) {
 		List<RuleTextField<? extends StatType>> ruleTextFields = panel1.getRuleTextFields();
 		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
@@ -82,6 +87,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		logger.info("registered rules listener");
 	}
 
+	//TODO: push logic for this to ScorerPanel, and call for both ScorerPanel's
 	public void addRecalculateScoreListener(ActionListener listener) {
 		JButton scoreButton = panel1.getScoreButton();
 		scoreButton.addActionListener(listener);
@@ -97,8 +103,8 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 	private JPanel createContentPanel() {
 		// get defaults from model
-		Mode defaultMode = model.getDefaultMode();
-		RuleMap defaultRules = model.getDefaultRules();
+		Mode defaultMode = SimpleModel.DEFAULT_MODE;
+		RuleMap defaultRules = SimpleModel.DEFAULT_RULES;
 
 		// set up content panel
 		GridBagPanel content = new GridBagPanel(5);
@@ -109,14 +115,26 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 		// scorer panels / add panels to content
 		content.add(modePanel, c);
-		//TODO: differentiate scorer panels (or drop second panel if it won't fit)
 		panel1 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
 		c.gridy++;
 		content.add(panel1, c);
+		//TODO: incorporte later
 		/*panel2 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
-		c.gridx++;
-		content.add(panel2, c);*/
+		//c.gridx++;
+		//content.add(panel2, c);*/
 
+		//TODO: incorporte later
+		/*JPanel scorerPanels = new JPanel();
+		int hgap = 50;
+		scorerPanels.setLayout(new GridLayout(1, 2, hgap, 0));
+		scorerPanels.add(panel1);
+		scorerPanels.add(panel2);
+		JScrollPane scrollPane = new JScrollPane(scorerPanels);
+		scrollPane.setPreferredSize(new Dimension(DEFAULT_WIDTH, (int)(0.7*DEFAULT_HEIGHT)));
+		c.gridy++;
+		content.add(scrollPane, c);*/
+
+		//TODO: remove this when start using scroll pane above
 		// set size
 		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 
