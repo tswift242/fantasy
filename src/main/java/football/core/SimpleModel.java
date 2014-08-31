@@ -54,6 +54,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	}
 
 	// command line version
+	@Override
 	public ScoringResults run(String[] args) {
 		logger.info("Running model with args: {}", Arrays.toString(args));
 		checkPositionIndex(0, args.length, "mode not specified\n" + getUsage());
@@ -94,6 +95,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	}
 
 	// run using currentMode and currentRules
+	@Override
 	public ScoringResults run() {
 		return run(currentMode, currentRules);
 	}
@@ -113,6 +115,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	}
 
 	// write results to default file in default directory
+	@Override
 	public void logResults(ScoringResults results) {
 		String fileSeparator = System.getProperty("file.separator");
 		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
@@ -124,22 +127,29 @@ public final class SimpleModel implements CustomScoringHelperModel
 	/*
 	 * Getters
 	 */
-	public Map<Mode,List<Player>> getModesToPlayersMap() {
+	// ignore modelID, since this is not a composite model
+	@Override
+	public Map<Mode,List<Player>> getModesToPlayersMap(int modelID) {
 		return modesToPlayersMap;
 	}
 
 	/*
 	 * Setters
 	 */
+	@Override
 	public void setMode(Mode mode) {
 		currentMode = mode;
 	}
 
-	public <T extends Enum<T> & StatType> void setRule(Rule<T> rule) {
+	// ignore modelID, since this is not a composite model
+	@Override
+	public <T extends Enum<T> & StatType> void setRule(Rule<T> rule, int modelID) {
 		currentRules.put(rule.getCategory(), rule);
 	}
 
-	public void setRules(RuleMap rules) {
+	// ignore modelID, since this is not a composite model
+	@Override
+	public void setRules(RuleMap rules, int modelID) {
 		currentRules = rules;
 	}
 

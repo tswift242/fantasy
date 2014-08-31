@@ -14,6 +14,7 @@ public final class SimpleController implements CustomScoringHelperController
 	}
 
 	// add listeners to the view
+	@Override
 	public void registerListeners(CustomScoringHelperModel model,
                             CustomScoringHelperView view) {
 		view.addModeListener(new ModeListener(model, view));

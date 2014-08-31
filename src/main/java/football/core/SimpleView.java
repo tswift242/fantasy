@@ -65,6 +65,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	/*
 	 * Setters
 	 */
+	@Override
 	public void setMode(Mode mode) {
 		panel1.setPlayersPanel(mode);
 		//panel2.setPlayersPanel(mode);
@@ -73,12 +74,14 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	/*
 	 * listener methods
 	 */
+	@Override
 	public void addModeListener(ItemListener listener) {
 		modesBox.addItemListener(listener);
 		logger.info("registered mode listener");
 	}
 
 	//TODO: push logic for this to ScorerPanel, and call for both ScorerPanel's
+	@Override
 	public void addRulesListener(DocumentListener listener) {
 		List<RuleTextField<? extends StatType>> ruleTextFields = panel1.getRuleTextFields();
 		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
@@ -88,12 +91,14 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	}
 
 	//TODO: push logic for this to ScorerPanel, and call for both ScorerPanel's
+	@Override
 	public void addRecalculateScoreListener(ActionListener listener) {
 		JButton scoreButton = panel1.getScoreButton();
 		scoreButton.addActionListener(listener);
 		logger.info("registered recalculate score listener");
 	}
 
+	@Override
 	public void updatePlayerScores(List<Player> players) {
 		panel1.updatePlayerScores(players);
 	}
@@ -115,11 +120,16 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 		// scorer panels / add panels to content
 		content.add(modePanel, c);
-		panel1 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
+		//TODO: pass modelID into ScorerPanel constructor
+		int modelID = 1;
+		panel1 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
+		panel1.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 		c.gridy++;
 		content.add(panel1, c);
 		//TODO: incorporte later
-		/*panel2 = new ScorerPanel(model.getModesToPlayersMap(), defaultMode, defaultRules);
+		/*int modelID = 2;
+		panel2 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
+		panel2.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 		//c.gridx++;
 		//content.add(panel2, c);*/
 

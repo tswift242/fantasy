@@ -20,13 +20,17 @@ public interface CustomScoringHelperModel
 	public ScoringResults run();
 
 	// log the results of player evaluations to a file
+	// ScoringResults argument will always be the same ScoringResults object returned by run()
 	public void logResults(ScoringResults results);
 
-	public Map<Mode,List<Player>> getModesToPlayersMap();
+	// modelID specifies which model to access in the case of composite models
+	public Map<Mode,List<Player>> getModesToPlayersMap(int modelID);
 
 	public void setMode(Mode mode);
 
-	public <T extends Enum<T> & StatType> void setRule(Rule<T> rule);
+	// modelID specifies which model to access in the case of composite models
+	public <T extends Enum<T> & StatType> void setRule(Rule<T> rule, int modelID);
 
-	public void setRules(RuleMap rules);
+	// modelID specifies which model to access in the case of composite models
+	public void setRules(RuleMap rules, int modelID);
 }

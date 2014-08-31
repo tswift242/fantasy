@@ -47,7 +47,9 @@ public class RecalculateScoreListener implements ActionListener
 			addRule(ruleTextField, rules);
 		}
 		// update model with new RuleMap
-		model.setRules(rules);
+		int modelID = Integer.parseInt(scorerPanel.getName());
+		logger.info("setting rules for model {}", modelID);
+		model.setRules(rules, modelID);
 
 		//TODO: feature everything above off depending if RulesListener enabled
 		// evaluate all players using current RuleMap
