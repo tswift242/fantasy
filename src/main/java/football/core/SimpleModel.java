@@ -28,6 +28,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	// rule map containing default rules, according to NFL.com
+	//TODO: should return defensive copy of this for safety
 	public static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
 	public static final Mode DEFAULT_MODE = Mode.QB;
 
@@ -69,6 +70,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 		return results;
 	}
 
+	//TODO: modify this to only run on one List<Player> (use multiple Model's to run on more)
 	// GUI version
 	public ScoringResults run(Mode mode, RuleMap rules) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
@@ -77,21 +79,21 @@ public final class SimpleModel implements CustomScoringHelperModel
 		List<Player> players2 = modesToPlayersMap2.get(mode);
 		// evaluate all players in each list with the corresponding set of rules
 		//TODO: pass in rules for players1 instead of always using DEFAULT_RULES
-		scorePlayers(players1,DEFAULT_RULES);
-		scorePlayers(players2,rules);
+		scorePlayers(players1,rules);
+		scorePlayers(players2,DEFAULT_RULES);
 		// sort players according to their scores
 		//TODO: delay sorting until logging in ResultsLogger, as sorting done by View anyway
 		Collections.sort(players1);
-		logger.info("Players sorted by default rules:\n{}", players1.toString());
+		logger.info("Players sorted by custom rules:\n{}", players1.toString());
 		Collections.sort(players2);
-		logger.info("Players sorted by custom rules:\n{}", players2.toString());
+		logger.info("Players sorted by default rules:\n{}", players2.toString());
 		// calculate (dis)similarity between players1 and players2
 		Metric metric = new SortOrderMetric();
 		double distance = metric.distance(players1,players2);
 		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
 
 		// return results so that view can be updated
-		return new ScoringResults(mode, rules, players1, players2, distance);
+		return new ComparisonScoringResults(mode, rules, DEFAULT_RULES, players1, players2, distance);
 	}
 
 	// run using currentMode and currentRules

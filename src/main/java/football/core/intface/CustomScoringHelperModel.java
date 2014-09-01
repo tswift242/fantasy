@@ -20,7 +20,7 @@ public interface CustomScoringHelperModel
 	public ScoringResults run();
 
 	// log the results of player evaluations to a file
-	// ScoringResults argument will always be the same ScoringResults object returned by run()
+	// SimpleScoringResults argument will always be the same SimpleScoringResults object returned by run()
 	public void logResults(ScoringResults results);
 
 	// modelID specifies which model to access in the case of composite models

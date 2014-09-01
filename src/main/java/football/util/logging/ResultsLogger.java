@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import football.core.ScoringResults;
 import football.players.Player;
 import football.players.modes.Mode;
+import football.stats.RuleMap;
 
 /*
  * A class for logging player scoring and ranking results to a file.
@@ -19,8 +22,8 @@ import football.players.modes.Mode;
 
 public class ResultsLogger
 {
-	private static final String delimiter = "***********************************************************";
-	private static final String sectionDenoter = "********";
+	private static final String delimiter = StringUtils.repeat("*", 90);
+	private static final String sectionDenoter = StringUtils.repeat("*", 8);
 
 	private PrintWriter out;
 
@@ -38,22 +41,33 @@ public class ResultsLogger
 
 	public void logResults(ScoringResults results) throws IOException {
 		Mode mode = results.getMode();
-		String[] args = results.getRules().toArgs(mode);
-		List<Player> defaultPlayers = results.getDefaultPlayers();
-		List<Player> customPlayers = results.getCustomPlayers();
+		List<RuleMap> allRules = results.getRules();
+		List<List<Player>> allPlayers = results.getPlayers();
 		double distance = results.getDistance();
 
 		out.println(delimiter + "\n");
 		out.println(toSectionHeader("Mode",sectionDenoter));
 		out.println(mode.toString() + "\n");
-		out.println(toSectionHeader("Custom scoring rules",sectionDenoter));
-		out.println(customPlayers.get(0).categoriesToString()); //TODO: make this call static
-		out.println(argsToString(args));
-		out.println(toSectionHeader("Scores using default rules",sectionDenoter));
-		out.println(listToString(defaultPlayers));
-		out.println(toSectionHeader("Scores using custom rules",sectionDenoter));
-		out.println(listToString(customPlayers));
-		out.println("Distance between default and custom rules is: " + distance);
+
+		// number of different RuleMap's used to score the same players
+		// == number of (simple) models being used
+		int numRuleMaps = allRules.size();
+		// log results for each (RuleMap, List<Player>) pair
+		// Note: not efficient for lists without random access; ignoring for now b/c
+		// lists will have random access, and b/c numRuleMaps <= 2
+		for(int i = 0; i < numRuleMaps; i++) {
+			RuleMap rules = allRules.get(i);
+			List<Player> players = allPlayers.get(i);
+
+			out.println(toSectionHeader("Custom scoring rules " + (i+1),sectionDenoter));
+			//TODO: make categoriesToString() a method of Mode (or make static)
+			out.println(players.get(0).categoriesToString());
+			out.println(argsToString(rules.toArgs(mode)));
+			out.println(toSectionHeader("Scores using custom rules " + (i+1),sectionDenoter));
+			out.println(listToString(players));
+		}
+
+		out.println("Distance between custom rules is: " + distance);
 		out.println("\n" + delimiter + "\n\n\n");
 	}
 

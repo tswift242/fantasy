@@ -68,6 +68,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	@Override
 	public void setMode(Mode mode) {
 		panel1.setPlayersPanel(mode);
+		//TODO: enable this
 		//panel2.setPlayersPanel(mode);
 	}
 
@@ -99,8 +100,12 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	}
 
 	@Override
-	public void updatePlayerScores(List<Player> players) {
-		panel1.updatePlayerScores(players);
+	public void updatePlayerScores(List<List<Player>> players) {
+		panel1.updatePlayerScores(players.get(0));
+		//TODO: enable this
+		/*if(players.size() > 1) {
+			panel2.updatePlayerScores(players.get(1));
+		}*/
 	}
 
 
