@@ -21,7 +21,7 @@ public final class ComparisonScoringResults extends ScoringResults
 
 	// merge 2 SimpleScoringResults into a ComparisonScoringResults
 	// uses a metric to compute the similarity between the 2 RuleMap's based on the Player scores
-	public ComparisonScoringResults(ScoringResults results1, ScoringResults results2, Metric metric) {
+	public ComparisonScoringResults(SimpleScoringResults results1, SimpleScoringResults results2, Metric metric) {
 		this(results1.getMode(), results1.getRules().get(0), results2.getRules().get(0), 
 				results1.getPlayers().get(0), results2.getPlayers().get(0),
 				metric.distance(results1.getPlayers().get(0), results2.getPlayers().get(0)));

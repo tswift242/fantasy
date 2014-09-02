@@ -31,13 +31,11 @@ public final class SimpleModel implements CustomScoringHelperModel
 	//TODO: should return defensive copy of this for safety
 	public static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
 	public static final Mode DEFAULT_MODE = Mode.QB;
+	public static final Metric DEFAULT_METRIC = new SortOrderMetric();
 
 	//TODO: make these maps map to List<E extends Player> if we drop Mode.ALL
-	//TODO: make these lists static?
 	// map of player modes to corresponding lists of players
 	private Map<Mode,List<Player>> modesToPlayersMap;
-	// copy of the above map containing copy player lists
-	private Map<Mode,List<Player>> modesToPlayersMap2;
 
 	private RuleMap currentRules;
 	private Mode currentMode;
@@ -49,7 +47,6 @@ public final class SimpleModel implements CustomScoringHelperModel
 		// modified whenever currentRules is modified)
 		currentRules = initDefaultRuleMap();
 		modesToPlayersMap = new EnumMap<Mode,List<Player>>(Mode.class);
-		modesToPlayersMap2 = new EnumMap<Mode,List<Player>>(Mode.class);
 		populateModesToPlayersMap();
 		logger.debug("Using default rule map of:\n{}", DEFAULT_RULES.toString());
 	}
@@ -63,37 +60,23 @@ public final class SimpleModel implements CustomScoringHelperModel
 		// parse scoring rules relevant to this mode
 		RuleMap rules = mode.parseScoringRules(args);
 
-		ScoringResults results = run(mode, rules);
-		// log results
-		logResults(results);
-
-		return results;
+		return run(mode, rules);
 	}
 
-	//TODO: modify this to only run on one List<Player> (use multiple Model's to run on more)
 	// GUI version
-	public ScoringResults run(Mode mode, RuleMap rules) {
+	private ScoringResults run(Mode mode, RuleMap rules) {
 		logger.info("Running model with mode and custom rules: {}\n{}", mode.toString(), rules.toString());
-		// get corresponding lists of players for this mode
-		List<Player> players1 = modesToPlayersMap.get(mode);
-		List<Player> players2 = modesToPlayersMap2.get(mode);
-		// evaluate all players in each list with the corresponding set of rules
-		//TODO: pass in rules for players1 instead of always using DEFAULT_RULES
-		scorePlayers(players1,rules);
-		scorePlayers(players2,DEFAULT_RULES);
+		// get corresponding list of players for this mode
+		List<Player> players = modesToPlayersMap.get(mode);
+		// evaluate all players with the corresponding set of rules
+		scorePlayers(players, rules);
 		// sort players according to their scores
 		//TODO: delay sorting until logging in ResultsLogger, as sorting done by View anyway
-		Collections.sort(players1);
-		logger.info("Players sorted by custom rules:\n{}", players1.toString());
-		Collections.sort(players2);
-		logger.info("Players sorted by default rules:\n{}", players2.toString());
-		// calculate (dis)similarity between players1 and players2
-		Metric metric = new SortOrderMetric();
-		double distance = metric.distance(players1,players2);
-		logger.info("Distance between players using {}: {}", metric.getClass().getName(), distance);
+		Collections.sort(players);
+		logger.info("Players sorted by custom rules:\n{}", players.toString());
 
 		// return results so that view can be updated
-		return new ComparisonScoringResults(mode, rules, DEFAULT_RULES, players1, players2, distance);
+		return new SimpleScoringResults(mode, rules, players);
 	}
 
 	// run using currentMode and currentRules
@@ -103,7 +86,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	}
 
 	// write results to file filename in directory resultsDirectory
-	public void logResults(ScoringResults results, String resultsDirectory, String filename) {
+	private void logResults(ScoringResults results, String resultsDirectory, String filename) {
 		String fileSeparator = System.getProperty("file.separator");
 		logger.info("Writing results to {}{}{}", resultsDirectory, fileSeparator, filename);
 
@@ -191,13 +174,10 @@ public final class SimpleModel implements CustomScoringHelperModel
 		// except Mode.ALL. Therefore, we build up the mapping for Mode.ALL
 		// using the players lists from all of the other mappings
 		List<Player> allPlayersList = new ArrayList<Player>();
-		List<Player> allPlayersListCopy = new ArrayList<Player>();
 		for(Mode mode : modesToPlayersMap.keySet()) {
 			allPlayersList.addAll(modesToPlayersMap.get(mode));
-			allPlayersListCopy.addAll(modesToPlayersMap2.get(mode));
 		}
 		modesToPlayersMap.put(Mode.ALL, allPlayersList);
-		modesToPlayersMap2.put(Mode.ALL, allPlayersListCopy);
 	}
 
 	// add mapping for mode to modes map, and corresponding copy mapping to copy of modes map
@@ -205,7 +185,6 @@ public final class SimpleModel implements CustomScoringHelperModel
 	// computation creating lists of players for modes that aren't used
 	private void addMapping(Mode mode) {
 		modesToPlayersMap.put(mode, createPlayersList(mode));
-		modesToPlayersMap2.put(mode, createPlayersList(mode));
 	}
 
 	// creates list of players for the given mode

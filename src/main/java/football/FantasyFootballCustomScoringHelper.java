@@ -1,5 +1,7 @@
 package football;
 
+import football.core.ComparisonModel;
+import football.core.ScoringResults;
 import football.core.SimpleController;
 import football.core.SimpleModel;
 import football.core.SimpleView;
@@ -14,7 +16,7 @@ public class FantasyFootballCustomScoringHelper
 
 	public static void main(String[] args)
 	{
-		CustomScoringHelperModel model = new SimpleModel();
+		CustomScoringHelperModel model = new ComparisonModel();
 		// if no cmd line args, then run GUI version; else, run command line version
 		boolean runGUIVersion = (args.length == 0);
 		if(runGUIVersion) {
@@ -24,7 +26,8 @@ public class FantasyFootballCustomScoringHelper
 			view.setVisible(true);
 		} else {
 			logger.info("Running command line version");
-			model.run(args);
+			ScoringResults results = model.run(args);
+			model.logResults(results);
 		}
 	}
 }
