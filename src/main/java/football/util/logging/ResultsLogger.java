@@ -67,7 +67,9 @@ public class ResultsLogger
 			out.println(listToString(players));
 		}
 
-		out.println("Distance between custom rules is: " + distance);
+		if(distance >= 0) {
+			out.println("Distance between sets of custom rules is: " + distance);
+		}
 		out.println("\n" + delimiter + "\n\n\n");
 	}
 
