@@ -47,7 +47,9 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
 
-		JPanel content = createContentPanel();
+		//TODO: set this based on model type
+		boolean createMultipleScorerPanels = true;
+		JPanel content = createContentPanel(createMultipleScorerPanels);
 
 		// frame stuff
 		this.setContentPane(content);
@@ -68,8 +70,9 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	@Override
 	public void setMode(Mode mode) {
 		panel1.setPlayersPanel(mode);
-		//TODO: enable this
-		//panel2.setPlayersPanel(mode);
+		if(panel2 != null) {
+			panel2.setPlayersPanel(mode);
+		}
 	}
 
 	/*
@@ -81,37 +84,40 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		logger.info("registered mode listener");
 	}
 
-	//TODO: push logic for this to ScorerPanel, and call for both ScorerPanel's
 	@Override
 	public void addRulesListener(DocumentListener listener) {
-		List<RuleTextField<? extends StatType>> ruleTextFields = panel1.getRuleTextFields();
-		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
-			ruleTextField.getDocument().addDocumentListener(listener);
+		panel1.addRulesListener(listener);
+		//TODO: see if there's a more reliable way to do this (possibly take in extra arg?)
+		if(panel2 != null) {
+			panel2.addRulesListener(listener);
 		}
 		logger.info("registered rules listener");
 	}
 
-	//TODO: push logic for this to ScorerPanel, and call for both ScorerPanel's
 	@Override
 	public void addRecalculateScoreListener(ActionListener listener) {
-		JButton scoreButton = panel1.getScoreButton();
-		scoreButton.addActionListener(listener);
+		panel1.addRecalculateScoreListener(listener);
+		//TODO: see if there's a more reliable way to do this (possibly take in extra arg?)
+		if(panel2 != null) {
+			panel2.addRecalculateScoreListener(listener);
+		}
 		logger.info("registered recalculate score listener");
 	}
 
 	@Override
 	public void updatePlayerScores(List<List<Player>> players) {
 		panel1.updatePlayerScores(players.get(0));
-		//TODO: enable this
-		/*if(players.size() > 1) {
+		//TODO: simplify this condition once boolean passed into createContentPanel is tied
+		// into type of model used (e.g. simple vs composite)
+		if((players.size() > 1) && (panel2 != null)) {
 			panel2.updatePlayerScores(players.get(1));
-		}*/
+		}
 	}
 
 
 
 
-	private JPanel createContentPanel() {
+	private JPanel createContentPanel(boolean createMultipleScorerPanels) {
 		// get defaults from model
 		Mode defaultMode = SimpleModel.DEFAULT_MODE;
 		RuleMap defaultRules = SimpleModel.DEFAULT_RULES;
@@ -126,32 +132,34 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		// scorer panels / add panels to content
 		content.add(modePanel, c);
 		//TODO: pass modelID into ScorerPanel constructor
+		//TODO: do not pass defaultMode and defaultRules into SP constructor; access statically
+		// instead
 		int modelID = 1;
 		panel1 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
 		panel1.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 		c.gridy++;
-		content.add(panel1, c);
-		//TODO: incorporte later
-		/*int modelID = 2;
-		panel2 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
-		panel2.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
-		//c.gridx++;
-		//content.add(panel2, c);*/
 
-		//TODO: incorporte later
-		/*JPanel scorerPanels = new JPanel();
-		int hgap = 50;
-		scorerPanels.setLayout(new GridLayout(1, 2, hgap, 0));
-		scorerPanels.add(panel1);
-		scorerPanels.add(panel2);
-		JScrollPane scrollPane = new JScrollPane(scorerPanels);
-		scrollPane.setPreferredSize(new Dimension(DEFAULT_WIDTH, (int)(0.7*DEFAULT_HEIGHT)));
-		c.gridy++;
-		content.add(scrollPane, c);*/
+		// create 2nd ScorerPanel, and put 2 panels side-by-side before adding to content panel
+		if(createMultipleScorerPanels) {
+			modelID = 2;
+			panel2 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
+			panel2.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 
-		//TODO: remove this when start using scroll pane above
-		// set size
-		content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+			JPanel scorerPanels = new JPanel();
+			int hgap = 50;
+			scorerPanels.setLayout(new GridLayout(1, 2, hgap, 0));
+			scorerPanels.add(panel1);
+			scorerPanels.add(panel2);
+			JScrollPane scrollPane = new JScrollPane(scorerPanels);
+			// need to setPreferredSize of scroll pane, because it looks bad visually otherwise
+			scrollPane.setPreferredSize(new Dimension(DEFAULT_WIDTH, (int)(0.7*DEFAULT_HEIGHT)));
+			content.add(scrollPane, c);
+		} else { // add just the 1 ScorerPanel to the content panel
+			content.add(panel1, c);
+
+			// set size
+			content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		}
 
 		return content;
 	}

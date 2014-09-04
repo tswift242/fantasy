@@ -5,10 +5,12 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentListener;
 
 import football.players.modes.Mode;
 import org.slf4j.Logger;
@@ -54,10 +56,6 @@ public final class ScorerPanel extends GridBagPanel
 		return rules.getRuleTextFields();
 	}
 
-	public JButton getScoreButton() {
-		return scoreButton;
-	}
-
 	public void setPlayersPanel(Mode mode) {
 		CardLayout cardLayout = (CardLayout)(playerPanels.getLayout());
 		cardLayout.show(playerPanels, mode.toString());
@@ -70,6 +68,19 @@ public final class ScorerPanel extends GridBagPanel
 		logger.info("updating scores for player panel: {}", panel.getName());
 		panel.updatePlayerScores(players);
 	}
+
+	public void addRulesListener(DocumentListener listener) {
+		List<RuleTextField<? extends StatType>> ruleTextFields = getRuleTextFields();
+		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
+			ruleTextField.getDocument().addDocumentListener(listener);
+		}
+	}
+
+	public void addRecalculateScoreListener(ActionListener listener) {
+		scoreButton.addActionListener(listener);
+	}
+
+
 
 	// create a PlayersPanel for each Mode, and add it to a aggregate panel which displays
 	// one panel at a time using the CardLayout
