@@ -118,6 +118,11 @@ public final class SimpleModel implements CustomScoringHelperModel
 		return modesToPlayersMap;
 	}
 
+	@Override
+	public int getNumberOfModels() {
+		return 1;
+	}
+
 	/*
 	 * Setters
 	 */

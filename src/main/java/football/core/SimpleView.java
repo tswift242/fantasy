@@ -34,21 +34,20 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	private static final long serialVersionUID = -3565226027504869570L;
-	private final int DEFAULT_WIDTH = 1400;
-	private final int DEFAULT_HEIGHT = 800;
+	private static final int DEFAULT_WIDTH = 1400;
+	private static final int DEFAULT_HEIGHT = 800;
 
 	private CustomScoringHelperModel model;
-
 	private ScorerPanel panel1, panel2;
 	private JComboBox<Mode> modesBox;
+	private boolean createMultipleScorerPanels;
 
 	public SimpleView(CustomScoringHelperModel model, String title) {
 		super(title);
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
 
-		//TODO: set this based on model type
-		boolean createMultipleScorerPanels = true;
+		createMultipleScorerPanels = isCompositeModel(model);
 		JPanel content = createContentPanel(createMultipleScorerPanels);
 
 		// frame stuff
@@ -87,8 +86,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	@Override
 	public void addRulesListener(DocumentListener listener) {
 		panel1.addRulesListener(listener);
-		//TODO: see if there's a more reliable way to do this (possibly take in extra arg?)
-		if(panel2 != null) {
+		if(createMultipleScorerPanels) {
 			panel2.addRulesListener(listener);
 		}
 		logger.info("registered rules listener");
@@ -97,8 +95,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	@Override
 	public void addRecalculateScoreListener(ActionListener listener) {
 		panel1.addRecalculateScoreListener(listener);
-		//TODO: see if there's a more reliable way to do this (possibly take in extra arg?)
-		if(panel2 != null) {
+		if(createMultipleScorerPanels) {
 			panel2.addRecalculateScoreListener(listener);
 		}
 		logger.info("registered recalculate score listener");
@@ -107,15 +104,30 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	@Override
 	public void updatePlayerScores(List<List<Player>> players) {
 		panel1.updatePlayerScores(players.get(0));
-		//TODO: simplify this condition once boolean passed into createContentPanel is tied
-		// into type of model used (e.g. simple vs composite)
-		if((players.size() > 1) && (panel2 != null)) {
+		if(createMultipleScorerPanels) {
 			panel2.updatePlayerScores(players.get(1));
 		}
 	}
 
 
 
+
+	// determine whether or not to create multiple ScorerPanel's
+	// based on whether the model passed in is composite
+	private boolean isCompositeModel(CustomScoringHelperModel model) {
+		boolean isComposite;
+
+		int numModels = model.getNumberOfModels();
+		if(numModels == 1) {
+			isComposite= false;
+		} else if(numModels == 2) {
+			isComposite = true;
+		} else {
+			throw new IllegalArgumentException("number of models returned by model must be 1 or 2");
+		}
+
+		return isComposite;
+	}
 
 	private JPanel createContentPanel(boolean createMultipleScorerPanels) {
 		// get defaults from model

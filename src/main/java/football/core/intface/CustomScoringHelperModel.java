@@ -33,4 +33,9 @@ public interface CustomScoringHelperModel
 
 	// modelID specifies which model to access in the case of composite models
 	public void setRules(RuleMap rules, int modelID);
+
+	// returns number of separate models (corresponding to separate RuleMap's) that are contained
+	// within this model object (for composite models)
+	// Note: should only return 1 or 2 for now
+	public int getNumberOfModels();
 }
