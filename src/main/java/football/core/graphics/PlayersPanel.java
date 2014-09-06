@@ -49,6 +49,7 @@ public final class PlayersPanel extends JPanel
 		this.add(scrollPane);*/
 	}
 
+	@SuppressWarnings("unchecked")
 	public void updatePlayerScores(List<Player> players) {
 		PlayersTableModel model = (PlayersTableModel)table.getModel();
 		int col = model.getColumnCount() - 1;
