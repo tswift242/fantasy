@@ -1,5 +1,6 @@
 package football.config;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,8 @@ public final class CustomScoringHelperProperties {
 	private static Metric defaultMetric = new SortOrderMetric();
 	private static int defaultWidth = 1400;
 	private static int defaultHeight = 800;
+	private static String resultsDirectory = System.getProperty("user.dir") +
+				System.getProperty("file.separator") + "fantasyfootball-custom-scorer-results";
 
 	// property keys
 	private static final String USE_COMPOSITE_MODEL = "useCompositeModel";
@@ -30,6 +33,7 @@ public final class CustomScoringHelperProperties {
 	private static final String DEFAULT_RULES = "defaultRules";
 	private static final String DEFAULT_WIDTH = "defaultWidth";
 	private static final String DEFAULT_HEIGHT = "defaultHeight";
+	private static final String RESULTS_DIRECTORY = "resultsDirectory";
 
 	private CustomScoringHelperProperties() {}
 
@@ -40,10 +44,10 @@ public final class CustomScoringHelperProperties {
 		// set properties by getting properties from loader
 		setUseCompositeModel(Boolean.parseBoolean(loader.getProperty(USE_COMPOSITE_MODEL)));
 		setDefaultMode(Mode.fromString(loader.getProperty(DEFAULT_MODE)));
-
 		setDefaultRules(loader.getProperty(DEFAULT_RULES));
 		setDefaultWidth(Integer.parseInt(loader.getProperty(DEFAULT_WIDTH)));
 		setDefaultHeight(Integer.parseInt(loader.getProperty(DEFAULT_HEIGHT)));
+		setResultsDirectory(loader.getProperty(RESULTS_DIRECTORY));
 	}
 
 	/*
@@ -73,6 +77,14 @@ public final class CustomScoringHelperProperties {
 
 	public static int getDefaultHeight() {
 		return defaultHeight;
+	}
+
+	public static String getResultsDirectory() {
+		return resultsDirectory;
+	}
+
+	public static String getResultsFilename(Mode mode) {
+		return (mode.toString() + ".txt");
 	}
 
 	/*
@@ -111,6 +123,14 @@ public final class CustomScoringHelperProperties {
 
 	private static void setDefaultHeight(int height) {
 		defaultHeight = height;
+	}
+
+	private static void setResultsDirectory(String directory) {
+		// allow user to set resultsDirectory property to nothing to indicate that they wish
+		// to use the default directory
+		if(!StringUtils.isBlank(directory)) {
+			resultsDirectory = directory;
+		}
 	}
 
 

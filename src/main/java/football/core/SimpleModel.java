@@ -95,9 +95,8 @@ public final class SimpleModel implements CustomScoringHelperModel
 	// write results to default file in default directory
 	@Override
 	public void logResults(ScoringResults results) {
-		String fileSeparator = System.getProperty("file.separator");
-		String resultsDirectory = System.getProperty("user.dir") + fileSeparator + "results";
-		String filename = (results.getMode().toString() + "results.txt");
+		String resultsDirectory = CustomScoringHelperProperties.getResultsDirectory();
+		String filename = CustomScoringHelperProperties.getResultsFilename(results.getMode());
 
 		logResults(results, resultsDirectory, filename);
 	}
@@ -106,6 +105,8 @@ public final class SimpleModel implements CustomScoringHelperModel
 	 * Getters
 	 */
 	// ignore modelID, since this is not a composite model
+	//TODO: should return defensive copy of map for satefy;
+	// can probably remove parameter if we do this
 	@Override
 	public Map<Mode,List<Player>> getModesToPlayersMap(int modelID) {
 		return modesToPlayersMap;

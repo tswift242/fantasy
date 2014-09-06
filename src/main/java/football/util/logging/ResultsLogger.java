@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import football.core.ScoringResults;
 import football.players.Player;
@@ -22,6 +24,8 @@ import football.stats.RuleMap;
 
 public class ResultsLogger
 {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
 	private static final String delimiter = StringUtils.repeat("*", 90);
 	private static final String sectionDenoter = StringUtils.repeat("*", 8);
 
@@ -31,7 +35,14 @@ public class ResultsLogger
 	// append indicates whether or not results should be appended to existing file content, or 
 	// if the file log should be started fresh.
 	public ResultsLogger(String resultsDirectory, String filename, boolean append) throws IOException {
-		out = new PrintWriter(new BufferedWriter(new FileWriter(new File(resultsDirectory,filename),append)));
+		File directory = new File(resultsDirectory);
+		// create directory if it doesn't exit
+		if(!directory.exists()) {
+			if(!directory.mkdirs()) {
+				logger.error("Error creating results directory {}", resultsDirectory);
+			}
+		}
+		out = new PrintWriter(new BufferedWriter(new FileWriter(new File(directory ,filename), append)));
 	}
 
 	// uses default append value of true
