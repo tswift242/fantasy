@@ -3,6 +3,7 @@ package football.core;
 import java.util.List;
 import java.util.Map;
 
+import football.config.CustomScoringHelperProperties;
 import football.core.intface.CustomScoringHelperModel;
 import football.players.Player;
 import football.players.modes.Mode;
@@ -26,10 +27,11 @@ public final class ComparisonModel implements CustomScoringHelperModel
 	public ScoringResults run(String[] args) {
 		// run each model with corresponding set of rules
 		SimpleScoringResults results1 = (SimpleScoringResults)model1.run(args);
-		SimpleScoringResults results2 = (SimpleScoringResults)model2.run(SimpleModel.DEFAULT_RULES.toArgs(Mode.fromString(args[0])));
+		SimpleScoringResults results2 = (SimpleScoringResults)model2.run(
+				CustomScoringHelperProperties.getDefaultRules().toArgs(Mode.fromString(args[0])));
 
 		// merge two results
-		Metric metric = SimpleModel.DEFAULT_METRIC;
+		Metric metric = CustomScoringHelperProperties.getDefaultMetric();
 		return new ComparisonScoringResults(results1, results2, metric);
 	}
 
@@ -40,7 +42,7 @@ public final class ComparisonModel implements CustomScoringHelperModel
 		SimpleScoringResults results2 = (SimpleScoringResults)model2.run();
 
 		// merge two results
-		Metric metric = SimpleModel.DEFAULT_METRIC;
+		Metric metric = CustomScoringHelperProperties.getDefaultMetric();
 		return new ComparisonScoringResults(results1, results2, metric);
 	}
 

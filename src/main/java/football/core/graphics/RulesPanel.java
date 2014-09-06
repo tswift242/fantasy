@@ -1,12 +1,8 @@
 package football.core.graphics;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import football.stats.RuleMap;
 import football.stats.StatType;
 import football.stats.categories.*;
 
@@ -19,17 +15,17 @@ public final class RulesPanel extends GridBagPanel
 	private static final long serialVersionUID = 4818675092111795395L;
 	private List<RuleTextField<? extends StatType>> ruleTextFields;
 
-	public RulesPanel(RuleMap defaultRules) {
+	public RulesPanel() {
 		super();
 
 		// add one of each stat type rules panel
 		List<StatTypeRulesPanel<? extends StatType>> rulePanels = new ArrayList<StatTypeRulesPanel<? extends StatType>>();
-		rulePanels.add(new StatTypeRulesPanel<Pass>(Pass.class, defaultRules));
-		rulePanels.add(new StatTypeRulesPanel<Rush>(Rush.class, defaultRules));
-		rulePanels.add(new StatTypeRulesPanel<Rec>(Rec.class, defaultRules));
-		rulePanels.add(new StatTypeRulesPanel<Misc>(Misc.class, defaultRules));
-		rulePanels.add(new StatTypeRulesPanel<Kick>(Kick.class, defaultRules));
-		rulePanels.add(new StatTypeRulesPanel<Def>(Def.class, defaultRules));
+		rulePanels.add(new StatTypeRulesPanel<Pass>(Pass.class));
+		rulePanels.add(new StatTypeRulesPanel<Rush>(Rush.class));
+		rulePanels.add(new StatTypeRulesPanel<Rec>(Rec.class));
+		rulePanels.add(new StatTypeRulesPanel<Misc>(Misc.class));
+		rulePanels.add(new StatTypeRulesPanel<Kick>(Kick.class));
+		rulePanels.add(new StatTypeRulesPanel<Def>(Def.class));
 
 		ruleTextFields = new ArrayList<RuleTextField<? extends StatType>>();
 

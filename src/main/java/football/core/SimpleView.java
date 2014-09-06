@@ -2,13 +2,10 @@ package football.core;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,26 +13,23 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentListener;
 
-import football.core.intface.CustomScoringHelperModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import football.config.CustomScoringHelperProperties;
 import football.core.graphics.GridBagPanel;
-import football.core.graphics.RuleTextField;
 import football.core.graphics.ScorerPanel;
+import football.core.intface.CustomScoringHelperModel;
 import football.core.intface.CustomScoringHelperView;
 import football.players.Player;
 import football.players.modes.Mode;
 import football.stats.RuleMap;
-import football.stats.StatType;
 
 public final class SimpleView extends JFrame implements CustomScoringHelperView
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
 	private static final long serialVersionUID = -3565226027504869570L;
-	private static final int DEFAULT_WIDTH = 1400;
-	private static final int DEFAULT_HEIGHT = 800;
 
 	private CustomScoringHelperModel model;
 	private ScorerPanel panel1, panel2;
@@ -130,9 +124,11 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	}
 
 	private JPanel createContentPanel(boolean createMultipleScorerPanels) {
-		// get defaults from model
-		Mode defaultMode = SimpleModel.DEFAULT_MODE;
-		RuleMap defaultRules = SimpleModel.DEFAULT_RULES;
+		// get defaults
+		Mode defaultMode = CustomScoringHelperProperties.getDefaultMode();
+		RuleMap defaultRules = CustomScoringHelperProperties.getDefaultRules();
+		int defaultWidth = CustomScoringHelperProperties.getDefaultWidth();
+		int defaultHeight = CustomScoringHelperProperties.getDefaultHeight();
 
 		// set up content panel
 		GridBagPanel content = new GridBagPanel(5);
@@ -147,14 +143,14 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		//TODO: do not pass defaultMode and defaultRules into SP constructor; access statically
 		// instead
 		int modelID = 1;
-		panel1 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
+		panel1 = new ScorerPanel(model.getModesToPlayersMap(modelID));
 		panel1.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 		c.gridy++;
 
 		// create 2nd ScorerPanel, and put 2 panels side-by-side before adding to content panel
 		if(createMultipleScorerPanels) {
 			modelID = 2;
-			panel2 = new ScorerPanel(model.getModesToPlayersMap(modelID), defaultMode, defaultRules);
+			panel2 = new ScorerPanel(model.getModesToPlayersMap(modelID));
 			panel2.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 
 			JPanel scorerPanels = new JPanel();
@@ -164,13 +160,13 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 			scorerPanels.add(panel2);
 			JScrollPane scrollPane = new JScrollPane(scorerPanels);
 			// need to setPreferredSize of scroll pane, because it looks bad visually otherwise
-			scrollPane.setPreferredSize(new Dimension(DEFAULT_WIDTH, (int)(0.7*DEFAULT_HEIGHT)));
+			scrollPane.setPreferredSize(new Dimension(defaultWidth, (int)(0.7*defaultHeight)));
 			content.add(scrollPane, c);
 		} else { // add just the 1 ScorerPanel to the content panel
 			content.add(panel1, c);
 
 			// set size
-			content.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+			content.setPreferredSize(new Dimension(defaultWidth, defaultHeight));
 		}
 
 		return content;

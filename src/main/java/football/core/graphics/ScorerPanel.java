@@ -2,9 +2,6 @@ package football.core.graphics;
 
 import java.awt.CardLayout;
 import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +13,8 @@ import football.players.modes.Mode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import football.config.CustomScoringHelperProperties;
 import football.players.Player;
-import football.stats.RuleMap;
 import football.stats.StatType;
 
 /*
@@ -34,10 +31,10 @@ public final class ScorerPanel extends GridBagPanel
 	private RulesPanel rules;
 	private JButton scoreButton;
 
-	public ScorerPanel(Map<Mode,List<Player>> playersMap, Mode defaultMode, RuleMap defaultRules) {
+	public ScorerPanel(Map<Mode,List<Player>> playersMap) {
 		super(5);
 
-		rules = new RulesPanel(defaultRules);
+		rules = new RulesPanel();
 		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
 
@@ -49,7 +46,7 @@ public final class ScorerPanel extends GridBagPanel
 		this.add(playerPanels, c);
 
 		// show players corresponding to default mode
-		setPlayersPanel(defaultMode);
+		setPlayersPanel(CustomScoringHelperProperties.getDefaultMode());
 	}
 
 	public List<RuleTextField<? extends StatType>> getRuleTextFields() {

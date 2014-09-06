@@ -12,26 +12,19 @@ import static com.google.common.base.Preconditions.checkPositionIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import football.config.CustomScoringHelperProperties;
 import football.core.intface.CustomScoringHelperModel;
-import football.players.*; // for creating DEFAULT_RULES
+import football.players.Player;
+import football.players.Players;
 import football.players.modes.Mode;
-import football.stats.Rule; // for creating DEFAULT_RULES
+import football.stats.Rule;
 import football.stats.RuleMap;
 import football.stats.StatType;
-import football.stats.categories.*;
 import football.util.logging.ResultsLogger;
-import football.util.metrics.Metric;
-import football.util.metrics.SortOrderMetric;
 
 public final class SimpleModel implements CustomScoringHelperModel
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-
-	// rule map containing default rules, according to NFL.com
-	//TODO: should return defensive copy of this for safety
-	public static final RuleMap DEFAULT_RULES = initDefaultRuleMap();
-	public static final Mode DEFAULT_MODE = Mode.QB;
-	public static final Metric DEFAULT_METRIC = new SortOrderMetric();
 
 	//TODO: make these maps map to List<E extends Player> if we drop Mode.ALL
 	// map of player modes to corresponding lists of players
@@ -41,14 +34,14 @@ public final class SimpleModel implements CustomScoringHelperModel
 	private Mode currentMode;
 
 	public SimpleModel() {
-		logger.info("Constructing model with default mode {}", DEFAULT_MODE.toString());
-		currentMode = DEFAULT_MODE;
+		currentMode = CustomScoringHelperProperties.getDefaultMode();
+		logger.info("Constructing model with default mode {}", currentMode.toString());
 		// init to default rules (don't simply assign to prevent DEFAULT_RULES from being 
 		// modified whenever currentRules is modified)
-		currentRules = initDefaultRuleMap();
+		currentRules = CustomScoringHelperProperties.getDefaultRules();
 		modesToPlayersMap = new EnumMap<Mode,List<Player>>(Mode.class);
 		populateModesToPlayersMap();
-		logger.debug("Using default rule map of:\n{}", DEFAULT_RULES.toString());
+		logger.debug("Using default rule map of:\n{}", CustomScoringHelperProperties.getDefaultRules().toString());
 	}
 
 	// command line version
@@ -151,8 +144,9 @@ public final class SimpleModel implements CustomScoringHelperModel
 			// the saved defaultScore of each player instead of computing the
 			// score from scratch
 			//TODO: NOT CORRECT -- need to implement equals() for RuleMap
-			//TODO: consider not checking for / tracking default score
-			if(rules.equals(DEFAULT_RULES)) {
+			//TODO: consider not checking for / tracking default score (cost of RuleMap
+			// equality check probably comparable to savings in computing score)
+			if(rules.equals(CustomScoringHelperProperties.getDefaultRules())) {
 				player.useDefaultScore();
 			} else {
 				player.evaluate(rules);
@@ -239,35 +233,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 		return playersList;
 	}
 
-	// create and initialize a RuleMap containing the default scoring rules
-	// for NFL.com leagues
-	private static RuleMap initDefaultRuleMap() {
-		RuleMap rules = new RuleMap();
-		rules.put(Pass.YDS, new Rule<Pass>(Pass.YDS, 1.0, 25));
-		rules.put(Pass.TD, new Rule<Pass>(Pass.TD, 4.0));
-		rules.put(Pass.INT, new Rule<Pass>(Pass.INT, -2.0));
-		rules.put(Rush.YDS, new Rule<Rush>(Rush.YDS, 1.0, 10));
-		rules.put(Rush.TD, new Rule<Rush>(Rush.TD, 6.0));
-		rules.put(Rec.YDS, new Rule<Rec>(Rec.YDS, 1.0, 10));
-		rules.put(Rec.TD, new Rule<Rec>(Rec.TD, 6.0));
-		rules.put(Misc.FUMB_TD, new Rule<Misc>(Misc.FUMB_TD, 6.0));
-		rules.put(Misc.FUMB_LOST, new Rule<Misc>(Misc.FUMB_LOST, -2.0));
-		rules.put(Misc.TWO_PT_CONV, new Rule<Misc>(Misc.TWO_PT_CONV, 2.0));
-		rules.put(Kick.PAT_MD, new Rule<Kick>(Kick.PAT_MD, 1.0));
-		rules.put(Kick.FG_MD_0, new Rule<Kick>(Kick.FG_MD_0, 3.0));
-		rules.put(Kick.FG_MD_20, new Rule<Kick>(Kick.FG_MD_20, 3.0));
-		rules.put(Kick.FG_MD_30, new Rule<Kick>(Kick.FG_MD_30, 3.0));
-		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 3.0));
-		rules.put(Kick.FG_MD_50, new Rule<Kick>(Kick.FG_MD_50, 5.0));
-		rules.put(Def.SCK, new Rule<Def>(Def.SCK, 1.0));
-		rules.put(Def.INT, new Rule<Def>(Def.INT, 2.0));
-		rules.put(Def.FUMB, new Rule<Def>(Def.FUMB, 2.0));
-		rules.put(Def.SAF, new Rule<Def>(Def.SAF, 2.0));
-		rules.put(Def.TD, new Rule<Def>(Def.TD, 6.0));
-		rules.put(Def.RET, new Rule<Def>(Def.RET, 6.0));
-		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -3.0, 7));
-		return rules;
-	}
+	
 
 	// get string detailing command line usage
 	private static String getUsage() {

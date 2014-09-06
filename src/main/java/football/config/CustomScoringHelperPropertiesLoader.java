@@ -21,6 +21,7 @@ public final class CustomScoringHelperPropertiesLoader {
 	private CustomScoringHelperPropertiesLoader(String propertiesFilename) {
 		props = new Properties();
 		try {
+			logger.info("reading properties from file {}", propertiesFilename);
 			InputStream in = this.getClass().getResourceAsStream(propertiesFilename);
 			if(in != null) {
 				props.load(in);
@@ -48,7 +49,6 @@ public final class CustomScoringHelperPropertiesLoader {
 	public String getProperty(String propertyName) {
 		String value = props.getProperty(propertyName);
 		if(value == null) {
-			logger.error("property {} not found", propertyName);
 			throw new IllegalArgumentException("property " + propertyName + " not found");
 		}
 		return value;

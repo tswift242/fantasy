@@ -1,14 +1,10 @@
 package football.core.graphics;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 
-import football.stats.Rule;
-import football.stats.RuleMap;
+import football.config.CustomScoringHelperProperties;
 import football.stats.StatType;
 
 /*
@@ -23,7 +19,7 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends Grid
 	private static final int MAX_CATEGORIES_PER_ROW = 8;
 	private List<RuleTextField<T>> ruleTextFields;
 
-	public StatTypeRulesPanel(Class<T> statType, RuleMap defaultRules) {
+	public StatTypeRulesPanel(Class<T> statType) {
 		super(2);
 
 		// get categories for given stat type
@@ -38,7 +34,7 @@ public final class StatTypeRulesPanel<T extends Enum<T> & StatType> extends Grid
 		ruleTextFields = new ArrayList<RuleTextField<T>>();
 		for(T category : categories) {
 			// set text to be default rule value
-			String initValue = defaultRules.getValueText(category);
+			String initValue = CustomScoringHelperProperties.getDefaultRules().getValueText(category);
 			createLabelAndTextField(category, initValue, numCols);
 		}
 	}
