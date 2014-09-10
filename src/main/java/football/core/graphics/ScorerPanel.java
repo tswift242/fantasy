@@ -29,7 +29,7 @@ public final class ScorerPanel extends GridBagPanel
 
 	private JPanel playerPanels;
 	private RulesPanel rules;
-	private JButton scoreButton;
+	private JButton scoreButton, restoreDefaultRulesButton;
 
 	public ScorerPanel(Map<Mode,List<Player>> playersMap) {
 		super(5);
@@ -37,7 +37,10 @@ public final class ScorerPanel extends GridBagPanel
 		rules = new RulesPanel();
 		createPlayerPanels(playersMap);
 		scoreButton = new JButton("Recalculate scores");
+		restoreDefaultRulesButton = new JButton("Restore default rules");
 
+		this.add(restoreDefaultRulesButton, c);
+		c.gridy++;
 		this.add(rules, c);
 		c.gridy++;
 		this.add(scoreButton, c); //TODO: play with placement
@@ -75,6 +78,10 @@ public final class ScorerPanel extends GridBagPanel
 
 	public void addRecalculateScoreListener(ActionListener listener) {
 		scoreButton.addActionListener(listener);
+	}
+
+	public void addRestoreDefaultRulesListener(ActionListener listener) {
+		restoreDefaultRulesButton.addActionListener(listener);
 	}
 
 

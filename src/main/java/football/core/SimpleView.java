@@ -96,6 +96,15 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	}
 
 	@Override
+	public void addRestoreDefaultRulesListener(ActionListener listener) {
+		panel1.addRestoreDefaultRulesListener(listener);
+		if(createMultipleScorerPanels) {
+			panel2.addRestoreDefaultRulesListener(listener);
+		}
+		logger.info("registered restore default rules listener");
+	}
+
+	@Override
 	public void updatePlayerScores(List<List<Player>> players) {
 		panel1.updatePlayerScores(players.get(0));
 		if(createMultipleScorerPanels) {

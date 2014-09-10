@@ -18,5 +18,7 @@ public interface CustomScoringHelperView
 
 	public void addRecalculateScoreListener(ActionListener listener);
 
+	public void addRestoreDefaultRulesListener(ActionListener listener);
+
 	public void updatePlayerScores(List<List<Player>> players);
 }

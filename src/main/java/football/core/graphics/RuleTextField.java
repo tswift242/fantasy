@@ -26,7 +26,10 @@ public class RuleTextField<T extends Enum<T> & StatType> extends JTextField
 	private final T category;
 
 	public RuleTextField(T category, String initText) {
-		super(new RuleDocument(), initText, RULE_FIELD_NUM_COLS);
+		super(initText, RULE_FIELD_NUM_COLS);
+		// Note: this is commented out b/c RuleDoc's insertString() interferes with setText()
+		// TODO: could consider having RuleDoc overload replace() to do second remove()
+		//super(new RuleDocument(), initText, RULE_FIELD_NUM_COLS);
 		//TODO: play with this
 		setHorizontalAlignment(JTextField.RIGHT);
 		// add reference to this text field in its document
@@ -40,6 +43,10 @@ public class RuleTextField<T extends Enum<T> & StatType> extends JTextField
 		return category;
 	}
 
+	public void setText(String text) {
+		super.setText(text);
+	}
+
 	private static class RuleDocument extends PlainDocument
 	{
 		private static final String defaultContent = "0.0";
@@ -50,7 +57,7 @@ public class RuleTextField<T extends Enum<T> & StatType> extends JTextField
 			super.postRemoveUpdate(e);
 			if(getLength() == 0) {
 				try {
-					logger.info("Document is empty. Setting content to 0.0");
+					logger.info("Document is empty. Setting content to {}", defaultContent);
 					insertString(0, defaultContent, null);
 				} catch(BadLocationException ex) {
 					logger.error(ex.toString());
