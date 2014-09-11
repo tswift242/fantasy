@@ -5,11 +5,14 @@ import java.awt.event.ItemListener;
 import java.util.List;
 import javax.swing.event.DocumentListener;
 
+import football.core.graphics.ScorerPanel;
 import football.players.Player;
 import football.players.modes.Mode;
 
 public interface CustomScoringHelperView
 {
+	public List<ScorerPanel> getScorerPanels();
+
 	public void setMode(Mode mode);
 
 	public void addModeListener(ItemListener listener);

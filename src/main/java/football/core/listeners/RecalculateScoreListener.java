@@ -3,9 +3,6 @@ package football.core.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.SwingUtilities;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 import football.core.ScoringResults;
 import football.core.intface.CustomScoringHelperModel;
@@ -35,21 +32,10 @@ public class RecalculateScoreListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		logger.info("recalculating player scores");
-		JButton scoreButton = (JButton)e.getSource();
-		// get ScorerPanel containing the JButton source
-		ScorerPanel scorerPanel = (ScorerPanel)SwingUtilities.getAncestorOfClass(ScorerPanel.class, scoreButton);
-		checkNotNull(scorerPanel, "JButton does not have ScorerPanel ancestor");
-		// get TextFields containing rule info on ScorerPanel
-		List<RuleTextField<? extends StatType>> ruleTextFields = scorerPanel.getRuleTextFields();
-		// create RuleMap from ruleTextFields
-		RuleMap rules = new RuleMap();
-		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
-			addRule(ruleTextField, rules);
+		List<ScorerPanel> scorerPanels = view.getScorerPanels();
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			updateRulesFromScorerPanel(scorerPanel);
 		}
-		// update model with new RuleMap
-		int modelID = Integer.parseInt(scorerPanel.getName());
-		logger.info("setting rules for model {}", modelID);
-		model.setRules(rules, modelID);
 
 		//TODO: feature everything above off depending if RulesListener enabled
 		// evaluate all players using current RuleMap
@@ -61,6 +47,22 @@ public class RecalculateScoreListener implements ActionListener
 		view.updatePlayerScores(results.getPlayers());
 		// log results with ResultsLogger
 		model.logResults(results);
+	}
+
+	// get the latest rules from the text fields of this scorer panel, and update the
+	// model with them
+	private void updateRulesFromScorerPanel(ScorerPanel scorerPanel) {
+		// get TextFields containing rule info on ScorerPanel
+		List<RuleTextField<? extends StatType>> ruleTextFields = scorerPanel.getRuleTextFields();
+		// create RuleMap from ruleTextFields
+		RuleMap rules = new RuleMap();
+		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
+			addRule(ruleTextField, rules);
+		}
+		// update model with new RuleMap
+		int modelID = Integer.parseInt(scorerPanel.getName());
+		logger.info("setting rules for model {}", modelID);
+		model.setRules(rules, modelID);
 	}
 
 	// parse text from ruleTextField to create a Rule, and add this Rule to RuleMap, rules
