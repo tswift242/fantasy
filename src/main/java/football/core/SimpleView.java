@@ -38,14 +38,13 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	private List<ScorerPanel> scorerPanels;
 	private JComboBox<Mode> modesBox;
 	private JButton rescoreButton;
-	private boolean createMultipleScorerPanels;
 
 	public SimpleView(CustomScoringHelperModel model, String title) {
 		super(title);
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
 
-		createMultipleScorerPanels = isCompositeModel(model);
+		boolean createMultipleScorerPanels = isCompositeModel(model);
 		JPanel content = createContentPanel(createMultipleScorerPanels);
 
 		// frame stuff
@@ -66,8 +65,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	 */
 	@Override
 	public List<ScorerPanel> getScorerPanels() {
-		//TODO: defensive copy?
-		return scorerPanels;
+		return new ArrayList<ScorerPanel>(scorerPanels);
 	}
 
 	/*
@@ -75,9 +73,8 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	 */
 	@Override
 	public void setMode(Mode mode) {
-		scorerPanels.get(0).setPlayersPanel(mode);
-		if(createMultipleScorerPanels) {
-			scorerPanels.get(1).setPlayersPanel(mode);
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			scorerPanel.setPlayersPanel(mode);
 		}
 	}
 
@@ -92,9 +89,8 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 	@Override
 	public void addRulesListener(DocumentListener listener) {
-		scorerPanels.get(0).addRulesListener(listener);
-		if(createMultipleScorerPanels) {
-			scorerPanels.get(1).addRulesListener(listener);
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			scorerPanel.addRulesListener(listener);
 		}
 		logger.info("registered rules listener");
 	}
@@ -107,18 +103,17 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 	@Override
 	public void addRestoreDefaultRulesListener(ActionListener listener) {
-		scorerPanels.get(0).addRestoreDefaultRulesListener(listener);
-		if(createMultipleScorerPanels) {
-			scorerPanels.get(1).addRestoreDefaultRulesListener(listener);
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			scorerPanel.addRestoreDefaultRulesListener(listener);
 		}
 		logger.info("registered restore default rules listener");
 	}
 
 	@Override
 	public void updatePlayerScores(List<List<Player>> players) {
-		scorerPanels.get(0).updatePlayerScores(players.get(0));
-		if(createMultipleScorerPanels) {
-			scorerPanels.get(1).updatePlayerScores(players.get(1));
+		int index = 0;
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			scorerPanel.updatePlayerScores(players.get(index++));
 		}
 	}
 
@@ -169,16 +164,12 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 		// create 2nd ScorerPanel, and put 2 panels side-by-side before adding to content panel
 		if(createMultipleScorerPanels) {
-			modelID = 2;
 			scorerPanel = new ScorerPanel(model.getModesToPlayersMap(modelID));
-			scorerPanel.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
+			scorerPanel.setName(String.valueOf(++modelID)); // tag ScorerPanel with an ID
 			scorerPanels.add(scorerPanel);
 
-			JPanel scorerPanelsPanel = new JPanel();
-			int hgap = 50;
-			scorerPanelsPanel.setLayout(new GridLayout(1, 2, hgap, 0));
-			scorerPanelsPanel.add(scorerPanels.get(0));
-			scorerPanelsPanel.add(scorerPanels.get(1));
+			JPanel scorerPanelsPanel = createScorerPanelsPanel(scorerPanels);
+
 			JScrollPane scrollPane = new JScrollPane(scorerPanelsPanel);
 			// need to setPreferredSize of scroll pane, because it looks bad visually otherwise
 			scrollPane.setPreferredSize(new Dimension(defaultWidth, (int)(0.7*defaultHeight)));
@@ -212,5 +203,18 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		modePanel.add(rescoreButton, c);
 
 		return modePanel;
+	}
+
+	// line up a list of ScorerPanel's side-by-side in a grid
+	private JPanel createScorerPanelsPanel(List<ScorerPanel> scorer_panels) {
+		int hgap = 50;
+
+		JPanel scorerPanelsPanel = new JPanel();
+		scorerPanelsPanel.setLayout(new GridLayout(1, scorer_panels.size(), hgap, 0));
+		for(ScorerPanel scorerPanel : scorer_panels) {
+			scorerPanelsPanel.add(scorerPanel);
+		}
+
+		return scorerPanelsPanel;
 	}
 }
