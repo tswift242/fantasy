@@ -1,6 +1,6 @@
 package football.core;
 
-import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -141,16 +141,14 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		// get defaults
 		Mode defaultMode = CustomScoringHelperProperties.getDefaultMode();
 		RuleMap defaultRules = CustomScoringHelperProperties.getDefaultRules();
-		int defaultWidth = CustomScoringHelperProperties.getDefaultWidth();
-		int defaultHeight = CustomScoringHelperProperties.getDefaultHeight();
 
 		// set up content panel
-		GridBagPanel content = new GridBagPanel(5);
-		GridBagConstraints c = content.getConstraints();
+		JPanel content = new JPanel();
+		content.setLayout(new BorderLayout());
 
 		// mode panel
 		JPanel modePanel = createModePanel(defaultMode);
-		content.add(modePanel, c);
+		content.add(modePanel, BorderLayout.NORTH);
 
 		// scorer panels
 		scorerPanels = new ArrayList<ScorerPanel>();
@@ -160,7 +158,6 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		scorerPanel = new ScorerPanel(model.getModesToPlayersMap(modelID));
 		scorerPanel.setName(String.valueOf(modelID)); // tag ScorerPanel with an ID
 		scorerPanels.add(scorerPanel);
-		c.gridy++;
 
 		// create 2nd ScorerPanel, and put 2 panels side-by-side before adding to content panel
 		if(createMultipleScorerPanels) {
@@ -171,14 +168,9 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 			JPanel scorerPanelsPanel = createScorerPanelsPanel(scorerPanels);
 
 			JScrollPane scrollPane = new JScrollPane(scorerPanelsPanel);
-			// need to setPreferredSize of scroll pane, because it looks bad visually otherwise
-			scrollPane.setPreferredSize(new Dimension(defaultWidth, (int)(0.7*defaultHeight)));
-			content.add(scrollPane, c);
+			content.add(scrollPane, BorderLayout.CENTER);
 		} else { // add just the 1 ScorerPanel to the content panel
-			content.add(scorerPanels.get(0), c);
-
-			// set size
-			content.setPreferredSize(new Dimension(defaultWidth, defaultHeight));
+			content.add(scorerPanels.get(0), BorderLayout.CENTER);
 		}
 
 		return content;
@@ -199,7 +191,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		c.gridx--;
 		c.gridy++;
 		c.gridwidth = 2;
-		c.insets = new Insets(10, 2, 2, 2);
+		c.insets = new Insets(10, 2, 5, 2);
 		modePanel.add(rescoreButton, c);
 
 		return modePanel;
