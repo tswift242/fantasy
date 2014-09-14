@@ -167,7 +167,10 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 			JPanel scorerPanelsPanel = createScorerPanelsPanel(scorerPanels);
 
+			int unitIncrement = 10;
 			JScrollPane scrollPane = new JScrollPane(scorerPanelsPanel);
+			scrollPane.getHorizontalScrollBar().setUnitIncrement(unitIncrement);
+			scrollPane.getVerticalScrollBar().setUnitIncrement(unitIncrement);
 			content.add(scrollPane, BorderLayout.CENTER);
 		} else { // add just the 1 ScorerPanel to the content panel
 			content.add(scorerPanels.get(0), BorderLayout.CENTER);
