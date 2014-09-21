@@ -55,6 +55,18 @@ public final class ComparisonModel implements CustomScoringHelperModel
 	}
 
 	@Override
+	public void updateResultsLogger(String fullPathToFile) {
+		// TODO: may want to re-work this
+		model1.updateResultsLogger(fullPathToFile);
+	}
+
+	@Override
+	public void updateResultsLogger(Mode mode) {
+		// TODO: may want to re-work this
+		model1.updateResultsLogger(mode);
+	}
+
+	@Override
 	public Map<Mode,List<Player>> getModesToPlayersMap(int modelID) {
 		if(modelID == 1) {
 			return model1.getModesToPlayersMap(modelID);

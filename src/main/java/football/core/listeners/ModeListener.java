@@ -25,10 +25,15 @@ public class ModeListener implements ItemListener
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if(e.getStateChange() == ItemEvent.SELECTED) {
-			logger.info("New mode selected: " + e.getItem().toString());
 			Mode newMode = (Mode)e.getItem();
+			logger.info("New mode selected: " + newMode.toString());
+
 			model.setMode(newMode);
 			view.setMode(newMode);
+
+			// change the results logger to write to new file based on the new mode
+			model.updateResultsLogger(newMode);
+			//TODO: update file path in GUI
 		}
 	}
 }

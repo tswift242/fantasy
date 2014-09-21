@@ -23,6 +23,13 @@ public interface CustomScoringHelperModel
 	// SimpleScoringResults argument will always be the same SimpleScoringResults object returned by run()
 	public void logResults(ScoringResults results);
 
+	// update ResultsLogger with given full path to log file provided by the user through the GUI
+	public void updateResultsLogger(String fullPathToFile);
+
+	// update ResultsLogger to log to a mode-specific file based on a new Mode selection 
+	// propagated by the ModeListener
+	public void updateResultsLogger(Mode mode);
+
 	// modelID specifies which model to access in the case of composite models
 	public Map<Mode,List<Player>> getModesToPlayersMap(int modelID);
 

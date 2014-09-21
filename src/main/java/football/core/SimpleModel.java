@@ -1,5 +1,6 @@
 package football.core;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ import football.util.logging.ResultsLogger;
 
 public final class SimpleModel implements CustomScoringHelperModel
 {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+	private static final Logger logger = LoggerFactory.getLogger(SimpleModel.class.getName());
 
 	//TODO: make these maps map to List<E extends Player> if we drop Mode.ALL
 	// map of player modes to corresponding lists of players
@@ -32,16 +33,21 @@ public final class SimpleModel implements CustomScoringHelperModel
 
 	private RuleMap currentRules;
 	private Mode currentMode;
+	private ResultsLogger resultsLogger;
 
 	public SimpleModel() {
 		currentMode = CustomScoringHelperProperties.getDefaultMode();
 		logger.info("Constructing model with default mode {}", currentMode.toString());
+
 		// init to default rules (don't simply assign to prevent DEFAULT_RULES from being 
 		// modified whenever currentRules is modified)
 		currentRules = CustomScoringHelperProperties.getDefaultRules();
+
 		modesToPlayersMap = new EnumMap<Mode,List<Player>>(Mode.class);
 		populateModesToPlayersMap();
 		logger.debug("Using default rule map of:\n{}", CustomScoringHelperProperties.getDefaultRules().toString());
+
+		resultsLogger = createDefaultResultsLogger();
 	}
 
 	// command line version
@@ -78,27 +84,48 @@ public final class SimpleModel implements CustomScoringHelperModel
 		return run(currentMode, currentRules);
 	}
 
-	// write results to file filename in directory resultsDirectory
-	private void logResults(ScoringResults results, String resultsDirectory, String filename) {
-		String fileSeparator = System.getProperty("file.separator");
-		logger.info("Writing results to {}{}{}", resultsDirectory, fileSeparator, filename);
-
+	@Override
+	public void logResults(ScoringResults results) {
 		try {
-			ResultsLogger logger = new ResultsLogger(resultsDirectory,filename);
-			logger.logResults(results);
-			logger.close();
+			if(resultsLogger != null) {
+				resultsLogger.logResults(results);
+			}
 		} catch(IOException e) {
 			logger.error("Unable to write results: {}", e.toString());
 		}
 	}
 
-	// write results to default file in default directory
-	@Override
-	public void logResults(ScoringResults results) {
-		String resultsDirectory = CustomScoringHelperProperties.getResultsDirectory();
-		String filename = CustomScoringHelperProperties.getResultsFilename(results.getMode());
+	private ResultsLogger createDefaultResultsLogger() {
+		Mode mode = CustomScoringHelperProperties.getDefaultMode();
+		String directory = CustomScoringHelperProperties.getResultsDirectory();
+		String filename = CustomScoringHelperProperties.getResultsFilename(mode);
 
-		logResults(results, resultsDirectory, filename);
+		String fileSeparator = System.getProperty("file.separator");
+		logger.info("Creating default ResultsLogger set to log results to {}{}{}", directory, fileSeparator, filename);
+
+		return createResultsLogger(directory, filename);
+	}
+
+	public void updateResultsLogger(String fullPathToFile) {
+		File file = new File(fullPathToFile);
+		// get directory and filename from file
+		String directory = file.getParent();
+		String filename = file.getName();
+
+		// replace ResultsLogger with new one
+		logger.info("Updating ResultsLogger to log results to {}", file.getAbsolutePath());
+		resultsLogger = replaceResultsLogger(resultsLogger, directory, filename);
+	}
+
+	public void updateResultsLogger(Mode mode) {
+		// get directory from ResultsLogger
+		String directory = resultsLogger.getDirectory();
+		// get filename based on Mode
+		String filename = CustomScoringHelperProperties.getResultsFilename(mode);
+
+		// replace ResultsLogger with new one
+		logger.info("Updating ResultsLogger to new Mode {}", mode.toString());
+		resultsLogger = replaceResultsLogger(resultsLogger, directory, filename);
 	}
 
 	/*
@@ -250,5 +277,29 @@ public final class SimpleModel implements CustomScoringHelperModel
 		result += (indent + "rb: " + RB.categoriesToString() + "\n");
 		result += (indent + "wr: " + WR.categoriesToString() + "\n");*/
 		return result;
+	}
+
+	// wrap logic for catching IOException for ResultsLogger constructor into a method
+	private static ResultsLogger createResultsLogger(String directory, String filename) {
+		ResultsLogger resultsLogger = null;
+
+		try {
+			resultsLogger = new ResultsLogger(directory, filename);
+		} catch(IOException e) {
+			logger.error("Error creating ResultsLogger: {}", e.toString());
+		}
+
+		return resultsLogger;
+	}
+
+	// replace old ResultsLogger oldLogger with a new ResultsLogger pointing at
+	// directory/filename
+	private static ResultsLogger replaceResultsLogger(ResultsLogger oldLogger, String directory, String filename) {
+		// close old ResultsLogger
+		if(oldLogger != null) {
+			oldLogger.close();
+		}
+
+		return createResultsLogger(directory, filename);
 	}
 }

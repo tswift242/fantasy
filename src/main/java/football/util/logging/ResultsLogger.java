@@ -30,11 +30,14 @@ public class ResultsLogger
 	private static final String sectionDenoter = StringUtils.repeat("*", 8);
 
 	private PrintWriter out;
+	private String resultsDirectory;
 
 	// create a ResultsLogger which logs results to the specified file in the specified directory.
 	// append indicates whether or not results should be appended to existing file content, or 
 	// if the file log should be started fresh.
 	public ResultsLogger(String resultsDirectory, String filename, boolean append) throws IOException {
+		this.resultsDirectory = resultsDirectory;
+
 		File directory = new File(resultsDirectory);
 		// create directory if it doesn't exit
 		if(!directory.exists()) {
@@ -42,12 +45,17 @@ public class ResultsLogger
 				logger.error("Error creating results directory {}", resultsDirectory);
 			}
 		}
+
 		out = new PrintWriter(new BufferedWriter(new FileWriter(new File(directory ,filename), append)));
 	}
 
 	// uses default append value of true
 	public ResultsLogger(String resultsDirectory, String filename) throws IOException {
 		this(resultsDirectory, filename, true);
+	}
+
+	public String getDirectory() {
+		return resultsDirectory;
 	}
 
 	public void logResults(ScoringResults results) throws IOException {
@@ -82,6 +90,9 @@ public class ResultsLogger
 			out.println("Distance between sets of custom rules is: " + distance);
 		}
 		out.println("\n" + delimiter + "\n\n\n");
+
+		// flush everything to disk
+		out.flush();
 	}
 
 	public void close() {
