@@ -6,6 +6,7 @@ import football.core.intface.CustomScoringHelperView;
 import football.core.listeners.ModeListener;
 import football.core.listeners.RecalculateScoreListener;
 import football.core.listeners.RestoreDefaultRulesListener;
+import football.core.listeners.WindowCloseListener;
 
 public final class SimpleController implements CustomScoringHelperController
 {
@@ -23,5 +24,6 @@ public final class SimpleController implements CustomScoringHelperController
 		//view.addRulesListener(new RulesListener(model));
 		view.addRecalculateScoreListener(new RecalculateScoreListener(model, view));
 		view.addRestoreDefaultRulesListener(new RestoreDefaultRulesListener());
+		view.addWindowCloseListener(new WindowCloseListener(model));
 	}
 }

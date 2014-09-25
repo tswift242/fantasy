@@ -109,4 +109,10 @@ public final class ComparisonModel implements CustomScoringHelperModel
 			throw new IllegalArgumentException("modelID " + modelID + " is not 1 or 2");
 		}
 	}
+
+	@Override
+	public void close() {
+		model1.close();
+		model2.close();
+	}
 }

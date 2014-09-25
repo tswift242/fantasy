@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -53,7 +54,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		this.setLocationRelativeTo(null); //center window on screen
 
 		//TODO: pass window closing event to controller
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
 	public SimpleView(CustomScoringHelperModel model) {
@@ -107,6 +108,13 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 			scorerPanel.addRestoreDefaultRulesListener(listener);
 		}
 		logger.info("registered restore default rules listener");
+	}
+
+	//TODO: move this to CSHView if we make that an abstract class
+	@Override
+	public void addWindowCloseListener(WindowListener listener) {
+		addWindowListener(listener);
+		logger.info("registered window close listener");
 	}
 
 	@Override

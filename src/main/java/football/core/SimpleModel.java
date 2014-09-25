@@ -164,6 +164,12 @@ public final class SimpleModel implements CustomScoringHelperModel
 		currentRules = rules;
 	}
 
+	@Override
+	public void close() {
+		logger.info("Closing model");
+		closeResultsLogger(resultsLogger);
+	}
+
 
 	// assign each player in players a score using the scoring rules in rules
 	private void scorePlayers(List<Player> players, RuleMap rules) {
@@ -296,10 +302,14 @@ public final class SimpleModel implements CustomScoringHelperModel
 	// directory/filename
 	private static ResultsLogger replaceResultsLogger(ResultsLogger oldLogger, String directory, String filename) {
 		// close old ResultsLogger
-		if(oldLogger != null) {
-			oldLogger.close();
-		}
+		closeResultsLogger(oldLogger);
 
 		return createResultsLogger(directory, filename);
+	}
+
+	private static void closeResultsLogger(ResultsLogger resultsLogger) {
+		if(resultsLogger != null) {
+			resultsLogger.close();
+		}
 	}
 }

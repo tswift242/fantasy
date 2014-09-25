@@ -2,6 +2,7 @@ package football.core.intface;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowListener;
 import java.util.List;
 import javax.swing.event.DocumentListener;
 
@@ -22,6 +23,8 @@ public interface CustomScoringHelperView
 	public void addRecalculateScoreListener(ActionListener listener);
 
 	public void addRestoreDefaultRulesListener(ActionListener listener);
+
+	public void addWindowCloseListener(WindowListener listener);
 
 	public void updatePlayerScores(List<List<Player>> players);
 }
