@@ -22,6 +22,7 @@ public final class CustomScoringHelperProperties {
 	private static Mode defaultMode = Mode.QB;
 	private static RuleMap defaultRules = defaultNFLRules;
 	private static Metric defaultMetric = new SortOrderMetric();
+	private static boolean resultsLoggingEnabled = true;
 	private static String resultsDirectory = System.getProperty("user.dir") +
 				System.getProperty("file.separator") + "fantasyfootball-custom-scorer-results";
 
@@ -29,6 +30,7 @@ public final class CustomScoringHelperProperties {
 	private static final String USE_COMPOSITE_MODEL = "useCompositeModel";
 	private static final String DEFAULT_MODE = "defaultMode";
 	private static final String DEFAULT_RULES = "defaultRules";
+	private static final String ENABLE_RESULTS_LOGGING = "enableResultsLogging";
 	private static final String RESULTS_DIRECTORY = "resultsDirectory";
 
 	private CustomScoringHelperProperties() {}
@@ -41,6 +43,7 @@ public final class CustomScoringHelperProperties {
 		setUseCompositeModel(Boolean.parseBoolean(loader.getProperty(USE_COMPOSITE_MODEL)));
 		setDefaultMode(Mode.fromString(loader.getProperty(DEFAULT_MODE)));
 		setDefaultRules(loader.getProperty(DEFAULT_RULES));
+		enableResultsLogging(Boolean.parseBoolean(loader.getProperty(ENABLE_RESULTS_LOGGING)));
 		setResultsDirectory(loader.getProperty(RESULTS_DIRECTORY));
 	}
 
@@ -63,6 +66,10 @@ public final class CustomScoringHelperProperties {
 	//TODO: should return defensive copy of this for safety
 	public static Metric getDefaultMetric() {
 		return defaultMetric;
+	}
+
+	public static boolean isResultsLoggingEnabled() {
+		return resultsLoggingEnabled;
 	}
 
 	public static String getResultsDirectory() {
@@ -101,6 +108,10 @@ public final class CustomScoringHelperProperties {
 			default:
 				throw new IllegalArgumentException("Invalid site specified: " + site + ". Must be one of these values: NFL, ESPN, Yahaoo, CBS");
 		}
+	}
+
+	private static void enableResultsLogging(boolean logResults) {
+		resultsLoggingEnabled = logResults;
 	}
 
 	private static void setResultsDirectory(String directory) {

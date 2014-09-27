@@ -47,7 +47,9 @@ public final class SimpleModel implements CustomScoringHelperModel
 		populateModesToPlayersMap();
 		logger.debug("Using default rule map of:\n{}", CustomScoringHelperProperties.getDefaultRules().toString());
 
-		resultsLogger = createDefaultResultsLogger();
+		if(CustomScoringHelperProperties.isResultsLoggingEnabled()) {
+			resultsLogger = createDefaultResultsLogger();
+		}
 	}
 
 	// command line version
@@ -87,7 +89,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	@Override
 	public void logResults(ScoringResults results) {
 		try {
-			if(resultsLogger != null) {
+			if(CustomScoringHelperProperties.isResultsLoggingEnabled()) {
 				resultsLogger.logResults(results);
 			}
 		} catch(IOException e) {

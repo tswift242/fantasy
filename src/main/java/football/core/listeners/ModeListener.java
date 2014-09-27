@@ -8,6 +8,7 @@ import football.core.intface.CustomScoringHelperView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import football.config.CustomScoringHelperProperties;
 import football.players.modes.Mode;
 
 public class ModeListener implements ItemListener
@@ -32,7 +33,9 @@ public class ModeListener implements ItemListener
 			view.setMode(newMode);
 
 			// change the results logger to write to new file based on the new mode
-			model.updateResultsLogger(newMode);
+			if(CustomScoringHelperProperties.isResultsLoggingEnabled()) {
+				model.updateResultsLogger(newMode);
+			}
 			//TODO: update file path in GUI
 		}
 	}
