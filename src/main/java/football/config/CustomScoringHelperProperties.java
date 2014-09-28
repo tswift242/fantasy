@@ -21,10 +21,12 @@ public final class CustomScoringHelperProperties {
 	private static boolean useCompositeModel = true;
 	private static Mode defaultMode = Mode.QB;
 	private static RuleMap defaultRules = defaultNFLRules;
-	private static Metric defaultMetric = new SortOrderMetric();
 	private static boolean resultsLoggingEnabled = true;
+	// TODO: setter for this which assigns to null if resultsLoggingEnabled == false
 	private static String resultsDirectory = System.getProperty("user.dir") +
 				System.getProperty("file.separator") + "fantasyfootball-custom-scorer-results";
+	private static boolean metricsEnabled = true;
+	private static Metric defaultMetric = new SortOrderMetric();
 
 	// property keys
 	private static final String USE_COMPOSITE_MODEL = "useCompositeModel";
@@ -32,6 +34,7 @@ public final class CustomScoringHelperProperties {
 	private static final String DEFAULT_RULES = "defaultRules";
 	private static final String ENABLE_RESULTS_LOGGING = "enableResultsLogging";
 	private static final String RESULTS_DIRECTORY = "resultsDirectory";
+	private static final String ENABLE_METRICS = "enableMetrics";
 
 	private CustomScoringHelperProperties() {}
 
@@ -45,6 +48,9 @@ public final class CustomScoringHelperProperties {
 		setDefaultRules(loader.getProperty(DEFAULT_RULES));
 		enableResultsLogging(Boolean.parseBoolean(loader.getProperty(ENABLE_RESULTS_LOGGING)));
 		setResultsDirectory(loader.getProperty(RESULTS_DIRECTORY));
+		enableMetrics(Boolean.parseBoolean(loader.getProperty(ENABLE_METRICS)));
+
+		setMetric(new SortOrderMetric());
 	}
 
 	/*
@@ -63,11 +69,6 @@ public final class CustomScoringHelperProperties {
 		return defaultRules;
 	}
 
-	//TODO: should return defensive copy of this for safety
-	public static Metric getDefaultMetric() {
-		return defaultMetric;
-	}
-
 	public static boolean isResultsLoggingEnabled() {
 		return resultsLoggingEnabled;
 	}
@@ -78,6 +79,15 @@ public final class CustomScoringHelperProperties {
 
 	public static String getResultsFilename(Mode mode) {
 		return (mode.toString() + ".txt");
+	}
+
+	public static boolean metricsEnabled() {
+		return metricsEnabled;
+	}
+
+	//TODO: should return defensive copy of this for safety
+	public static Metric getDefaultMetric() {
+		return defaultMetric;
 	}
 
 	/*
@@ -120,6 +130,14 @@ public final class CustomScoringHelperProperties {
 		if(!StringUtils.isBlank(directory)) {
 			resultsDirectory = directory;
 		}
+	}
+
+	private static void enableMetrics(boolean enableMetrics) {
+		metricsEnabled = (useCompositeModel() && enableMetrics);
+	}
+
+	private static void setMetric(Metric metric) {
+		defaultMetric = (metricsEnabled() ? metric : null);
 	}
 
 

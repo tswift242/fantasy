@@ -10,7 +10,6 @@ import football.players.modes.Mode;
 import football.stats.Rule;
 import football.stats.RuleMap;
 import football.stats.StatType;
-import football.util.logging.ResultsLogger;
 import football.util.metrics.Metric;
 
 public final class ComparisonModel implements CustomScoringHelperModel
@@ -31,8 +30,7 @@ public final class ComparisonModel implements CustomScoringHelperModel
 				CustomScoringHelperProperties.getDefaultRules().toArgs(Mode.fromString(args[0])));
 
 		// merge two results
-		Metric metric = CustomScoringHelperProperties.getDefaultMetric();
-		return new ComparisonScoringResults(results1, results2, metric);
+		return mergeResults(results1, results2);
 	}
 
 	@Override
@@ -42,8 +40,7 @@ public final class ComparisonModel implements CustomScoringHelperModel
 		SimpleScoringResults results2 = (SimpleScoringResults)model2.run();
 
 		// merge two results
-		Metric metric = CustomScoringHelperProperties.getDefaultMetric();
-		return new ComparisonScoringResults(results1, results2, metric);
+		return mergeResults(results1, results2);
 	}
 
 	@Override
@@ -114,5 +111,22 @@ public final class ComparisonModel implements CustomScoringHelperModel
 	public void close() {
 		model1.close();
 		model2.close();
+	}
+
+
+
+
+	// Merge 2 simple results into a comparison results object after computing metric
+	// information (if metrics are enabled)
+	private ComparisonScoringResults mergeResults(SimpleScoringResults results1, SimpleScoringResults results2) {
+		double distance;
+		if(CustomScoringHelperProperties.metricsEnabled()) {
+			Metric metric = CustomScoringHelperProperties.getDefaultMetric();
+			distance = metric.distance(results1.getPlayers().get(0), results2.getPlayers().get(0));
+		} else {
+			distance = -1;
+		}
+
+		return new ComparisonScoringResults(results1, results2, distance);
 	}
 }

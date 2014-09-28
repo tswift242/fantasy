@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import football.config.CustomScoringHelperProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,10 +87,10 @@ public class ResultsLogger
 			out.println(listToString(players));
 		}
 
-		if(distance >= 0) {
-			out.println("Distance between sets of custom rules is: " + distance);
+		if(CustomScoringHelperProperties.metricsEnabled()) {
+			out.println("Distance between sets of custom rules is: " + distance + "\n");
 		}
-		out.println("\n" + delimiter + "\n\n\n");
+		out.println(delimiter + "\n\n\n");
 
 		// flush everything to disk
 		out.flush();
