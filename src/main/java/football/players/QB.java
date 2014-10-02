@@ -89,12 +89,6 @@ public final class QB extends Player
 	}
 
 	@Override
-	public String categoriesToString() {
-		String delimiter = "\t\t";
-		return (Pass.valuesToString() + delimiter + Rush.valuesToString() + delimiter + Misc.valuesToString());
-	}
-
-	@Override
 	public String statsToString() {
 		String delimiter = "\t";
 		return (PlayerUtils.statsToString(passStats) + delimiter + PlayerUtils.statsToString(rushStats) +

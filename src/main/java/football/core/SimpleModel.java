@@ -279,11 +279,11 @@ public final class SimpleModel implements CustomScoringHelperModel
 		result += (indent + "mode := player position to simulate. Possible values are def, k, qb, rb, and wr.\n");
 		result += (indent + "sc1 - scN := scoring coefficients representing all rules needed to score players" + 
 				" at position given by mode. Necessary scoring coefficients per position are given below.\n");
-		/*result += (indent + "def: " + DEF.categoriesToString() + "\n");
-		result += (indent + "k: " + K.categoriesToString() + "\n");
-		result += (indent + "qb: " + QB.categoriesToString() + "\n");
-		result += (indent + "rb: " + RB.categoriesToString() + "\n");
-		result += (indent + "wr: " + WR.categoriesToString() + "\n");*/
+		result += (indent + "def: " + Mode.DEF.getCategoriesString() + "\n");
+		result += (indent + "k: " + Mode.K.getCategoriesString() + "\n");
+		result += (indent + "qb: " + Mode.QB.getCategoriesString() + "\n");
+		result += (indent + "rb: " + Mode.RB.getCategoriesString() + "\n");
+		result += (indent + "wr: " + Mode.WR.getCategoriesString() + "\n");
 		return result;
 	}
 

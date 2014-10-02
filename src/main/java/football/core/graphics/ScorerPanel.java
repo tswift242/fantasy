@@ -86,7 +86,7 @@ public final class ScorerPanel extends GridBagPanel
 		for(Mode mode : Mode.values()) {
 			//TODO: avoiding Mode.ALL for now because of issues
 			if(mode != Mode.ALL) {
-				PlayersPanel players = new PlayersPanel(playersMap.get(mode));
+				PlayersPanel players = new PlayersPanel(playersMap.get(mode), mode);
 				players.setName(mode.toString());
 				// TODO: get consistent PlayersPanel sizing by setting 
 				// preferredScrollableViewportSize for each panel to be preferred size

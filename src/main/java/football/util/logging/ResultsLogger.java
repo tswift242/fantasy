@@ -72,6 +72,7 @@ public class ResultsLogger
 		// number of different RuleMap's used to score the same players
 		// == number of (simple) models being used
 		int numRuleMaps = allRules.size();
+		String categoriesString = mode.getCategoriesString();
 		// log results for each (RuleMap, List<Player>) pair
 		// Note: not efficient for lists without random access; ignoring for now b/c
 		// lists will have random access, and b/c numRuleMaps <= 2
@@ -80,8 +81,7 @@ public class ResultsLogger
 			List<Player> players = allPlayers.get(i);
 
 			out.println(toSectionHeader("Custom scoring rules " + (i+1),sectionDenoter));
-			//TODO: make categoriesToString() a method of Mode (or make static)
-			out.println(players.get(0).categoriesToString());
+			out.println(categoriesString);
 			out.println(argsToString(rules.toArgs(mode)));
 			out.println(toSectionHeader("Scores using custom rules " + (i+1),sectionDenoter));
 			out.println(listToString(players));

@@ -1,7 +1,6 @@
 package football.stats.categories;
 
 import football.stats.StatType;
-import football.util.EnumUtils;
 import football.util.StatCategoryUtils;
 
 public enum Kick implements StatType
@@ -21,7 +20,6 @@ public enum Kick implements StatType
 
 	private final String text;
 	private static final int size = values().length;
-	private static final String valuesString = EnumUtils.valuesToString(Kick.class);
 
 	private Kick(String text) {
 		this.text = text;
@@ -38,9 +36,5 @@ public enum Kick implements StatType
 
 	public static int size() {
 		return size;
-	}
-
-	public static String valuesToString() {
-		return valuesString;
 	}
 }

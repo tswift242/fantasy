@@ -49,13 +49,17 @@ public enum Mode
 		}
 	};
 
+
 	private final String text;
 	// list of associated StatType's with each Mode
 	private final List<Class<? extends StatType>> statTypes;
+	// string containing all relevant stat categories for this mode delimited by whitespace
+	private final String categoriesString;
 
 	private Mode(String text, List<Class<? extends StatType>> statTypes) {
 		this.text = text;
 		this.statTypes = statTypes;
+		this.categoriesString = categoriesToString();
 	}
 
 	@Override
@@ -73,7 +77,22 @@ public enum Mode
 		return statTypes;
 	}
 
+	public String getCategoriesString() {
+		return categoriesString;
+	}
 
+
+
+	private String categoriesToString() {
+		String results = "";
+
+		String delimiter = "\t\t";
+		for(Class<? extends StatType> statType : statTypes) {
+			results += (EnumUtils.valuesToString(statType) + delimiter);
+		}
+
+		return results.trim();
+	}
 
 	//TODO: throw in Util class
 	@SafeVarargs //ignore "unchecked generic array creation for varargs" -- Java 7 ONLY

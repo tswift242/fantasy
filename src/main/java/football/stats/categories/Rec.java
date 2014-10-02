@@ -1,7 +1,6 @@
 package football.stats.categories;
 
 import football.stats.StatType;
-import football.util.EnumUtils;
 import football.util.StatCategoryUtils;
 
 public enum Rec implements StatType
@@ -13,7 +12,6 @@ public enum Rec implements StatType
 	private final String text;
 	private static final int size = values().length;
 	private static final int yardsUnit = 10;
-	private static final String valuesString = EnumUtils.valuesToString(Rec.class);
 
 	private Rec(String text) {
 		this.text = text;
@@ -34,9 +32,5 @@ public enum Rec implements StatType
 
 	public static int getYardsUnit() {
 		return yardsUnit;
-	}
-
-	public static String valuesToString() {
-		return valuesString;
 	}
 }

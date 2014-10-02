@@ -91,8 +91,6 @@ public abstract class Player implements Comparable<Player>
 		return String.format("%-15s %-8s",name,scoreFmt.format(score));
 	}
 
-	public abstract String categoriesToString();
-
 	// returns all player's stat values
 	public abstract String statsToString();
 }

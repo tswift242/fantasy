@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.players.Player;
+import football.players.modes.Mode;
 
 /*
  * Panel displaying a list of players of a given position, their relevant stats, 
@@ -31,9 +32,9 @@ public final class PlayersPanel extends JPanel
 
 	private JTable table;
 
-	public PlayersPanel(List<Player> players) {
+	public PlayersPanel(List<Player> players, Mode mode) {
 		// construct table
-		table = new JTable(new PlayersTableModel(players));
+		table = new JTable(new PlayersTableModel(players, mode));
 		setSortingBehavior(table);
 
 		// add to panel without JScrollPane
@@ -99,9 +100,9 @@ public final class PlayersPanel extends JPanel
 		// Note: don't need to update values in here because model data doesn't change location
 		private Map<String,Integer> namesToIndices;
 
-		public PlayersTableModel(List<Player> players) {
+		public PlayersTableModel(List<Player> players, Mode mode) {
 			// create column names
-			setColumnNames(players);
+			setColumnNames(players, mode);
 
 			// create row data
 			setPlayerData(players);
@@ -157,9 +158,9 @@ public final class PlayersPanel extends JPanel
 		}
 
 
-		private void setColumnNames(List<Player> players) {
+		private void setColumnNames(List<Player> players, Mode mode) {
 			// stat categories for this group of players
-			String[] categories = players.get(0).categoriesToString().split(WHITESPACE_REGEX);
+			String[] categories = mode.getCategoriesString().split(WHITESPACE_REGEX);
 			// numStats == numCategories
 			int numStats = categories.length;
 			// add 2 more columns for player names and scores

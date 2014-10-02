@@ -79,11 +79,6 @@ public final class WR extends Player
 	}
 
 	@Override
-	public String categoriesToString() {
-		return (Rec.valuesToString() + "\t\t" + Misc.valuesToString());
-	}
-
-	@Override
 	public String statsToString() {
 		return (PlayerUtils.statsToString(recStats) + "\t" + PlayerUtils.statsToString(miscStats));
 	}

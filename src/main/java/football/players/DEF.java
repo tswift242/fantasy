@@ -62,11 +62,6 @@ public final class DEF extends Player
 	}
 
 	@Override
-	public String categoriesToString() {
-		return Def.valuesToString();
-	}
-
-	@Override
 	public String statsToString() {
 		return PlayerUtils.statsToString(defStats);
 	}

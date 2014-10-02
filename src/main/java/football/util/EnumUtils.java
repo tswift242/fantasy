@@ -4,12 +4,21 @@ public final class EnumUtils
 {
 	private EnumUtils() {} //NEVER USE THIS
 
-	public static <T extends Enum<T>> String valuesToString(Class<T> enumType) {
+	// type T should extend Enum, but does not because that information is not always statically
+	// avaiable for callers
+	public static <T> String valuesToString(Class<T> enumType) {
 		String values = "";
-		for(T value : enumType.getEnumConstants()) {
+
+		T[] valuesArray = enumType.getEnumConstants();
+		if(valuesArray == null) {
+			throw new IllegalArgumentException("Type " + enumType.getName() + " is not an Enum");
+		}
+
+		for(T value : valuesArray) {
 			//TODO: make 10 below parameter
 			values += String.format("%-10s ",value.toString());
 		}
+
 		return values.trim();
 	}
 

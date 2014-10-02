@@ -89,12 +89,6 @@ public final class RB extends Player
 	}
 
 	@Override
-	public String categoriesToString() {
-		String delimiter = "\t\t";
-		return (Rush.valuesToString() + delimiter + Rec.valuesToString() + delimiter + Misc.valuesToString());
-	}
-
-	@Override
 	public String statsToString() {
 		String delimiter = "\t";
 		return (PlayerUtils.statsToString(rushStats) + delimiter + PlayerUtils.statsToString(recStats) +

@@ -61,11 +61,6 @@ public final class K extends Player
 	}
 
 	@Override
-	public String categoriesToString() {
-		return Kick.valuesToString();
-	}
-
-	@Override
 	public String statsToString() {
 		return PlayerUtils.statsToString(kickStats);
 	}
