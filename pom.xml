@@ -6,7 +6,7 @@
 
   <groupId>football</groupId>
   <artifactId>fantasyfootball-custom-scorer</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.9.0-SNAPSHOT</version>
   <name>fantasyfootball-custom-scorer</name>
 
   <packaging>jar</packaging>
