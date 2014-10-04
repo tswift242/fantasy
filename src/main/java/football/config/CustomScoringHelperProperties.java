@@ -16,6 +16,9 @@ public final class CustomScoringHelperProperties {
 	private static final Logger logger = LoggerFactory.getLogger(CustomScoringHelperProperties.class.getName());
 
 	public static final RuleMap defaultNFLRules = createDefaultNFLRuleMap();
+	public static final RuleMap defaultESPNRules = createDefaultESPNRuleMap();
+	public static final RuleMap defaultYahooRules = createDefaultYahooRuleMap();
+	public static final RuleMap defaultCBSRules = createDefaultCBSRuleMap();
 
 	// properties
 	private static boolean useCompositeModel = true;
@@ -107,13 +110,13 @@ public final class CustomScoringHelperProperties {
 				defaultRules = defaultNFLRules;
 				break;
 			case "ESPN":
-				logger.warn("Not implemented yet. Using default NFL.com rules");
+				defaultRules = defaultESPNRules;
 				break;
 			case "Yahoo":
-				logger.warn("Not implemented yet. Using default NFL.com rules");
+				defaultRules = defaultYahooRules;
 				break;
 			case "CBS":
-				logger.warn("Not implemented yet. Using default NFL.com rules");
+				defaultRules = defaultCBSRules;
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid site specified: " + site + ". Must be one of these values: NFL, ESPN, Yahaoo, CBS");
@@ -146,30 +149,93 @@ public final class CustomScoringHelperProperties {
 	// create and initialize a RuleMap containing the default scoring rules
 	// for NFL.com leagues
 	private static RuleMap createDefaultNFLRuleMap() {
-		RuleMap rules = new RuleMap();
-		rules.put(Pass.YDS, new Rule<Pass>(Pass.YDS, 1.0, 25));
+		RuleMap rules = createCommonRuleMap();
+		// Pass
 		rules.put(Pass.TD, new Rule<Pass>(Pass.TD, 4.0));
 		rules.put(Pass.INT, new Rule<Pass>(Pass.INT, -2.0));
+		// Kick
+		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 3.0));
+		// Def
+		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -2.8, 7));
+		return rules;
+	}
+
+	// create and initialize a RuleMap containing the default scoring rules
+	// for ESPN.com leagues
+	private static RuleMap createDefaultESPNRuleMap() {
+		RuleMap rules = createCommonRuleMap();
+		// Pass
+		rules.put(Pass.TD, new Rule<Pass>(Pass.TD, 4.0));
+		rules.put(Pass.INT, new Rule<Pass>(Pass.INT, -2.0));
+		// Kick
+		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 4.0));
+		// TODO: FG_MISSED = -1
+		// Def
+		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -1.285714, 7));
+		// TODO: BLK (kick/punt) = 2
+		// TODO: YDS_ALLOWED = -11.5/6 = -1.916 per 100
+		return rules;
+	}
+
+	// create and initialize a RuleMap containing the default scoring rules
+	// for Yahoo.com leagues
+	private static RuleMap createDefaultYahooRuleMap() {
+		RuleMap rules = createCommonRuleMap();
+		// Pass
+		rules.put(Pass.TD, new Rule<Pass>(Pass.TD, 4.0));
+		rules.put(Pass.INT, new Rule<Pass>(Pass.INT, -1.0));
+		// Kick
+		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 4.0));
+		// Def
+		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -2.8, 7));
+		// TODO: BLK (kick/punt) = 2
+		return rules;
+	}
+
+	// create and initialize a RuleMap containing the default scoring rules
+	// for CBS.com leagues
+	private static RuleMap createDefaultCBSRuleMap() {
+		RuleMap rules = createCommonRuleMap();
+		// Pass
+		rules.put(Pass.TD, new Rule<Pass>(Pass.TD, 6.0));
+		rules.put(Pass.INT, new Rule<Pass>(Pass.INT, -2.0));
+		// Kick
+		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 3.0));
+		// Def
+		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -2.0, 7));
+		// TODO: YDS_ALLOWED = -4 per 100
+		return rules;
+	}
+
+	// helper method which creates and initializes a RuleMap with default scoring rules
+	// which are common to all fantasy sites
+	private static RuleMap createCommonRuleMap() {
+		RuleMap rules = new RuleMap();
+		// Pass
+		rules.put(Pass.YDS, new Rule<Pass>(Pass.YDS, 1.0, 25));
+		// Rush
 		rules.put(Rush.YDS, new Rule<Rush>(Rush.YDS, 1.0, 10));
 		rules.put(Rush.TD, new Rule<Rush>(Rush.TD, 6.0));
+		// Rec
 		rules.put(Rec.YDS, new Rule<Rec>(Rec.YDS, 1.0, 10));
 		rules.put(Rec.TD, new Rule<Rec>(Rec.TD, 6.0));
+		// Misc
 		rules.put(Misc.FUMB_TD, new Rule<Misc>(Misc.FUMB_TD, 6.0));
 		rules.put(Misc.FUMB_LOST, new Rule<Misc>(Misc.FUMB_LOST, -2.0));
 		rules.put(Misc.TWO_PT_CONV, new Rule<Misc>(Misc.TWO_PT_CONV, 2.0));
+		// Kick
 		rules.put(Kick.PAT_MD, new Rule<Kick>(Kick.PAT_MD, 1.0));
 		rules.put(Kick.FG_MD_0, new Rule<Kick>(Kick.FG_MD_0, 3.0));
 		rules.put(Kick.FG_MD_20, new Rule<Kick>(Kick.FG_MD_20, 3.0));
 		rules.put(Kick.FG_MD_30, new Rule<Kick>(Kick.FG_MD_30, 3.0));
-		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 3.0));
 		rules.put(Kick.FG_MD_50, new Rule<Kick>(Kick.FG_MD_50, 5.0));
+		// Def
 		rules.put(Def.SCK, new Rule<Def>(Def.SCK, 1.0));
 		rules.put(Def.INT, new Rule<Def>(Def.INT, 2.0));
 		rules.put(Def.FUMB, new Rule<Def>(Def.FUMB, 2.0));
 		rules.put(Def.SAF, new Rule<Def>(Def.SAF, 2.0));
 		rules.put(Def.TD, new Rule<Def>(Def.TD, 6.0));
 		rules.put(Def.RET, new Rule<Def>(Def.RET, 6.0));
-		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -3.0, 7));
 		return rules;
 	}
 }
