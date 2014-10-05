@@ -2,6 +2,7 @@ package football.config;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -18,32 +19,31 @@ public final class CustomScoringHelperPropertiesLoader {
 
 	private Properties props;
 
-	private CustomScoringHelperPropertiesLoader(String propertiesFilename) {
+	private CustomScoringHelperPropertiesLoader(String propertiesFilename) throws FileNotFoundException, IOException {
 		props = new Properties();
-		try {
-			logger.info("reading properties from file {}", propertiesFilename);
-			InputStream in = this.getClass().getResourceAsStream(propertiesFilename);
-			if(in != null) {
+		logger.info("reading properties from file {}", propertiesFilename);
+		InputStream in = this.getClass().getResourceAsStream(propertiesFilename);
+		if(in != null) {
+			try {
 				props.load(in);
 				in.close();
 				logger.info("properties loaded successfuly");
-			} else {
-				//TODO: throw FileNotFoundException here?
-				logger.warn("cannot find file {}. Using default property values intead", propertiesFilename);
+			} catch(IOException e) {
+				throw new IOException("Error while parsing properties file " + propertiesFilename, e);
 			}
-		} catch(IOException e) {
-			logger.error("exception parsing properties file {}:\n{}", propertiesFilename, e.toString());
+		} else {
+			throw new FileNotFoundException("Cannot find file: " + propertiesFilename);
 		}
 	}
 
-	public static CustomScoringHelperPropertiesLoader getInstance(String propertiesFilename) {
+	public static CustomScoringHelperPropertiesLoader getInstance(String propertiesFilename) throws FileNotFoundException, IOException {
 		if(_loader == null) {
 			_loader = new CustomScoringHelperPropertiesLoader(propertiesFilename);
 		}
 		return _loader;
 	}
 
-	public static CustomScoringHelperPropertiesLoader getInstance() {
+	public static CustomScoringHelperPropertiesLoader getInstance() throws FileNotFoundException, IOException {
 		return getInstance(overridePropertiesFilename);
 	}
 

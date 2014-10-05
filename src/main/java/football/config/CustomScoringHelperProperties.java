@@ -1,5 +1,8 @@
 package football.config;
 
+import java.io.IOException;
+import java.io.FileNotFoundException;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,17 +45,23 @@ public final class CustomScoringHelperProperties {
 
 	public static void init() {
 		logger.info("initializing property values");
-		CustomScoringHelperPropertiesLoader loader = CustomScoringHelperPropertiesLoader.getInstance();
+		try {
+			CustomScoringHelperPropertiesLoader loader = CustomScoringHelperPropertiesLoader.getInstance();
 
-		// set properties by getting properties from loader
-		setUseCompositeModel(Boolean.parseBoolean(loader.getProperty(USE_COMPOSITE_MODEL)));
-		setDefaultMode(Mode.fromString(loader.getProperty(DEFAULT_MODE)));
-		setDefaultRules(loader.getProperty(DEFAULT_RULES));
-		enableResultsLogging(Boolean.parseBoolean(loader.getProperty(ENABLE_RESULTS_LOGGING)));
-		setResultsDirectory(loader.getProperty(RESULTS_DIRECTORY));
-		enableMetrics(Boolean.parseBoolean(loader.getProperty(ENABLE_METRICS)));
+			// set properties by getting properties from loader
+			setUseCompositeModel(Boolean.parseBoolean(loader.getProperty(USE_COMPOSITE_MODEL)));
+			setDefaultMode(Mode.fromString(loader.getProperty(DEFAULT_MODE)));
+			setDefaultRules(loader.getProperty(DEFAULT_RULES));
+			enableResultsLogging(Boolean.parseBoolean(loader.getProperty(ENABLE_RESULTS_LOGGING)));
+			setResultsDirectory(loader.getProperty(RESULTS_DIRECTORY));
+			enableMetrics(Boolean.parseBoolean(loader.getProperty(ENABLE_METRICS)));
 
-		setMetric(new SortOrderMetric());
+			setMetric(new SortOrderMetric());
+		} catch(FileNotFoundException e) { // properties file does not exit
+			logger.error("{}. Using default properties.", e.toString());
+		} catch(IOException e) { // error while parsing properties file
+			logger.error("{}. Using default properties.", e.toString());
+		}
 	}
 
 	/*
