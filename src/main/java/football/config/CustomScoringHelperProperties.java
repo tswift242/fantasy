@@ -25,7 +25,6 @@ public final class CustomScoringHelperProperties {
 	private static Mode defaultMode = Mode.QB;
 	private static RuleMap defaultRules = defaultNFLRules;
 	private static boolean resultsLoggingEnabled = true;
-	// TODO: setter for this which assigns to null if resultsLoggingEnabled == false
 	private static String resultsDirectory = System.getProperty("user.dir") +
 				System.getProperty("file.separator") + "fantasyfootball-custom-scorer-results";
 	private static boolean metricsEnabled = true;
@@ -77,6 +76,9 @@ public final class CustomScoringHelperProperties {
 	}
 
 	public static String getResultsDirectory() {
+		if(!isResultsLoggingEnabled()) {
+			throw new IllegalStateException("Attempted to get results directory while results logging was disabled");
+		}
 		return resultsDirectory;
 	}
 
@@ -90,6 +92,9 @@ public final class CustomScoringHelperProperties {
 
 	//TODO: should return defensive copy of this for safety
 	public static Metric getDefaultMetric() {
+		if(!metricsEnabled()) {
+			throw new IllegalStateException("Attempted to get default metric while metrics was disabled");
+		}
 		return defaultMetric;
 	}
 
@@ -128,9 +133,12 @@ public final class CustomScoringHelperProperties {
 	}
 
 	private static void setResultsDirectory(String directory) {
+		if(!isResultsLoggingEnabled()) {
+			resultsDirectory = null;
+		}
 		// allow user to set resultsDirectory property to nothing to indicate that they wish
 		// to use the default directory
-		if(!StringUtils.isBlank(directory)) {
+		else if(!StringUtils.isBlank(directory)) {
 			resultsDirectory = directory;
 		}
 	}
