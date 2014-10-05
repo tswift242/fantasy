@@ -11,7 +11,7 @@ public final class CustomScoringHelperPropertiesLoader {
 
 	private static final Logger logger =
 		LoggerFactory.getLogger(CustomScoringHelperPropertiesLoader.class.getName());
-	private static final String defaultPropertiesFilename = "/custom-scorer-default.properties";
+	private static final String overridePropertiesFilename = "/custom-scorer-override.properties";
 
 	// singleton pattern
 	private static CustomScoringHelperPropertiesLoader _loader = null;
@@ -26,6 +26,7 @@ public final class CustomScoringHelperPropertiesLoader {
 			if(in != null) {
 				props.load(in);
 				in.close();
+				logger.info("properties loaded successfuly");
 			} else {
 				//TODO: throw FileNotFoundException here?
 				logger.warn("cannot find file {}. Using default property values intead", propertiesFilename);
@@ -43,7 +44,7 @@ public final class CustomScoringHelperPropertiesLoader {
 	}
 
 	public static CustomScoringHelperPropertiesLoader getInstance() {
-		return getInstance(defaultPropertiesFilename);
+		return getInstance(overridePropertiesFilename);
 	}
 
 	public String getProperty(String propertyName) {

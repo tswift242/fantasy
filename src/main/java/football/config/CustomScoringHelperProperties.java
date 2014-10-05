@@ -25,7 +25,7 @@ public final class CustomScoringHelperProperties {
 	private static Mode defaultMode = Mode.QB;
 	private static RuleMap defaultRules = defaultNFLRules;
 	private static boolean resultsLoggingEnabled = true;
-	private static String resultsDirectory = System.getProperty("user.dir") +
+	private static String resultsDirectory = System.getProperty("user.home") +
 				System.getProperty("file.separator") + "fantasyfootball-custom-scorer-results";
 	private static boolean metricsEnabled = true;
 	private static Metric defaultMetric = new SortOrderMetric();
