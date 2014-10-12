@@ -38,6 +38,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	private CustomScoringHelperModel model;
 	private List<ScorerPanel> scorerPanels;
 	private JComboBox<Mode> modesBox;
+	private JComboBox<String> sitesBox;
 	private JButton rescoreButton;
 
 	public SimpleView(CustomScoringHelperModel model, String title) {
@@ -79,6 +80,21 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		}
 	}
 
+	@Override
+	public void updatePlayerScores(List<List<Player>> players) {
+		int index = 0;
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			scorerPanel.updatePlayerScores(players.get(index++));
+		}
+	}
+
+	@Override
+	public void setRuleTextFields(RuleMap rules) {
+		for(ScorerPanel scorerPanel : scorerPanels) {
+			scorerPanel.setRuleTextFields(rules);
+		}
+	}
+
 	/*
 	 * listener methods
 	 */
@@ -86,6 +102,12 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	public void addModeListener(ItemListener listener) {
 		modesBox.addItemListener(listener);
 		logger.info("registered mode listener");
+	}
+
+	@Override
+	public void addLeagueSiteListener(ItemListener listener) {
+		sitesBox.addItemListener(listener);
+		logger.info("registered league site listener");
 	}
 
 	@Override
@@ -117,13 +139,6 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		logger.info("registered window close listener");
 	}
 
-	@Override
-	public void updatePlayerScores(List<List<Player>> players) {
-		int index = 0;
-		for(ScorerPanel scorerPanel : scorerPanels) {
-			scorerPanel.updatePlayerScores(players.get(index++));
-		}
-	}
 
 
 
@@ -148,19 +163,19 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	private JPanel createContentPanel(boolean createMultipleScorerPanels) {
 		// get defaults
 		Mode defaultMode = CustomScoringHelperProperties.getDefaultMode();
-		RuleMap defaultRules = CustomScoringHelperProperties.getDefaultRules();
+		String defaultSite = CustomScoringHelperProperties.getDefaultLeagueSite();
 
 		// set up content panel
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
 
-		// mode panel
-		JPanel modePanel = createModePanel(defaultMode);
-		content.add(modePanel, BorderLayout.NORTH);
+		// global options panel
+		JPanel globalOptionsPanel = createGlobalOptionsPanel(defaultMode, defaultSite);
+		content.add(globalOptionsPanel, BorderLayout.NORTH);
 
 		// scorer panels
 		scorerPanels = new ArrayList<ScorerPanel>();
-		//TODO: pass modelID into ScorerPanel constructor
+		//TODO: pass modelID into ScorerPanel constructor (consider making this a field for ScorerPanel)
 		int modelID = 1;
 		ScorerPanel scorerPanel;
 		scorerPanel = new ScorerPanel(model.getModesToPlayersMap(modelID));
@@ -187,25 +202,36 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		return content;
 	}
 
-	private JPanel createModePanel(Mode initMode) {
-		GridBagPanel modePanel = new GridBagPanel(2);
-		GridBagConstraints c = modePanel.getConstraints();
+	private JPanel createGlobalOptionsPanel(Mode initMode, String initSite) {
+		GridBagPanel globalOptionsPanel = new GridBagPanel(5);
+		GridBagConstraints c = globalOptionsPanel.getConstraints();
 
-		modePanel.add(new JLabel("Select a player mode: "), c);
 
+		// Mode combo box
+		globalOptionsPanel.add(new JLabel("Player mode: "), c);
 		modesBox = new JComboBox<Mode>(Mode.values());
 		modesBox.setSelectedItem(initMode);
 		c.gridx++;
-		modePanel.add(modesBox, c);
+		globalOptionsPanel.add(modesBox, c);
 
+		// League site combo box
+		c.gridx--;
+		c.gridy++;
+		globalOptionsPanel.add(new JLabel("Leage site: "), c);
+		sitesBox = new JComboBox<String>(new String[]{"NFL", "ESPN", "Yahoo", "CBS"});
+		sitesBox.setSelectedItem(initSite);
+		c.gridx++;
+		globalOptionsPanel.add(sitesBox, c);
+
+		// Rescore button
 		rescoreButton = new JButton("Recalculate scores");
 		c.gridx--;
 		c.gridy++;
 		c.gridwidth = 2;
 		c.insets = new Insets(10, 2, 5, 2);
-		modePanel.add(rescoreButton, c);
+		globalOptionsPanel.add(rescoreButton, c);
 
-		return modePanel;
+		return globalOptionsPanel;
 	}
 
 	// line up a list of ScorerPanel's side-by-side in a grid

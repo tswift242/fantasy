@@ -163,6 +163,11 @@ public final class SimpleModel implements CustomScoringHelperModel
 	// ignore modelID, since this is not a composite model
 	@Override
 	public void setRules(RuleMap rules, int modelID) {
+		setRules(rules);
+	}
+
+	@Override
+	public void setRules(RuleMap rules) {
 		currentRules = rules;
 	}
 

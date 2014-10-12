@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import football.config.CustomScoringHelperProperties;
 import football.players.Player;
+import football.stats.RuleMap;
 import football.stats.StatType;
 
 /*
@@ -57,6 +58,18 @@ public final class ScorerPanel extends GridBagPanel
 		CardLayout cardLayout = (CardLayout)(playerPanels.getLayout());
 		cardLayout.show(playerPanels, mode.toString());
 		logger.info("Set players panel to mode {}", mode.toString());
+	}
+
+	// sets the text of each RuleTextField belonging to the this ScorerPanel to the value given
+	// by the corresponding Rule in the given RuleMap
+	public void setRuleTextFields(RuleMap rules) {
+		// get TextFields containing rule info on ScorerPanel
+		List<RuleTextField<? extends StatType>> ruleTextFields = getRuleTextFields();
+		// set text of each rule text field back to the default
+		for(RuleTextField<? extends StatType> ruleTextField : ruleTextFields) {
+			String text = rules.getValueText(ruleTextField.getCategory());
+			ruleTextField.setText(text);
+		}
 	}
 
 	// update player scores within current player panel

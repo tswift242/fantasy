@@ -23,9 +23,15 @@ public final class CustomScoringHelperProperties {
 	public static final RuleMap defaultYahooRules = createDefaultYahooRuleMap();
 	public static final RuleMap defaultCBSRules = createDefaultCBSRuleMap();
 
-	// properties
+	/*
+	 * Properties
+	 */
 	private static boolean useCompositeModel = true;
+	// Mode selected by default at program start
 	private static Mode defaultMode = Mode.QB;
+	// league site selected by default at program start
+	private static String defaultSite = "NFL";
+	// default set of Rules for the CURRENTLY SELECTED league site
 	private static RuleMap defaultRules = defaultNFLRules;
 	private static boolean resultsLoggingEnabled = true;
 	private static String resultsDirectory = System.getProperty("user.home") +
@@ -33,7 +39,9 @@ public final class CustomScoringHelperProperties {
 	private static boolean metricsEnabled = true;
 	private static Metric defaultMetric = new SortOrderMetric();
 
-	// property keys
+	/*
+	 * Property keys
+	 */
 	private static final String USE_COMPOSITE_MODEL = "useCompositeModel";
 	private static final String DEFAULT_MODE = "defaultMode";
 	private static final String DEFAULT_RULES = "defaultRules";
@@ -51,7 +59,8 @@ public final class CustomScoringHelperProperties {
 			// set properties by getting properties from loader
 			setUseCompositeModel(Boolean.parseBoolean(loader.getProperty(USE_COMPOSITE_MODEL)));
 			setDefaultMode(Mode.fromString(loader.getProperty(DEFAULT_MODE)));
-			setDefaultRules(loader.getProperty(DEFAULT_RULES));
+			setDefaultSite(loader.getProperty(DEFAULT_RULES));
+			setDefaultRules(defaultSite);
 			enableResultsLogging(Boolean.parseBoolean(loader.getProperty(ENABLE_RESULTS_LOGGING)));
 			setResultsDirectory(loader.getProperty(RESULTS_DIRECTORY));
 			enableMetrics(Boolean.parseBoolean(loader.getProperty(ENABLE_METRICS)));
@@ -73,6 +82,10 @@ public final class CustomScoringHelperProperties {
 
 	public static Mode getDefaultMode() {
 		return defaultMode;
+	}
+
+	public static String getDefaultLeagueSite() {
+		return defaultSite;
 	}
 
 	//TODO: should return defensive copy of this for safety
@@ -118,7 +131,11 @@ public final class CustomScoringHelperProperties {
 		defaultMode = mode;
 	}
 
-	private static void setDefaultRules(String site) {
+	private static void setDefaultSite(String site) {
+		defaultSite = site;
+	}
+
+	public static void setDefaultRules(String site) {
 		switch(site) {
 			case "NFL":
 				defaultRules = defaultNFLRules;

@@ -9,6 +9,7 @@ import javax.swing.event.DocumentListener;
 import football.core.graphics.ScorerPanel;
 import football.players.Player;
 import football.players.modes.Mode;
+import football.stats.RuleMap;
 
 public interface CustomScoringHelperView
 {
@@ -16,7 +17,13 @@ public interface CustomScoringHelperView
 
 	public void setMode(Mode mode);
 
+	public void updatePlayerScores(List<List<Player>> players);
+
+	public void setRuleTextFields(RuleMap rules);
+
 	public void addModeListener(ItemListener listener);
+
+	public void addLeagueSiteListener(ItemListener listener);
 
 	public void addRulesListener(DocumentListener listener);
 
@@ -25,6 +32,4 @@ public interface CustomScoringHelperView
 	public void addRestoreDefaultRulesListener(ActionListener listener);
 
 	public void addWindowCloseListener(WindowListener listener);
-
-	public void updatePlayerScores(List<List<Player>> players);
 }

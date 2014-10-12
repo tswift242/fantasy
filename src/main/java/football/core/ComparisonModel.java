@@ -99,12 +99,18 @@ public final class ComparisonModel implements CustomScoringHelperModel
 	@Override
 	public void setRules(RuleMap rules, int modelID) {
 		if(modelID == 1) {
-			model1.setRules(rules, modelID);
+			model1.setRules(rules);
 		} else if(modelID == 2) {
-			model2.setRules(rules, modelID);
+			model2.setRules(rules);
 		} else {
 			throw new IllegalArgumentException("modelID " + modelID + " is not 1 or 2");
 		}
+	}
+
+	@Override
+	public void setRules(RuleMap rules) {
+		model1.setRules(rules);
+		model2.setRules(rules);
 	}
 
 	@Override
