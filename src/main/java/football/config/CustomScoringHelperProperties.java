@@ -203,11 +203,15 @@ public final class CustomScoringHelperProperties {
 		rules.put(Pass.INT, new Rule<Pass>(Pass.INT, -2.0));
 		// Kick
 		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 4.0));
-		// TODO: FG_MISSED = -1
+		rules.put(Kick.FG_MS_0, new Rule<Kick>(Kick.FG_MS_0, -1.0));
+		rules.put(Kick.FG_MS_20, new Rule<Kick>(Kick.FG_MS_20, -1.0));
+		rules.put(Kick.FG_MS_30, new Rule<Kick>(Kick.FG_MS_30, -1.0));
+		rules.put(Kick.FG_MS_40, new Rule<Kick>(Kick.FG_MS_40, -1.0));
+		rules.put(Kick.FG_MS_50, new Rule<Kick>(Kick.FG_MS_50, -1.0));
 		// Def
-		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -1.285714, 7));
+		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -1.28, 7));
+		rules.put(Def.YDS, new Rule<Def>(Def.YDS, -1.91, 100)); // -1.916 = -11.5/6
 		// TODO: BLK (kick/punt) = 2
-		// TODO: YDS_ALLOWED = -11.5/6 = -1.916 per 100
 		return rules;
 	}
 
@@ -237,7 +241,7 @@ public final class CustomScoringHelperProperties {
 		rules.put(Kick.FG_MD_40, new Rule<Kick>(Kick.FG_MD_40, 3.0));
 		// Def
 		rules.put(Def.PTS, new Rule<Def>(Def.PTS, -2.0, 7));
-		// TODO: YDS_ALLOWED = -4 per 100
+		rules.put(Def.YDS, new Rule<Def>(Def.YDS, -4.0, 100));
 		return rules;
 	}
 
