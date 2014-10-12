@@ -75,11 +75,6 @@ public final class ComparisonModel implements CustomScoringHelperModel
 	}
 
 	@Override
-	public int getNumberOfModels() {
-		return 2;
-	}
-
-	@Override
 	public void setMode(Mode mode) {
 		model1.setMode(mode);
 		model2.setMode(mode);

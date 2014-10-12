@@ -46,8 +46,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		logger.info("Creating view with name: {}", title);
 		this.model = model;
 
-		boolean createMultipleScorerPanels = isCompositeModel(model);
-		JPanel content = createContentPanel(createMultipleScorerPanels);
+		JPanel content = createContentPanel();
 
 		// frame stuff
 		this.setContentPane(content);
@@ -143,24 +142,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 
 
-	// determine whether or not to create multiple ScorerPanel's
-	// based on whether the model passed in is composite
-	private boolean isCompositeModel(CustomScoringHelperModel model) {
-		boolean isComposite;
-
-		int numModels = model.getNumberOfModels();
-		if(numModels == 1) {
-			isComposite= false;
-		} else if(numModels == 2) {
-			isComposite = true;
-		} else {
-			throw new IllegalArgumentException("number of models returned by model must be 1 or 2");
-		}
-
-		return isComposite;
-	}
-
-	private JPanel createContentPanel(boolean createMultipleScorerPanels) {
+	private JPanel createContentPanel() {
 		// get defaults
 		Mode defaultMode = CustomScoringHelperProperties.getDefaultMode();
 		String defaultSite = CustomScoringHelperProperties.getDefaultLeagueSite();
@@ -183,7 +165,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		scorerPanels.add(scorerPanel);
 
 		// create 2nd ScorerPanel, and put 2 panels side-by-side before adding to content panel
-		if(createMultipleScorerPanels) {
+		if(CustomScoringHelperProperties.useCompositeModel()) {
 			scorerPanel = new ScorerPanel(model.getModesToPlayersMap(modelID));
 			scorerPanel.setName(String.valueOf(++modelID)); // tag ScorerPanel with an ID
 			scorerPanels.add(scorerPanel);
