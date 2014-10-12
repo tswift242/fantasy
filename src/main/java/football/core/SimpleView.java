@@ -1,18 +1,13 @@
 package football.core;
 
 import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.event.DocumentListener;
@@ -21,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import football.config.CustomScoringHelperProperties;
-import football.core.graphics.GridBagPanel;
+import football.core.graphics.GlobalOptionsPanel;
 import football.core.graphics.ScorerPanel;
 import football.core.intface.CustomScoringHelperModel;
 import football.core.intface.CustomScoringHelperView;
@@ -37,9 +32,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 	private CustomScoringHelperModel model;
 	private List<ScorerPanel> scorerPanels;
-	private JComboBox<Mode> modesBox;
-	private JComboBox<String> sitesBox;
-	private JButton rescoreButton;
+	private GlobalOptionsPanel globalOptionsPanel;
 
 	public SimpleView(CustomScoringHelperModel model, String title) {
 		super(title);
@@ -53,7 +46,6 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		this.pack(); //resize frame based on preferred sizes of subcomponents
 		this.setLocationRelativeTo(null); //center window on screen
 
-		//TODO: pass window closing event to controller
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 
@@ -99,14 +91,12 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 	 */
 	@Override
 	public void addModeListener(ItemListener listener) {
-		modesBox.addItemListener(listener);
-		logger.info("registered mode listener");
+		globalOptionsPanel.addModeListener(listener);
 	}
 
 	@Override
 	public void addLeagueSiteListener(ItemListener listener) {
-		sitesBox.addItemListener(listener);
-		logger.info("registered league site listener");
+		globalOptionsPanel.addLeagueSiteListener(listener);
 	}
 
 	@Override
@@ -119,8 +109,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 
 	@Override
 	public void addRecalculateScoreListener(ActionListener listener) {
-		rescoreButton.addActionListener(listener);
-		logger.info("registered recalculate score listener");
+		globalOptionsPanel.addRecalculateScoreListener(listener);
 	}
 
 	@Override
@@ -152,7 +141,7 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		content.setLayout(new BorderLayout());
 
 		// global options panel
-		JPanel globalOptionsPanel = createGlobalOptionsPanel(defaultMode, defaultSite);
+		globalOptionsPanel = new GlobalOptionsPanel(defaultMode, defaultSite);
 		content.add(globalOptionsPanel, BorderLayout.NORTH);
 
 		// scorer panels
@@ -182,38 +171,6 @@ public final class SimpleView extends JFrame implements CustomScoringHelperView
 		}
 
 		return content;
-	}
-
-	private JPanel createGlobalOptionsPanel(Mode initMode, String initSite) {
-		GridBagPanel globalOptionsPanel = new GridBagPanel(5);
-		GridBagConstraints c = globalOptionsPanel.getConstraints();
-
-
-		// Mode combo box
-		globalOptionsPanel.add(new JLabel("Player mode: "), c);
-		modesBox = new JComboBox<Mode>(Mode.values());
-		modesBox.setSelectedItem(initMode);
-		c.gridx++;
-		globalOptionsPanel.add(modesBox, c);
-
-		// League site combo box
-		c.gridx--;
-		c.gridy++;
-		globalOptionsPanel.add(new JLabel("Leage site: "), c);
-		sitesBox = new JComboBox<String>(new String[]{"NFL", "ESPN", "Yahoo", "CBS"});
-		sitesBox.setSelectedItem(initSite);
-		c.gridx++;
-		globalOptionsPanel.add(sitesBox, c);
-
-		// Rescore button
-		rescoreButton = new JButton("Recalculate scores");
-		c.gridx--;
-		c.gridy++;
-		c.gridwidth = 2;
-		c.insets = new Insets(10, 2, 5, 2);
-		globalOptionsPanel.add(rescoreButton, c);
-
-		return globalOptionsPanel;
 	}
 
 	// line up a list of ScorerPanel's side-by-side in a grid
