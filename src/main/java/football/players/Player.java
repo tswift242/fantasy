@@ -23,15 +23,13 @@ public abstract class Player implements Comparable<Player>
 
 	protected final String name; //uniquely identifies player
 	protected double score; //calculated and stored by evaluate
-	private final double defaultScore; //score using default scoring rules
 
-	public Player(String name, double defaultScore)
+	public Player(String name)
 	{
 		checkNotNull(name, "name is null");
 		checkArgument(!name.equals(""), "name is empty");
 		this.name = name;
-		this.score = defaultScore;
-		this.defaultScore = defaultScore;
+		this.score = 0;
 	}
 
 	public String getName() {
@@ -47,14 +45,6 @@ public abstract class Player implements Comparable<Player>
 
 	//evaluate player by assigning them a score
 	public abstract double evaluate(RuleMap rules);
-
-	// use the player's default score instead of evaluating it
-	// against some rules and assigning it a new score.
-	// Used when we're using the default scoring rules
-	public double useDefaultScore() {
-		score = defaultScore;
-		return score;
-	}
 
 	//players considered equal if their names match
 	@Override

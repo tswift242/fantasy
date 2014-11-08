@@ -18,16 +18,16 @@ public final class K extends Player
 	private final Set<Stat<Kick>> kickStats;
 
 	//stats ordered: pat made/miss, fg made, fg miss
-	public K(String name, double defaultScore, Set<Stat<Kick>> kickStats)
+	public K(String name, Set<Stat<Kick>> kickStats)
 	{
-		super(name, defaultScore);
+		super(name);
 		this.kickStats = new LinkedHashSet<Stat<Kick>>(kickStats);
 		checkStatsSetNotNullWithCorrectSize(this.kickStats,Kick.class);
 	}
 
 	//copy constructor. Note: does not copy stat sets.
 	public K(K other) {
-		this(other.name, other.score, other.kickStats);
+		this(other.name, other.kickStats);
 	}
 
 	public Set<Stat<Kick>> getKickStats() {

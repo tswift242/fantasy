@@ -50,6 +50,17 @@ public final class SimpleModel implements CustomScoringHelperModel
 		if(CustomScoringHelperProperties.isResultsLoggingEnabled()) {
 			resultsLogger = createDefaultResultsLogger();
 		}
+
+		// Score each set of players using the default rules to provide each 
+		// player with a default score
+		for(Mode mode : Mode.values()) {
+			if(mode != Mode.ALL) {
+				ScoringResults initScoringResults = run(mode, currentRules);
+				// insert newly scored players into map
+				List<Player> initPlayers = initScoringResults.getPlayers().get(0);
+				modesToPlayersMap.put(mode, initPlayers);
+			}
+		}
 	}
 
 	// command line version
@@ -176,17 +187,7 @@ public final class SimpleModel implements CustomScoringHelperModel
 	// assign each player in players a score using the scoring rules in rules
 	private void scorePlayers(List<Player> players, RuleMap rules) {
 		for(Player player : players) {
-			// if we're using default rules, "look up" correct score by using
-			// the saved defaultScore of each player instead of computing the
-			// score from scratch
-			//TODO: NOT CORRECT -- need to implement equals() for RuleMap
-			//TODO: consider not checking for / tracking default score (cost of RuleMap
-			// equality check probably comparable to savings in computing score)
-			if(rules.equals(CustomScoringHelperProperties.getDefaultRules())) {
-				player.useDefaultScore();
-			} else {
-				player.evaluate(rules);
-			}
+			player.evaluate(rules);
 		}
 	}
 

@@ -28,9 +28,9 @@ public final class QB extends Player
 	private final Set<Stat<Misc>> miscStats;
 
 	//stats ordered: comp, inc, yds, td, inter, sck
-	public QB(String name, double defaultScore, Set<Stat<Pass>> passStats, Set<Stat<Rush>> rushStats, Set<Stat<Misc>> miscStats)
+	public QB(String name, Set<Stat<Pass>> passStats, Set<Stat<Rush>> rushStats, Set<Stat<Misc>> miscStats)
 	{
-		super(name, defaultScore);
+		super(name);
 		this.passStats = new LinkedHashSet<Stat<Pass>>(passStats);
 		this.rushStats = new LinkedHashSet<Stat<Rush>>(rushStats);
 		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
@@ -41,7 +41,7 @@ public final class QB extends Player
 
 	//copy constructor. Note: does not copy stat sets.
 	public QB(QB other) {
-		this(other.name, other.score, other.passStats, other.rushStats, other.miscStats);
+		this(other.name, other.passStats, other.rushStats, other.miscStats);
 	}
 
 	public Set<Stat<Pass>> getPassStats() {

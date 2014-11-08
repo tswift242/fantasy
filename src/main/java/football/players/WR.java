@@ -26,9 +26,9 @@ public final class WR extends Player
 	private final Set<Stat<Misc>> miscStats;
 
 	//stats ordered: rec, yds, td
-	public WR(String name, double defaultScore, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
+	public WR(String name, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
 	{
-		super(name, defaultScore);
+		super(name);
 		this.recStats = new LinkedHashSet<Stat<Rec>>(recStats);
 		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
 		checkStatsSetNotNullWithCorrectSize(this.recStats,Rec.class);
@@ -37,7 +37,7 @@ public final class WR extends Player
 
 	//copy constructor. Note: does not copy stat sets.
 	public WR(WR other) {
-		this(other.name, other.score, other.recStats, other.miscStats);
+		this(other.name, other.recStats, other.miscStats);
 	}
 
 	public Set<Stat<Rec>> getRecStats() {

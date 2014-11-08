@@ -17,9 +17,9 @@ public final class DEF extends Player
 	private final int numStatTypes = 1; //number of stat types used by player
 	private final Set<Stat<Def>> defStats;
 
-	public DEF(String name, double defaultScore, Set<Stat<Def>> defStats)
+	public DEF(String name, Set<Stat<Def>> defStats)
 	{
-		super(name, defaultScore);
+		super(name);
 		this.defStats = new LinkedHashSet<Stat<Def>>(defStats);
 		checkStatsSetNotNullWithCorrectSize(this.defStats,Def.class);
 		//TODO: check all elements of set are non-null?
@@ -27,7 +27,7 @@ public final class DEF extends Player
 
 	//copy constructor. Note: does not copy stat sets.
 	public DEF(DEF other) {
-		this(other.name, other.score, other.defStats);
+		this(other.name, other.defStats);
 	}
 
 	public Set<Stat<Def>> getDefStats() {

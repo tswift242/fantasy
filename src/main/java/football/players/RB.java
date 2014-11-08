@@ -28,9 +28,9 @@ public final class RB extends Player
 	private final Set<Stat<Misc>> miscStats;
 
 	//stats ordered: atts, yds, td
-	public RB(String name, double defaultScore, Set<Stat<Rush>> rushStats, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
+	public RB(String name, Set<Stat<Rush>> rushStats, Set<Stat<Rec>> recStats, Set<Stat<Misc>> miscStats)
 	{
-		super(name, defaultScore);
+		super(name);
 		this.rushStats = new LinkedHashSet<Stat<Rush>>(rushStats);
 		this.recStats = new LinkedHashSet<Stat<Rec>>(recStats);
 		this.miscStats = new LinkedHashSet<Stat<Misc>>(miscStats);
@@ -41,7 +41,7 @@ public final class RB extends Player
 
 	//copy constructor. Note: does not copy stat sets.
 	public RB(RB other) {
-		this(other.name, other.score, other.rushStats, other.recStats, other.miscStats);
+		this(other.name, other.rushStats, other.recStats, other.miscStats);
 	}
 
 	public Set<Stat<Rush>> getRushStats() {

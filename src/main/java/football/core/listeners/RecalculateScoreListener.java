@@ -68,6 +68,7 @@ public class RecalculateScoreListener implements ActionListener
 		String text = ruleTextField.getText();
 
 		Rule<T> rule = PlayerUtils.parseRuleText(text, category);
+        // TODO: don't need to remove category from rules since this is a brand new map
 		// if rule is invalid, remove it from the RuleMap to prevent old value from being used
 		// equivalent to setting value to be 0
 		if(rule == null) {
