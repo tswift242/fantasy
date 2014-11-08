@@ -16,11 +16,21 @@ public enum Mode
 		public RuleMap parseScoringRules(String[] args) {
 			return football.players.QB.parseScoringRules(args);
 		}
+
+		@Override
+		public int getScorePrecision() {
+			return 2;
+		}
 	},
 	RB("RB", newList(Rush.class, Rec.class, Misc.class)) {
 		@Override
 		public RuleMap parseScoringRules(String[] args) {
 			return football.players.RB.parseScoringRules(args);
+		}
+
+		@Override
+		public int getScorePrecision() {
+			return 1;
 		}
 	},
 	WR("WR", newList(Rec.class, Misc.class)) {
@@ -28,11 +38,21 @@ public enum Mode
 		public RuleMap parseScoringRules(String[] args) {
 			return football.players.WR.parseScoringRules(args);
 		}
+
+		@Override
+		public int getScorePrecision() {
+			return 1;
+		}
 	},
 	K("K", newList(Kick.class)) {
 		@Override
 		public RuleMap parseScoringRules(String[] args) {
 			return football.players.K.parseScoringRules(args);
+		}
+
+		@Override
+		public int getScorePrecision() {
+			return 1;
 		}
 	},
 	DEF("DEF", newList(Def.class)) {
@@ -40,12 +60,22 @@ public enum Mode
 		public RuleMap parseScoringRules(String[] args) {
 			return football.players.DEF.parseScoringRules(args);
 		}
+
+		@Override
+		public int getScorePrecision() {
+			return 1;
+		}
 	},
 	ALL("ALL", newList(Pass.class, Rush.class, Rec.class, Kick.class, Def.class)) {
 		@Override
 		public RuleMap parseScoringRules(String[] args) {
 			//TODO
 			return new RuleMap();
+		}
+
+		@Override
+		public int getScorePrecision() {
+			return 2;
 		}
 	};
 
@@ -71,8 +101,6 @@ public enum Mode
 		return EnumUtils.fromString(Mode.class, text);
 	}
 
-	public abstract RuleMap parseScoringRules(String[] args);
-
 	public List<Class<? extends StatType>> getStatTypes() {
 		return statTypes;
 	}
@@ -80,6 +108,11 @@ public enum Mode
 	public String getCategoriesString() {
 		return categoriesString;
 	}
+
+    public abstract RuleMap parseScoringRules(String[] args);
+
+	// returns display precision for player scores for players corresponding to this Mode
+	public abstract int getScorePrecision();
 
 
 

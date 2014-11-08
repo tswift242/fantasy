@@ -1,15 +1,17 @@
 package football.core.graphics;
 
 import java.awt.BorderLayout;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SortOrder;
+import javax.swing.SwingConstants;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import static javax.swing.RowSorter.SortKey;
@@ -35,19 +37,13 @@ public final class PlayersPanel extends JPanel
 	public PlayersPanel(List<Player> players, Mode mode) {
 		// construct table
 		table = new JTable(new PlayersTableModel(players, mode));
+		table.setDefaultRenderer(Double.class, new ScoreCellRenderer(mode.getScorePrecision()));
 		setSortingBehavior(table);
 
 		// add to panel without JScrollPane
 		this.setLayout(new BorderLayout());
 		this.add(table.getTableHeader(), BorderLayout.PAGE_START);
 		this.add(table, BorderLayout.CENTER);
-
-		// add to panel with JScrollPane
-		/*table.setPreferredScrollableViewportSize(table.getPreferredSize());
-		//table.setFillsViewportHeight(true);
-		JScrollPane scrollPane = new JScrollPane(table);
-		//scrollPane.setPreferredSize(new Dimension(1100, 200));
-		this.add(scrollPane);*/
 	}
 
 	@SuppressWarnings("unchecked")
@@ -176,6 +172,7 @@ public final class PlayersPanel extends JPanel
 
 			playerData = new Object[players.size()][numCols];
 			namesToIndices = new HashMap<String,Integer>();
+
 			int rowIdx = 0; // don't assume List has random access
 			for(Player player : players) {
 				String name = player.getName();
@@ -205,5 +202,33 @@ public final class PlayersPanel extends JPanel
 			}
 			return result;
 		}
+	}
+
+	/*
+	* Renderer for double cells containing player scores.
+	* Scores are rendered with a right-justified alignment, with
+	* the given amount of precision.
+	*/
+	private class ScoreCellRenderer extends DefaultTableCellRenderer
+	{
+        private final NumberFormat scoreFmt;
+
+        public ScoreCellRenderer(int precision) {
+            super();
+            setHorizontalAlignment(SwingConstants.RIGHT);
+
+			scoreFmt = NumberFormat.getNumberInstance();
+			scoreFmt.setMinimumFractionDigits(precision);
+            scoreFmt.setMaximumFractionDigits(precision);
+        }
+
+        @Override
+        public void setValue(Object value) {
+            if((value != null) && (value instanceof Double)) {
+                Double score = (Double)value;
+                value = scoreFmt.format(score.doubleValue());
+            }
+            super.setValue(value);
+        }
 	}
 }

@@ -19,7 +19,7 @@ import football.stats.RuleMap;
 public abstract class Player implements Comparable<Player>
 {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
-	private final DecimalFormat scoreFmt = new DecimalFormat(".##"); //static
+	private static final DecimalFormat SCORE_FORMAT = new DecimalFormat(".00");
 
 	protected final String name; //uniquely identifies player
 	protected double score; //calculated and stored by evaluate
@@ -78,7 +78,7 @@ public abstract class Player implements Comparable<Player>
 
 	@Override
 	public String toString() {
-		return String.format("%-15s %-8s",name,scoreFmt.format(score));
+		return String.format("%-15s %-8s",name,SCORE_FORMAT.format(score));
 	}
 
 	// returns all player's stat values
