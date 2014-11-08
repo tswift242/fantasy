@@ -32,7 +32,6 @@ public class RulesListener implements DocumentListener
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		//TODO: change text to "0.0" if its empty
 		updateRule(e);
 	}
 

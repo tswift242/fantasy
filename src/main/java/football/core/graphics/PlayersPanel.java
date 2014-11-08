@@ -102,7 +102,7 @@ public final class PlayersPanel extends JPanel
 
 		public PlayersTableModel(List<Player> players, Mode mode) {
 			// create column names
-			setColumnNames(players, mode);
+			setColumnNames(mode);
 
 			// create row data
 			setPlayerData(players);
@@ -158,7 +158,7 @@ public final class PlayersPanel extends JPanel
 		}
 
 
-		private void setColumnNames(List<Player> players, Mode mode) {
+		private void setColumnNames(Mode mode) {
 			// stat categories for this group of players
 			String[] categories = mode.getCategoriesString().split(WHITESPACE_REGEX);
 			// numStats == numCategories

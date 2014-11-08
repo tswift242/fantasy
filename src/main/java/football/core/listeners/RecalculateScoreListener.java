@@ -39,9 +39,6 @@ public class RecalculateScoreListener implements ActionListener
 
 		//TODO: feature everything above off depending if RulesListener enabled
 		// evaluate all players using current RuleMap
-		//TODO: following 2 steps should only be done to model with id modelID in the case of
-		// composite models (can still log both results for comparison), unless we change 
-		// it so that there's only one "recalculate score" button for the whole app
 		ScoringResults results = model.run();
 		// modify view based on updated model
 		view.updatePlayerScores(results.getPlayers());
