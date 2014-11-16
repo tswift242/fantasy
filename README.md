@@ -34,6 +34,9 @@ These are options which apply to each individual scoring panel.
 * **Restore default rules:** All scoring rules can be easily reset back to their defaults by clicking the "Restore default rules" button.
 * **Sorting:** Playes may be manually sorted by any of the relevant statistical categories for that group of players, as well as by player name. By default, players are sorted automatically by score in ascending order.
 
+## Players
+The program currently uses a fixed set of hard-coded players and statistics. Each mode (position) is meant to have a set of representative players, in that good, mediocre, and bad players are all included, in roughly equal amounts. Player statistics are from the 2012-2013 NFL season. The goal is to enhance our data usage in the future by having player statistics read out of a CSV file, and ideally have the ability to grab this data from online sources dynamically as needed.
+
 ## Stat Abbreviations
 
 ### Multi-categorical
